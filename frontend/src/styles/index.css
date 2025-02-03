@@ -1,1 +1,48 @@
 @import 'tailwindcss';
+
+/* plugin */
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
+
+@theme {
+	/* Font Family */
+	--font-nunito: Nunito, sans-serif;
+
+	/* Font Size */
+	--text-titlehero: 4.5rem;
+	--text-titlepage: 3rem;
+	--text-subtitle: 2rem;
+	--text-heading: 1.5rem;
+	--text-subheading: 1.25rem;
+	--text-body-base: 1rem;
+	--text-body-bold: 1rem;
+	--text-body-light: 1rem;
+	--text-body-small-base: 0.875rem;
+	--text-body-small-bold: 0.875rem;
+	--text-body-small-light: 0.875rem;
+
+	/* Colors */
+	--color-primary: #5aa9e6;
+	--color-secondary: #ff9a76;
+	--color-black: #2e2e2e;
+	--color-highlight: #fce38a;
+	--color-neutral-gray: #f0f0f0;
+	--color-neutral-white: #fafafa;
+	--color-neutral-darkgray: #858585;
+}
+
+@layer base {
+	* {
+		font-family: var(--font-nunito);
+	}
+}
+
+@layer components {
+	.navlink {
+		@apply block rounded-lg px-4 py-2 text-body-small-base font-medium text-black hover:bg-neutral-darkgray hover:text-neutral-gray focus:bg-neutral-darkgray focus:text-neutral-gray;
+	}
+
+	.navlink-active {
+		@apply block rounded-lg bg-neutral-darkgray px-4 py-2 text-body-small-base font-medium text-neutral-gray;
+	}
+}
