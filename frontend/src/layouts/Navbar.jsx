@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'motion/react'
 
 import Logo from '../components/Logo'
@@ -8,7 +8,32 @@ import HamburgerMenu from '../components/HamburgerMenu'
 import Button from '../components/Button'
 
 const Navbar = () => {
+	// nav menu
 	const [isOpen, setIsOpen] = useState(false)
+
+	// dropdown
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+	const dropdownRef = useRef(null)
+
+	// Handle toggle dropdown
+	const handleToggleDropdown = () => {
+		setIsDropdownOpen((prev) => !prev)
+	}
+
+	// Handle ketika klik di luar dropdown
+	const handleClickOutside = (e) => {
+		if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+			setIsDropdownOpen(false)
+		}
+	}
+
+	// tambahkan event ketika terdeteksi ada klik di luar dropdown
+	useEffect(() => {
+		document.addEventListener('click', handleClickOutside)
+		return () => {
+			document.removeEventListener('click', handleClickOutside)
+		}
+	}, [])
 
 	return (
 		<nav className="bg-neutral-darkgray h-20 flex items-center">
@@ -49,10 +74,11 @@ const Navbar = () => {
 					</div>
 					{/* Search */}
 
-					<div className="flex items-center gap-4">
+					<div className="flex items-center gap-10">
 						{/* Navlink Desktop */}
-						<nav className="hidden sm:flex" aria-label="Global">
-							<ul className="flex items-center gap-6 text-sm">
+						<nav className="hidden lg:flex" aria-label="Global">
+							<ul className="relative flex items-center gap-6 text-sm">
+								{/* Beranda */}
 								<li>
 									<NavLink
 										to="/"
@@ -60,7 +86,9 @@ const Navbar = () => {
 										Beranda
 									</NavLink>
 								</li>
+								{/* Beranda */}
 
+								{/* Blog */}
 								<li>
 									<NavLink
 										to="/blog"
@@ -68,28 +96,69 @@ const Navbar = () => {
 										Blog
 									</NavLink>
 								</li>
+								{/* Blog */}
 
-								<li>
-									<NavLink
-										to="/kategori"
-										className="text-neutral-white transition hover:text-neutral-white/75">
+								{/* Kategori */}
+								<li className="relative">
+									<span
+										ref={dropdownRef}
+										className="text-neutral-white cursor-pointer transition hover:text-neutral-white/75"
+										onClick={handleToggleDropdown}>
 										Kategori
-									</NavLink>
+									</span>
+
+									{/* Dropdown Menu */}
+									<motion.ul
+										initial={{ height: 0 }}
+										animate={{ height: isDropdownOpen ? 'auto' : 0 }}
+										exit={{ height: 0 }}
+										transition={{ duration: 0.3, ease: 'easeInOut' }}
+										className="absolute right-0 mt-2 w-40 bg-neutral-white shadow-lg rounded-lg overflow-hidden">
+										<li>
+											<NavLink
+												to="/kategori/destinasi"
+												className="block px-4 py-2 text-neutral-darkgray hover:text-primary">
+												Destinasi
+											</NavLink>
+										</li>
+										<li>
+											<NavLink
+												to="/kategori/kuliner"
+												className="block px-4 py-2 text-neutral-darkgray hover:text-primary">
+												Kuliner
+											</NavLink>
+										</li>
+										<li>
+											<NavLink
+												to="/kategori/lifestyle"
+												className="block px-4 py-2 text-neutral-darkgray hover:text-primary">
+												Lifestyle
+											</NavLink>
+										</li>
+										<li>
+											<NavLink
+												to="/kategori/tipsnhacks"
+												className="block px-4 py-2 text-neutral-darkgray hover:text-primary">
+												Tips & Hacks
+											</NavLink>
+										</li>
+									</motion.ul>
+									{/* Dropdown Menu */}
 								</li>
+								{/* Kategori */}
 							</ul>
 						</nav>
 						{/* Navlink Desktop */}
 
 						{/* Action Button */}
-						<div className="hidden sm:flex sm:gap-4">
+						<div className="hidden lg:flex sm:gap-4">
 							<Button to="/login" text="Masuk" style="primary-outline" />
-
 							<Button to="/register" text="Daftar" />
 						</div>
 						{/* Action Button */}
 
 						{/* Hamburger Menu */}
-						<div className="block md:hidden relative z-50">
+						<div className="block lg:hidden relative z-50">
 							<HamburgerMenu
 								onClick={() => setIsOpen(!isOpen)}
 								isOpen={isOpen}
@@ -99,7 +168,7 @@ const Navbar = () => {
 						{/* Hamburger Menu */}
 					</div>
 
-					{/* Navlink Mobile */}
+					{/* Navmenu Mobile */}
 					<motion.div
 						initial={{ x: '100%' }} // Mulai dari luar layar (kanan)
 						animate={{ x: isOpen ? '1%' : '100%' }} // Muncul ke kiri saat isOpen = true
@@ -109,6 +178,7 @@ const Navbar = () => {
 							isOpen ? 'shadow-xl' : ''
 						} flex h-screen flex-col justify-between border-e bg-neutral-white fixed top-0 right-0 w-max min-w-72 z-40 px-4 pb-10 pt-24`}>
 						<div className="w-full">
+							{/* Search */}
 							<Input
 								text="Search"
 								id="search"
@@ -131,8 +201,11 @@ const Navbar = () => {
 									</svg>
 								}
 							/>
+							{/* Search */}
 
+							{/* Navlink mobile */}
 							<ul className="mt-6 space-y-1">
+								{/* Beranda */}
 								<li>
 									<NavLink
 										to="/"
@@ -142,7 +215,9 @@ const Navbar = () => {
 										Beranda
 									</NavLink>
 								</li>
+								{/* Beranda */}
 
+								{/* Blog */}
 								<li>
 									<NavLink
 										to="/blog"
@@ -152,7 +227,9 @@ const Navbar = () => {
 										Blog
 									</NavLink>
 								</li>
+								{/* Blog */}
 
+								{/* Kategori */}
 								<li>
 									<details className="group [&_summary::-webkit-details-marker]:hidden">
 										<summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-black">
@@ -218,16 +295,17 @@ const Navbar = () => {
 										</ul>
 									</details>
 								</li>
+								{/* Kategori */}
 							</ul>
+							{/* Navlink mobile */}
 						</div>
 
+						{/* Action Button */}
 						<div className="flex flex-col gap-2">
-							{/* Action Button */}
 							<Button to="/login" text="Masuk" style="primary-outline" />
-
 							<Button to="/register" text="Daftar" />
-							{/* Action Button */}
 						</div>
+						{/* Action Button */}
 					</motion.div>
 					{/* Navlink Mobile */}
 				</div>
