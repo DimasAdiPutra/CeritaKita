@@ -8,6 +8,9 @@ const Input = ({
 	type,
 	iconLeft,
 	iconRight,
+	// inputClassName = '',
+	// labelClassName = '',
+	transparent,
 }) => {
 	return (
 		<div className={!showLabel && 'relative'}>
@@ -15,13 +18,15 @@ const Input = ({
 				htmlFor={id}
 				className={
 					showLabel
-						? 'block text-body-small-base font-medium text-neutral-darkgray'
+						? `block text-body-small-base font-medium ${
+								transparent ? 'text-neutral-white' : ' text-neutral-darkgray'
+						  }`
 						: 'sr-only'
 				}>
 				{label}
 			</label>
 
-			<span className="pointer-events-none absolute inset-y-0 start-0 grid w-10 place-content-center text-neutral-darkgray">
+			<span className="pointer-events-none absolute inset-y-0 start-0 grid w-10 place-content-center">
 				{iconLeft && iconLeft}
 			</span>
 
@@ -31,12 +36,16 @@ const Input = ({
 				placeholder={text}
 				className={`${
 					iconLeft && 'pl-10'
-				} w-full rounded-md border-neutral-darkgray border-2 focus:border-primary focus:ring-0 focus:outline-0 py-2.5 pe-10 shadow-xs sm:text-body-small-base transition-colors`}
+				} w-full rounded-md border-2 focus:border-primary focus:ring-0 focus:outline-0 py-2.5 pe-10 shadow-xs sm:text-body-small-base transition-colors ${
+					transparent
+						? 'bg-transparent border-neutral-white placeholder:text-neutral-white'
+						: 'bg-neutral-white border-neutral-darkgray placeholder:text-neutral-darkgray'
+				}`}
 			/>
 
 			<span className="sr-only">{text}</span>
 
-			<span className="pointer-events-none absolute inset-y-0 end-0 grid w-10 place-content-center text-neutral-darkgray">
+			<span className="pointer-events-none absolute inset-y-0 end-0 grid w-10 place-content-center">
 				{iconRight && iconRight}
 			</span>
 		</div>

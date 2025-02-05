@@ -4,7 +4,7 @@ const MainLayouts = ({ children }) => {
 	return (
 		<>
 			<Navbar />
-			<div className="">{children}</div>
+			<div className="p-2">{children}</div>
 		</>
 	)
 }

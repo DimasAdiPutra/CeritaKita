@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router'
+import { Link, NavLink, useLocation } from 'react-router'
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'motion/react'
 
@@ -10,6 +10,12 @@ import Button from '../components/Button'
 const Navbar = () => {
 	// nav menu
 	const [isOpen, setIsOpen] = useState(false)
+
+	// Set background transparent
+	const [isTransparent, setIsTransparent] = useState(true)
+
+	// Ambil lokasi url saat ini
+	const location = useLocation()
 
 	// dropdown
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -27,6 +33,31 @@ const Navbar = () => {
 		}
 	}
 
+	// Handle untuk perubahan bg navbar ketika user ada di halaman home dan di hero section
+	useEffect(() => {
+		const handleScroll = () => {
+			const heroSectionHeight = 10
+			if (window.scrollY > heroSectionHeight) {
+				setIsTransparent(false)
+			} else {
+				setIsTransparent(true)
+			}
+		}
+
+		if (location.pathname === '/') {
+			window.addEventListener('scroll', handleScroll)
+			handleScroll() // Jalankan saat komponen dimount untuk cek posisi awal
+		} else {
+			setIsTransparent(false)
+		}
+
+		return () => {
+			if (handleScroll) {
+				window.removeEventListener('scroll', handleScroll)
+			}
+		}
+	}, [location])
+
 	// tambahkan event ketika terdeteksi ada klik di luar dropdown
 	useEffect(() => {
 		document.addEventListener('click', handleClickOutside)
@@ -36,8 +67,11 @@ const Navbar = () => {
 	}, [])
 
 	return (
-		<nav className="bg-neutral-darkgray h-20 flex items-center">
-			<div className="mx-auto max-w-screen-xl px-5 sm:px-10 lg:px-20 w-full relative">
+		<nav
+			className={`${
+				isTransparent ? 'bg-transparent' : ' bg-neutral-darkgray shadow'
+			} fixed top-0 z-30 w-full h-20 flex items-center transition`}>
+			<div className="container">
 				<div className="flex h-16 items-center justify-between w-full relative">
 					{/* LOGO */}
 					<div className="md:flex md:items-center md:gap-12">
@@ -63,13 +97,14 @@ const Navbar = () => {
 									xmlns="http://www.w3.org/2000/svg">
 									<path
 										d="M28 28L22.2094 22.2093M22.2094 22.2093C23.1999 21.2188 23.9856 20.0429 24.5217 18.7487C25.0577 17.4546 25.3336 16.0675 25.3336 14.6667C25.3336 13.2659 25.0577 11.8788 24.5217 10.5846C23.9856 9.29043 23.1999 8.11452 22.2094 7.124C21.2188 6.13348 20.0429 5.34776 18.7488 4.8117C17.4546 4.27563 16.0675 3.99973 14.6667 3.99973C13.2659 3.99973 11.8788 4.27563 10.5846 4.8117C9.29046 5.34776 8.11455 6.13348 7.12403 7.124C5.12359 9.12444 3.99976 11.8376 3.99976 14.6667C3.99976 17.4957 5.12359 20.2089 7.12403 22.2093C9.12447 24.2098 11.8376 25.3336 14.6667 25.3336C17.4957 25.3336 20.2089 24.2098 22.2094 22.2093Z"
-										stroke="#2E2E2E"
+										stroke={isTransparent ? '#FAFAFA' : '#2E2E2E'}
 										strokeWidth="2"
 										strokeLinecap="round"
 										strokeLinejoin="round"
 									/>
 								</svg>
 							}
+							transparent={isTransparent}
 						/>
 					</div>
 					{/* Search */}
