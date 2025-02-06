@@ -26,6 +26,7 @@ export default function Button({
 		'px-4 py-2 rounded-md transition font-medium flex justify-center items-center gap-2 transition'
 
 	return to ? (
+		// Jika terdapat props to, maka gunakan link, jika tidak gunakan button
 		<Link
 			to={to}
 			className={`${baseStyle} ${variantStyle[style]} ${className}`}>

@@ -87,7 +87,7 @@ const Navbar = () => {
 							text="Search"
 							id="search"
 							label="Search"
-							type="search"
+							type="text"
 							iconRight={
 								<svg
 									width="16"
@@ -213,12 +213,12 @@ const Navbar = () => {
 							isOpen ? 'shadow-xl' : ''
 						} flex h-screen flex-col justify-between border-e bg-neutral-white fixed top-0 right-0 w-max min-w-72 z-40 px-4 pb-10 pt-24`}>
 						<div className="w-full">
-							{/* Search */}
+							{/* Mobile Search */}
 							<Input
 								text="Search"
-								id="search"
+								id="mobileSearch"
 								label="Search"
-								type="search"
+								type="text"
 								iconRight={
 									<svg
 										width="16"
@@ -236,7 +236,7 @@ const Navbar = () => {
 									</svg>
 								}
 							/>
-							{/* Search */}
+							{/* Mobile Search */}
 
 							{/* Navlink mobile */}
 							<ul className="mt-6 space-y-1">

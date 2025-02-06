@@ -19,7 +19,7 @@ const HomePage = () => {
 					<p>Browser Anda tidak mendukung tag video.</p>
 				</video>
 				<div className="container h-full">
-					<div className="relative z-20 h-full flex justify-center max-w-xl lg:max-w-7xl sm:px-6 lg:h-screen">
+					<div className="relative z-20 h-full max-w-xl lg:max-w-7xl sm:px-6 lg:h-screen">
 						<div className="flex flex-col justify-center h-full max-w-xl lg:max-w-7xl">
 							<h1 className="text-titlepage font-extrabold w-full max-w-48 md:max-w-lg lg:text-9xl lg:max-w-xl xl:text-titlehero xl:max-w-xl text-neutral-white">
 								Setiap Cerita Adalah Inspirasi
