@@ -69,7 +69,7 @@ const Navbar = () => {
 	return (
 		<nav
 			className={`${
-				isTransparent ? 'bg-transparent' : ' bg-neutral-darkgray shadow'
+				isTransparent ? 'bg-transparent' : ' bg-primary shadow'
 			} fixed top-0 z-30 w-full h-20 flex items-center transition`}>
 			<div className="container">
 				<div className="flex h-16 items-center justify-between w-full relative">
@@ -117,7 +117,14 @@ const Navbar = () => {
 								<li>
 									<NavLink
 										to="/"
-										className="text-neutral-white transition hover:text-neutral-white/75">
+										className={({ isActive }) =>
+											`${
+												isActive
+													? 'text-neutral-white/75'
+													: 'text-neutral-white'
+											}
+											transition hover:text-neutral-white/75`
+										}>
 										Beranda
 									</NavLink>
 								</li>
@@ -127,7 +134,14 @@ const Navbar = () => {
 								<li>
 									<NavLink
 										to="/blog"
-										className="text-neutral-white transition hover:text-neutral-white/75">
+										className={({ isActive }) =>
+											`${
+												isActive
+													? 'text-neutral-white/75'
+													: 'text-neutral-white'
+											}
+											transition hover:text-neutral-white/75`
+										}>
 										Blog
 									</NavLink>
 								</li>
@@ -187,8 +201,8 @@ const Navbar = () => {
 
 						{/* Action Button */}
 						<div className="hidden lg:flex sm:gap-4">
-							<Button to="/login" text="Masuk" style="primary-outline" />
-							<Button to="/register" text="Daftar" />
+							<Button to="/login" text="Masuk" style="neutral-outline" />
+							<Button to="/register" text="Daftar" style="neutral" />
 						</div>
 						{/* Action Button */}
 
