@@ -35,6 +35,10 @@
 	* {
 		font-family: var(--font-nunito);
 	}
+
+	body {
+		height: 200vh;
+	}
 }
 
 @layer components {
