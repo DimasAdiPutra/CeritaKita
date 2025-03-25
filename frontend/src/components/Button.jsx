@@ -13,14 +13,14 @@ const VARIANT_STYLES = {
 		'bg-primary text-neutral-white hover:inset-shadow-sm hover:inset-shadow-neutral-darkgray',
 	secondary:
 		'bg-secondary text-neutral-white hover:inset-shadow-sm hover:inset-shadow-neutral-darkgray',
-	neutral:
-		'bg-neutral-white text-black hover:inset-shadow-sm hover:inset-shadow-neutral-darkgray',
+	highlight:
+		'bg-highlight text-black hover:inset-shadow-sm hover:inset-shadow-neutral-darkgray',
 	'primary-outline':
 		'border-2 border-primary bg-transparent text-primary hover:bg-primary focus:bg-primary hover:text-neutral-white focus:text-neutral-white',
 	'secondary-outline':
 		'border-2 border-secondary bg-transparent text-secondary hover:bg-secondary focus:bg-secondary hover:text-neutral-white focus:text-neutral-white',
-	'neutral-outline':
-		'border-2 border-neutral-white bg-transparent text-neutral-white hover:bg-neutral-white focus:bg-neutral-white hover:text-black focus:text-black',
+	'highlight-outline':
+		'border-2 border-highlight bg-transparent text-highlight hover:bg-highlight focus:bg-highlight hover:text-black focus:text-black',
 }
 
 export default function Button({

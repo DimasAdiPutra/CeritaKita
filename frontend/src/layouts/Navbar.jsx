@@ -2,10 +2,14 @@ import { Link, NavLink, useLocation } from 'react-router'
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'motion/react'
 
+// Import Components
 import Logo from '../components/Logo'
 import Input from '../components/Input'
 import HamburgerMenu from '../components/HamburgerMenu'
 import Button from '../components/Button'
+
+// Import Icons
+import { Search, ChevronDown } from 'lucide-react'
 
 const Navbar = () => {
 	// nav menu
@@ -52,19 +56,22 @@ const Navbar = () => {
 		}
 
 		return () => {
-			if (handleScroll) {
-				window.removeEventListener('scroll', handleScroll)
-			}
+			window.removeEventListener('scroll', handleScroll)
 		}
 	}, [location])
 
 	// tambahkan event ketika terdeteksi ada klik di luar dropdown
 	useEffect(() => {
-		document.addEventListener('click', handleClickOutside)
+		if (isDropdownOpen) {
+			document.addEventListener('click', handleClickOutside)
+		} else {
+			document.removeEventListener('click', handleClickOutside)
+		}
+
 		return () => {
 			document.removeEventListener('click', handleClickOutside)
 		}
-	}, [])
+	}, [isDropdownOpen])
 
 	return (
 		<nav
@@ -89,20 +96,11 @@ const Navbar = () => {
 							label="Search"
 							type="text"
 							iconRight={
-								<svg
-									width="16"
-									height="16"
-									viewBox="0 0 32 32"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg">
-									<path
-										d="M28 28L22.2094 22.2093M22.2094 22.2093C23.1999 21.2188 23.9856 20.0429 24.5217 18.7487C25.0577 17.4546 25.3336 16.0675 25.3336 14.6667C25.3336 13.2659 25.0577 11.8788 24.5217 10.5846C23.9856 9.29043 23.1999 8.11452 22.2094 7.124C21.2188 6.13348 20.0429 5.34776 18.7488 4.8117C17.4546 4.27563 16.0675 3.99973 14.6667 3.99973C13.2659 3.99973 11.8788 4.27563 10.5846 4.8117C9.29046 5.34776 8.11455 6.13348 7.12403 7.124C5.12359 9.12444 3.99976 11.8376 3.99976 14.6667C3.99976 17.4957 5.12359 20.2089 7.12403 22.2093C9.12447 24.2098 11.8376 25.3336 14.6667 25.3336C17.4957 25.3336 20.2089 24.2098 22.2094 22.2093Z"
-										stroke={isTransparent ? '#FAFAFA' : '#2E2E2E'}
-										strokeWidth="2"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-								</svg>
+								<Search
+									strokeWidth={1.5}
+									size={16}
+									className="text-neutral-white"
+								/>
 							}
 							transparent={isTransparent}
 						/>
@@ -110,7 +108,7 @@ const Navbar = () => {
 					{/* Search */}
 
 					<div className="flex items-center gap-10">
-						{/* Navlink Desktop */}
+						{/* NAVLINK === DESKTOP */}
 						<nav className="hidden lg:flex" aria-label="Global">
 							<ul className="relative flex items-center gap-6 text-sm">
 								{/* Beranda */}
@@ -197,12 +195,12 @@ const Navbar = () => {
 								{/* Kategori */}
 							</ul>
 						</nav>
-						{/* Navlink Desktop */}
+						{/* NAVLINK === DESKTOP */}
 
 						{/* Action Button */}
 						<div className="hidden lg:flex sm:gap-4">
-							<Button to="/login" text="Masuk" style="neutral-outline" />
-							<Button to="/register" text="Daftar" style="neutral" />
+							<Button to="/login" text="Masuk" style="highlight" />
+							<Button to="/register" text="Daftar" style="secondary" />
 						</div>
 						{/* Action Button */}
 
@@ -217,7 +215,7 @@ const Navbar = () => {
 						{/* Hamburger Menu */}
 					</div>
 
-					{/* Navmenu Mobile */}
+					{/* NAVMENU === MOBILE */}
 					<motion.div
 						initial={{ x: '100%' }} // Mulai dari luar layar (kanan)
 						animate={{ x: isOpen ? '1%' : '100%' }} // Muncul ke kiri saat isOpen = true
@@ -234,25 +232,12 @@ const Navbar = () => {
 								label="Search"
 								type="text"
 								iconRight={
-									<svg
-										width="16"
-										height="16"
-										viewBox="0 0 32 32"
-										fill="none"
-										xmlns="http://www.w3.org/2000/svg">
-										<path
-											d="M28 28L22.2094 22.2093M22.2094 22.2093C23.1999 21.2188 23.9856 20.0429 24.5217 18.7487C25.0577 17.4546 25.3336 16.0675 25.3336 14.6667C25.3336 13.2659 25.0577 11.8788 24.5217 10.5846C23.9856 9.29043 23.1999 8.11452 22.2094 7.124C21.2188 6.13348 20.0429 5.34776 18.7488 4.8117C17.4546 4.27563 16.0675 3.99973 14.6667 3.99973C13.2659 3.99973 11.8788 4.27563 10.5846 4.8117C9.29046 5.34776 8.11455 6.13348 7.12403 7.124C5.12359 9.12444 3.99976 11.8376 3.99976 14.6667C3.99976 17.4957 5.12359 20.2089 7.12403 22.2093C9.12447 24.2098 11.8376 25.3336 14.6667 25.3336C17.4957 25.3336 20.2089 24.2098 22.2094 22.2093Z"
-											stroke="#2E2E2E"
-											strokeWidth="2"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-									</svg>
+									<Search strokeWidth={1.5} size={16} className="text-black" />
 								}
 							/>
 							{/* Mobile Search */}
 
-							{/* Navlink mobile */}
+							{/* NAVLINK === MOBILE */}
 							<ul className="mt-6 space-y-1">
 								{/* Beranda */}
 								<li>
@@ -287,17 +272,7 @@ const Navbar = () => {
 											</span>
 
 											<span className="shrink-0 transition duration-300 group-open:-rotate-180">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													className="size-5"
-													viewBox="0 0 20 20"
-													fill="currentColor">
-													<path
-														fillRule="evenodd"
-														d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-														clipRule="evenodd"
-													/>
-												</svg>
+												<ChevronDown strokeWidth={1.5} className="text-black" />
 											</span>
 										</summary>
 
@@ -346,7 +321,7 @@ const Navbar = () => {
 								</li>
 								{/* Kategori */}
 							</ul>
-							{/* Navlink mobile */}
+							{/* NAVLINK === MOBILE */}
 						</div>
 
 						{/* Action Button */}
@@ -356,7 +331,7 @@ const Navbar = () => {
 						</div>
 						{/* Action Button */}
 					</motion.div>
-					{/* Navlink Mobile */}
+					{/* NAVMENU === MOBILE */}
 				</div>
 			</div>
 		</nav>
