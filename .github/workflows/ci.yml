@@ -1,0 +1,24 @@
+name: CI for CeritaKita
+
+on: [push, pull_request]  # Jalan tiap push atau PR
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Sesuaikan dengan versi proyek
+
+      - name: Install dependencies
+        run: pnpm install  # Sesuaikan jika pakai npm/yarn
+
+      - name: Run tests
+        run: pnpm test  # Jalankan Jest atau testing lain
+
+      - name: Build project
+        run: pnpm build  # Build project React
