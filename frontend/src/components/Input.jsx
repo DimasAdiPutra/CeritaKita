@@ -1,59 +1,72 @@
 import PropTypes from 'prop-types'
+import clsx from 'clsx' // Pastikan install: npm install clsx
 
-const Input = ({
+export default function Input({
 	label,
-	showLabel,
+	showLabel = false,
 	text = '',
 	id,
-	type,
+	type = 'text',
 	iconLeft,
 	iconRight,
-	transparent,
-}) => {
+	transparent = false,
+	className = '',
+}) {
 	return (
-		<div className={!showLabel && 'relative'}>
-			{/* Label */}
-			<label
-				htmlFor={id}
-				className={
-					showLabel
-						? `block text-body-small-base font-medium ${
-								transparent ? 'text-neutral-white' : ' text-neutral-darkgray'
-						  }`
-						: 'sr-only'
-				}>
-				{label}
-			</label>
+		<div className={clsx({ relative: !showLabel })}>
+			{showLabel && (
+				<label
+					htmlFor={id}
+					className={clsx(
+						'block text-body-small-base font-medium',
+						transparent ? 'text-neutral-white' : 'text-neutral-darkgray'
+					)}>
+					{label}
+				</label>
+			)}
 
-			{/* icon left */}
-			<span className="pointer-events-none absolute inset-y-0 start-0 grid w-10 place-content-center">
-				{iconLeft && iconLeft}
-			</span>
+			<div className="relative">
+				{iconLeft && (
+					<span className="pointer-events-none absolute inset-y-0 start-0 grid w-10 place-content-center">
+						{iconLeft}
+					</span>
+				)}
 
-			{/* inputan */}
-			<input
-				type={type}
-				id={id}
-				placeholder={text}
-				className={`${
-					iconLeft && 'pl-10'
-				} w-full rounded-md border-2 focus:border-primary focus:ring-0 focus:outline-0 py-2.5 pe-10 shadow-xs sm:text-body-small-base transition-colors ${
-					transparent
-						? 'bg-transparent border-neutral-white text-neutral-white  placeholder:text-neutral-white'
-						: 'bg-neutral-white border-neutral-darkgray text-neutral-darkgray placeholder:text-neutral-darkgray'
-				}`}
-			/>
+				<input
+					type={type}
+					id={id}
+					placeholder={text}
+					className={clsx(
+						'w-full rounded-md border-2 py-2.5 pe-10 shadow-xs sm:text-body-small-base transition-colors focus:border-primary focus:ring-0 focus:outline-0',
+						{
+							'pl-10': iconLeft,
+							'bg-transparent border-neutral-white text-neutral-white placeholder:text-neutral-white':
+								transparent,
+							'bg-neutral-white border-neutral-darkgray text-neutral-darkgray placeholder:text-neutral-darkgray':
+								!transparent,
+						},
+						className
+					)}
+				/>
 
-			{/* icon right */}
-			<span className="pointer-events-none absolute inset-y-0 end-0 grid w-10 place-content-center">
-				{iconRight && iconRight}
-			</span>
+				{iconRight && (
+					<span className="pointer-events-none absolute inset-y-0 end-0 grid w-10 place-content-center">
+						{iconRight}
+					</span>
+				)}
+			</div>
 		</div>
 	)
 }
 
 Input.propTypes = {
-	type: PropTypes.oneOf(['text', 'email', 'password']).isRequired,
+	label: PropTypes.string,
+	showLabel: PropTypes.bool,
+	text: PropTypes.string,
+	id: PropTypes.string.isRequired,
+	type: PropTypes.oneOf(['text', 'email', 'password']),
+	iconLeft: PropTypes.node,
+	iconRight: PropTypes.node,
+	transparent: PropTypes.bool,
+	className: PropTypes.string,
 }
-
-export default Input

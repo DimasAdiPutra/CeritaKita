@@ -18,10 +18,12 @@ export default [
 			},
 		},
 		settings: { react: { version: '18.3' } },
+		env: { jest: true },
 		plugins: {
 			react,
 			'react-hooks': reactHooks,
 			'react-refresh': reactRefresh,
+			jest,
 		},
 		rules: {
 			...js.configs.recommended.rules,
@@ -35,5 +37,6 @@ export default [
 			],
 			'react/prop-types': 'off',
 		},
+		extends: ['plugin:jest/recommended'],
 	},
 ]

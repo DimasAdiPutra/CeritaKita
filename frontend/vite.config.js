@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import compression from 'vite-plugin-compression2'
 import { VitePWA } from 'vite-plugin-pwa'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -63,4 +64,14 @@ export default defineConfig({
 			},
 		}),
 	],
+	test: {
+		globals: true,
+		environment: 'jsdom',
+		setupFiles: './jest.config.js',
+	},
+	resolve: {
+		alias: {
+			'@': path.resolve(__dirname, 'src'),
+		},
+	},
 })
