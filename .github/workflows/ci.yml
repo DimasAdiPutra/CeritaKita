@@ -12,7 +12,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18  # Sesuaikan dengan versi proyek
+          node-version: 20  # Sesuaikan dengan versi proyek
 
       - name: Install dependencies
         run: pnpm install  # Sesuaikan jika pakai npm/yarn
@@ -22,3 +22,9 @@ jobs:
 
       - name: Build project
         run: pnpm build  # Build project React
+
+      - name: Deploy to Vercel
+        run: |
+          npm install -g vercel
+          vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+
