@@ -15,8 +15,10 @@ jobs:
           node-version: 20  # Sesuaikan dengan versi proyek
           cache: 'pnpm'      # Cache dependencies untuk mempercepat build
 
-      - name: Install pnpm
-        run: npm install -g pnpm  # **Tambahkan langkah ini**
+      - name: Setup pnpm  # Ini menggantikan `npm install -g pnpm`
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10  # Gunakan versi terbaru dari pnpm
 
       - name: Install dependencies
         run: pnpm install  # Sesuaikan jika pakai npm/yarn
