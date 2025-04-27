@@ -9,18 +9,15 @@ const BASE_STYLE =
 
 // Variant styles (modular)
 const VARIANT_STYLES = {
-	primary:
-		'bg-primary text-neutral-white hover:inset-shadow-sm hover:inset-shadow-neutral-darkgray',
-	secondary:
-		'bg-secondary text-neutral-white hover:inset-shadow-sm hover:inset-shadow-neutral-darkgray',
-	highlight:
-		'bg-highlight text-black hover:inset-shadow-sm hover:inset-shadow-neutral-darkgray',
+	primary: 'bg-clr-primary text-clr-text-dark hover:bg-clr-primary-hover',
+	secondary: 'bg-clr-secondary text-clr-text-dark hover:bg-clr-secondary-hover',
+	tertiary: 'bg-clr-tertiary text-clr-text-light hover:bg-clr-tertiary-hover',
 	'primary-outline':
-		'border-2 border-primary bg-transparent text-primary hover:bg-primary focus:bg-primary hover:text-neutral-white focus:text-neutral-white',
+		'border-2 border-clr-primary bg-transparent text-clr-primary hover:bg-clr-primary-hover focus:bg-clr-primary-active hover:text-clr-text-dark focus:text-clr-text-dark',
 	'secondary-outline':
-		'border-2 border-secondary bg-transparent text-secondary hover:bg-secondary focus:bg-secondary hover:text-neutral-white focus:text-neutral-white',
-	'highlight-outline':
-		'border-2 border-highlight bg-transparent text-highlight hover:bg-highlight focus:bg-highlight hover:text-black focus:text-black',
+		'border-2 border-clr-secondary bg-transparent text-clr-secondary hover:bg-clr-secondary focus:bg-clr-secondary hover:text-clr-text-dark focus:text-clr-text-dark',
+	'tertiary-outline':
+		'border-2 border-clr-tertiary bg-transparent text-clr-tertiary hover:bg-clr-tertiary focus:bg-clr-tertiary hover:text-clr-text-light focus:text-clr-text-light',
 }
 
 export default function Button({

@@ -76,14 +76,14 @@ const Navbar = () => {
 	return (
 		<nav
 			className={`${
-				isTransparent ? 'bg-transparent' : ' bg-primary shadow'
+				isTransparent ? 'bg-transparent' : 'bg-clr-container-light shadow'
 			} fixed top-0 z-30 w-full h-20 flex items-center transition`}>
 			<div className="container">
 				<div className="flex h-16 items-center justify-between w-full relative">
 					{/* LOGO */}
 					<div className="md:flex md:items-center md:gap-12">
 						<Link to="/">
-							<Logo />
+							<Logo dark={!isTransparent} />
 						</Link>
 					</div>
 					{/* LOGO */}
@@ -99,7 +99,9 @@ const Navbar = () => {
 								<Search
 									strokeWidth={1.5}
 									size={16}
-									className="text-neutral-white"
+									className={
+										isTransparent ? 'text-clr-text-dark' : 'text-clr-text-light'
+									}
 								/>
 							}
 							transparent={isTransparent}
@@ -116,12 +118,19 @@ const Navbar = () => {
 									<NavLink
 										to="/"
 										className={({ isActive }) =>
-											`${
-												isActive
-													? 'text-neutral-white/75'
-													: 'text-neutral-white'
-											}
-											transition hover:text-neutral-white/75`
+											isTransparent
+												? `${
+														isActive
+															? 'text-clr-text-dark-hover'
+															: 'text-clr-text-dark'
+												  }
+											transition hover:text-clr-text-dark-hover`
+												: `${
+														isActive
+															? 'text-clr-text-light-hover'
+															: 'text-clr-text-light'
+												  }
+											transition hover:text-clr-text-light-hover`
 										}>
 										Beranda
 									</NavLink>
@@ -133,12 +142,19 @@ const Navbar = () => {
 									<NavLink
 										to="/blog"
 										className={({ isActive }) =>
-											`${
-												isActive
-													? 'text-neutral-white/75'
-													: 'text-neutral-white'
-											}
-											transition hover:text-neutral-white/75`
+											isTransparent
+												? `${
+														isActive
+															? 'text-clr-text-dark-hover'
+															: 'text-clr-text-dark'
+												  }
+											transition hover:text-clr-text-dark-hover`
+												: `${
+														isActive
+															? 'text-clr-text-light-hover'
+															: 'text-clr-text-light'
+												  }
+											transition hover:text-clr-text-light-hover`
 										}>
 										Blog
 									</NavLink>
@@ -149,7 +165,7 @@ const Navbar = () => {
 								<li className="relative">
 									<span
 										ref={dropdownRef}
-										className="text-neutral-white cursor-pointer transition hover:text-neutral-white/75"
+										className={`${isTransparent ? "text-clr-text-dark hover:text-clr-text-dark-hover" : "text-clr-text-light hover:text-clr-text-light-hover"} cursor-pointer transition`}
 										onClick={handleToggleDropdown}>
 										Kategori
 									</span>
@@ -160,32 +176,32 @@ const Navbar = () => {
 										animate={{ height: isDropdownOpen ? 'auto' : 0 }}
 										exit={{ height: 0 }}
 										transition={{ duration: 0.3, ease: 'easeInOut' }}
-										className="absolute right-0 mt-2 w-40 bg-neutral-white shadow-lg rounded-lg overflow-hidden">
+										className="absolute right-0 mt-2 w-40 bg-clr-container-light shadow-lg rounded-lg overflow-hidden">
 										<li>
 											<NavLink
 												to="/kategori/destinasi"
-												className="block px-4 py-2 text-neutral-darkgray hover:text-primary">
+												className="block px-4 py-2 text-clr-text-light hover:text-clr-primary">
 												Destinasi
 											</NavLink>
 										</li>
 										<li>
 											<NavLink
 												to="/kategori/kuliner"
-												className="block px-4 py-2 text-neutral-darkgray hover:text-primary">
+												className="block px-4 py-2 text-clr-text-light hover:text-clr-primary">
 												Kuliner
 											</NavLink>
 										</li>
 										<li>
 											<NavLink
 												to="/kategori/lifestyle"
-												className="block px-4 py-2 text-neutral-darkgray hover:text-primary">
+												className="block px-4 py-2 text-clr-text-light hover:text-clr-primary">
 												Lifestyle
 											</NavLink>
 										</li>
 										<li>
 											<NavLink
 												to="/kategori/tipsnhacks"
-												className="block px-4 py-2 text-neutral-darkgray hover:text-primary">
+												className="block px-4 py-2 text-clr-text-light hover:text-clr-primary">
 												Tips & Hacks
 											</NavLink>
 										</li>
@@ -199,7 +215,7 @@ const Navbar = () => {
 
 						{/* Action Button */}
 						<div className="hidden lg:flex sm:gap-4">
-							<Button to="/login" text="Masuk" style="highlight" />
+							<Button to="/login" text="Masuk" />
 							<Button to="/register" text="Daftar" style="secondary" />
 						</div>
 						{/* Action Button */}
@@ -209,7 +225,7 @@ const Navbar = () => {
 							<HamburgerMenu
 								onClick={() => setIsOpen(!isOpen)}
 								isOpen={isOpen}
-								dark={isOpen}
+								dark={isOpen || !isTransparent}
 							/>
 						</div>
 						{/* Hamburger Menu */}
@@ -223,7 +239,7 @@ const Navbar = () => {
 						transition={{ type: 'spring', stiffness: 200, damping: 30 }} // Animasi halus
 						className={`${
 							isOpen ? 'shadow-xl' : ''
-						} flex h-screen flex-col justify-between border-e bg-neutral-white fixed top-0 right-0 w-max min-w-72 z-40 px-4 pb-10 pt-24`}>
+						} flex h-screen flex-col justify-between border-e bg-clr-container-light fixed top-0 right-0 w-max min-w-72 z-40 px-4 pb-10 pt-24`}>
 						<div className="w-full">
 							{/* Mobile Search */}
 							<Input
@@ -232,7 +248,11 @@ const Navbar = () => {
 								label="Search"
 								type="text"
 								iconRight={
-									<Search strokeWidth={1.5} size={16} className="text-black" />
+									<Search
+										strokeWidth={1.5}
+										size={16}
+										className="text-clr-text-light"
+									/>
 								}
 							/>
 							{/* Mobile Search */}
@@ -266,13 +286,16 @@ const Navbar = () => {
 								{/* Kategori */}
 								<li>
 									<details className="group [&_summary::-webkit-details-marker]:hidden">
-										<summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-black">
+										<summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-clr-text-light">
 											<span className="text-body-small-base font-medium">
 												Kategori
 											</span>
 
 											<span className="shrink-0 transition duration-300 group-open:-rotate-180">
-												<ChevronDown strokeWidth={1.5} className="text-black" />
+												<ChevronDown
+													strokeWidth={1.5}
+													className="text-clr-text-light"
+												/>
 											</span>
 										</summary>
 
