@@ -6,7 +6,7 @@ export default function HamburgerMenu({ onClick, isOpen, dark }) {
 	// Style dasar untuk bar hamburger
 	const barClass = clsx(
 		'w-8 h-1 rounded-md',
-		dark ? 'bg-black' : 'bg-neutral-white'
+		dark ? 'bg-clr-text-light' : 'bg-clr-text-dark'
 	)
 
 	// Variasi animasi untuk masing-masing bar

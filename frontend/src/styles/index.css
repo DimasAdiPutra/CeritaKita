@@ -22,13 +22,22 @@
 	--text-body-small-light: 0.875rem;
 
 	/* Colors */
-	--color-primary: #5aa9e6;
-	--color-secondary: #ff9a76;
-	--color-black: #2e2e2e;
-	--color-highlight: #fce38a;
-	--color-neutral-gray: #f0f0f0;
-	--color-neutral-white: #fafafa;
-	--color-neutral-darkgray: #858585;
+	--color-clr-background: #f8f9fa;
+	--color-clr-text-light: #212529;
+	--color-clr-text-light-hover: #000000;
+	--color-clr-text-dark: #eaeaea;
+	--color-clr-text-dark-hover: #f2f2f2;
+	--color-clr-container-light: #f2f2f2;
+	--color-clr-container-dark: #1e1e1e;
+	--color-clr-primary: #007bff;
+	--color-clr-primary-active: #0056b3;
+	--color-clr-primary-hover: #0051a3;
+	--color-clr-secondary: #f2994a;
+	--color-clr-secondary-active: #d9843e;
+	--color-clr-secondary-hover: #e68a3c;
+	--color-clr-tertiary: #728f40;
+	--color-clr-tertiary-active: #5c7334;
+	--color-clr-tertiary-hover: #677e3a;
 }
 
 @layer base {
@@ -37,6 +46,7 @@
 	}
 
 	body {
+		@apply bg-clr-background;
 		height: 200vh;
 	}
 }
@@ -50,11 +60,11 @@
 
 	/* Navbar */
 	.navlink {
-		@apply block rounded-lg px-4 py-2 text-body-small-base font-medium text-black hover:bg-neutral-darkgray hover:text-neutral-gray focus:bg-neutral-darkgray focus:text-neutral-gray;
+		@apply block rounded-lg px-4 py-2 text-body-small-base font-medium text-black hover:bg-clr-container-dark hover:text-clr-text-dark focus:bg-clr-container-dark focus:text-clr-text-dark;
 	}
 
 	.navlink-active {
-		@apply block rounded-lg bg-neutral-darkgray px-4 py-2 text-body-small-base font-medium text-neutral-gray;
+		@apply block rounded-lg bg-clr-container-dark px-4 py-2 text-body-small-base font-medium text-clr-text-dark;
 	}
 	/* Navbar */
 

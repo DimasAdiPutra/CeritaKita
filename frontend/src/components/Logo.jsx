@@ -4,15 +4,20 @@ import logoWhite from '../assets/Logo CeritaKita - White.png'
 
 const Logo = ({ dark }) => {
 	return (
-		<div className="flex">
+		<div className="flex gap-1">
 			<img
 				src={dark ? logoBlack : logoWhite}
 				alt="Logo CeritaKita"
 				title="logo CeritaKita"
 				loading="lazy"
-				className="w-8"
+				className="h-8"
 			/>
-			<p className="text-heading text-neutral-white font-semibold">CeritaKita</p>
+			<p
+				className={`text-heading font-semibold ${
+					dark ? 'text-clr-text-light' : 'text-clr-text-dark'
+				}`}>
+				CeritaKita
+			</p>
 		</div>
 	)
 }
