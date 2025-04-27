@@ -34,7 +34,11 @@ const Blog = () => {
 					{/* Input Search */}
 					<Input
 						iconLeft={
-							<Search size={16} strokeWidth={1.6} className="text-black" />
+							<Search
+								size={16}
+								strokeWidth={1.6}
+								className="text-clr-text-light"
+							/>
 						}
 						id="cardSearch"
 						label="Search"
@@ -46,13 +50,13 @@ const Blog = () => {
 					{/* Filter */}
 					<div className="relative mt-8 md:mt-0 w-max flex items-center">
 						<div className="flex items-center overflow-hidden">
-							<p className="px-4 py-2 text-body-base/none text-neutral-darkgray">
+							<p className="px-4 py-2 text-body-base/none text-clr-text-light">
 								Kategori :
 							</p>
 
 							<button
 								onClick={handleToggleDropdown}
-								className="flex items-center gap-1 h-full p-2 cursor-pointer border border-neutral-darkgray rounded text-neutral-darkgray hover:bg-gray-50">
+								className="flex items-center gap-1 h-full p-2 cursor-pointer border border-clr-container-dark rounded text-clr-text-light hover:bg-gray-50">
 								<span className="">Semua</span>
 								<ChevronDown
 									size={18}
@@ -67,20 +71,20 @@ const Blog = () => {
 							animate={{ height: isDropdownOpen ? 'auto' : 0 }}
 							exit={{ height: 0 }}
 							transition={{ duration: 0.3, ease: 'easeInOut' }}
-							className="absolute start-[50%] md:start-auto md:end-0 top-full h-full z-10 w-max rounded-md bg-neutral-white shadow-2xl overflow-hidden"
+							className="absolute start-[50%] md:start-auto md:end-0 top-full h-full z-10 w-max rounded-md bg-clr-container-light shadow-2xl overflow-hidden"
 							role="menu">
 							<div className="p-2">
 								<Link
 									to=""
 									onClick={handleToggleDropdown}
-									className="block rounded-lg px-4 py-2 text-sm text-neutral-darkgray hover:bg-neutral-gray hover:text-black"
+									className="block rounded-lg px-4 py-2 text-sm text-clr-text-light hover:bg-clr-container-dark hover:text-clr-text-light"
 									role="menuitem">
 									Semua
 								</Link>
 								<Link
 									to=""
 									onClick={handleToggleDropdown}
-									className="block rounded-lg px-4 py-2 text-sm text-neutral-darkgray hover:bg-neutral-gray hover:text-black"
+									className="block rounded-lg px-4 py-2 text-sm text-clr-text-light hover:bg-clr-container-dark hover:text-clr-text-light"
 									role="menuitem">
 									Destinasi
 								</Link>
@@ -88,7 +92,7 @@ const Blog = () => {
 								<Link
 									to=""
 									onClick={handleToggleDropdown}
-									className="block rounded-lg px-4 py-2 text-sm text-neutral-darkgray hover:bg-neutral-gray hover:text-black"
+									className="block rounded-lg px-4 py-2 text-sm text-clr-text-light hover:bg-clr-container-dark hover:text-clr-text-light"
 									role="menuitem">
 									Kuliner
 								</Link>
@@ -96,7 +100,7 @@ const Blog = () => {
 								<Link
 									to=""
 									onClick={handleToggleDropdown}
-									className="block rounded-lg px-4 py-2 text-sm text-neutral-darkgray hover:bg-neutral-gray hover:text-black"
+									className="block rounded-lg px-4 py-2 text-sm text-clr-text-light hover:bg-clr-container-dark hover:text-clr-text-light"
 									role="menuitem">
 									Lifestyle
 								</Link>
@@ -104,7 +108,7 @@ const Blog = () => {
 								<Link
 									to=""
 									onClick={handleToggleDropdown}
-									className="block rounded-lg px-4 py-2 text-sm text-neutral-darkgray hover:bg-neutral-gray hover:text-black"
+									className="block rounded-lg px-4 py-2 text-sm text-clr-text-light hover:bg-clr-container-dark hover:text-clr-text-light"
 									role="menuitem">
 									Tips & Hacks
 								</Link>

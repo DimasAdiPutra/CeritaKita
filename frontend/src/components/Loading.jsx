@@ -7,7 +7,7 @@ const Loading = () => {
 				className="max-w-12">
 				<path
 					fill="none"
-					stroke="#5AA9E6FF"
+					stroke="#007bff"
 					strokeWidth="15"
 					strokeLinecap="round"
 					strokeDasharray="300 385"
