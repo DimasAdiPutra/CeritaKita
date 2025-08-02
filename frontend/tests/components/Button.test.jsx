@@ -31,7 +31,7 @@ describe('Button Component', () => {
 	test('memastikan style yang benar berdasarkan prop `style`', () => {
 		render(<Button text="Styled Button" style="primary" />)
 		const button = screen.getByRole('button') || screen.getByRole('link')
-		expect(button).toHaveClass(clsx('bg-primary text-neutral-white'))
+		expect(button).toHaveClass(clsx('bg-clr-primary text-clr-text-dark'))
 	})
 
 	test('merender ikon kiri dan kanan', () => {
