@@ -51,7 +51,7 @@ describe('Input Component', () => {
 		render(<Input id="test-input" transparent={true} />)
 		const inputElement = screen.getByRole('textbox')
 		expect(inputElement).toHaveClass(
-			'bg-transparent border-neutral-white text-neutral-white placeholder:text-neutral-white'
+			'bg-transparent border-clr-container-light text-clr-text-dark placeholder:text-clr-text-dark'
 		)
 	})
 
@@ -59,7 +59,7 @@ describe('Input Component', () => {
 		render(<Input id="test-input" transparent={false} />)
 		const inputElement = screen.getByRole('textbox')
 		expect(inputElement).toHaveClass(
-			'bg-neutral-white border-neutral-darkgray text-neutral-darkgray placeholder:text-neutral-darkgray'
+			'bg-neutral-white border-clr-container-dark text-clr-text-light placeholder:text-clr-text-light'
 		)
 	})
 })
