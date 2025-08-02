@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 
 // Base style untuk button
 const BASE_STYLE =
-	'px-4 py-2 rounded-md transition font-medium flex justify-center items-center gap-2'
+	'px-4 py-2 rounded-md transition font-medium flex justify-center items-center gap-2 cursor-pointer'
 
 // Variant styles (modular)
 const VARIANT_STYLES = {
