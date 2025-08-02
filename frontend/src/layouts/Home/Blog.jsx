@@ -49,6 +49,11 @@ const Blog = () => {
 								strokeWidth={1.6}
 								className="text-clr-text-light"
 							/>
+							<Search
+								size={16}
+								strokeWidth={1.6}
+								className="text-clr-text-light"
+							/>
 						}
 						id="cardSearch"
 						label="Search"
