@@ -27,9 +27,9 @@ const Blog = () => {
 		<section className="pt-16">
 			<div className="container">
 				{/* Judul */}
-				<h1 className="text-subtitle mb-4">
+				<h2 className="text-subtitle mb-4">
 					Bacalah, Nikmati, dan Bagikan Ceritamu
-				</h1>
+				</h2>
 				{/* Judul */}
 
 				{/* Paragraf */}
@@ -68,7 +68,7 @@ const Blog = () => {
 
 								<button
 									onClick={handleFilterDropdown}
-									className="flex items-center gap-1 h-full p-2 cursor-pointer border border-clr-container-dark rounded text-clr-text-light hover:bg-gray-50">
+									className="flex items-center gap-1 h-full p-2 cursor-pointer border border-clr-container-dark rounded text-clr-text-light hover:bg-gray-50" aria-label='kategori'>
 									<span className="">Semua</span>
 									<ChevronDown
 										size={18}
@@ -131,7 +131,7 @@ const Blog = () => {
 
 						{/* Sort */}
 						<div className="relative">
-							<button onClick={handleSortDropdown}>
+							<button onClick={handleSortDropdown} aria-label='filter'>
 								<ListFilter
 									size={32}
 									strokeWidth={2}
