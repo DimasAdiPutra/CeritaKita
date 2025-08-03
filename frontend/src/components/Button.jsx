@@ -3,11 +3,9 @@ import { Link } from 'react-router'
 import clsx from 'clsx'
 import { useMemo } from 'react'
 
-// Base style untuk button
 const BASE_STYLE =
 	'px-4 py-2 rounded-md transition font-medium flex justify-center items-center gap-2 cursor-pointer'
 
-// Variant styles (modular)
 const VARIANT_STYLES = {
 	primary: 'bg-clr-primary text-clr-text-dark hover:bg-clr-primary-hover',
 	secondary: 'bg-clr-secondary text-clr-text-dark hover:bg-clr-secondary-hover',
@@ -30,23 +28,32 @@ export default function Button({
 	text,
 	style = 'primary',
 	disabled,
+	ariaLabel, // tambahkan ini
 }) {
-	// Memoized variant style (agar tidak dibuat ulang setiap render)
 	const computedClass = useMemo(
 		() => clsx(BASE_STYLE, VARIANT_STYLES[style], className),
 		[style, className]
 	)
 
+	// Tentukan aria-label yang dipakai
+	const accessibleLabel = ariaLabel || text || undefined
+
 	const buttonContent = (
 		<>
 			{iconLeft}
-			<span className="text-body-base">{text}</span>
+			{text && <span className="text-body-base">{text}</span>}
 			{iconRight}
 		</>
 	)
 
 	return to ? (
-		<Link to={to} className={computedClass} aria-disabled={disabled}>
+		<Link
+			to={to}
+			className={computedClass}
+			aria-label={accessibleLabel}
+			aria-disabled={disabled}
+			role="button" // ini penting kalau pakai <Link> sebagai button
+		>
 			{buttonContent}
 		</Link>
 	) : (
@@ -54,7 +61,9 @@ export default function Button({
 			type={type}
 			onClick={onClick}
 			className={computedClass}
-			disabled={disabled}>
+			disabled={disabled}
+			aria-label={accessibleLabel}
+		>
 			{buttonContent}
 		</button>
 	)
@@ -67,6 +76,7 @@ Button.propTypes = {
 	className: PropTypes.string,
 	iconLeft: PropTypes.node,
 	iconRight: PropTypes.node,
-	text: PropTypes.string.isRequired,
-	style: PropTypes.oneOf(Object.keys(VARIANT_STYLES)), // Menggunakan keys dari VARIANT_STYLES agar lebih aman
+	text: PropTypes.string, // biarkan optional, karena icon-only button kadang dipakai
+	style: PropTypes.oneOf(Object.keys(VARIANT_STYLES)),
+	ariaLabel: PropTypes.string, // tambahkan ini
 }
