@@ -4,6 +4,7 @@ import { Suspense, lazy } from 'react'
 // Import pages
 const HomePage = lazy(() => import('../pages/HomePage'))
 const BlogPage = lazy(() => import('../pages/BlogPage'))
+const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
 
 // import components
 import Loading from '../components/Loading'
@@ -19,6 +20,9 @@ const AppRoutes = () => {
 					<Routes>
 						<Route path="/" element={<HomePage />} />
 						<Route path="/blog" element={<BlogPage />} />
+
+						{/* Halaman 404 Not Found */}
+						<Route path='*' element={<NotFoundPage />} />
 					</Routes>
 				</MainLayouts>
 			</Suspense>

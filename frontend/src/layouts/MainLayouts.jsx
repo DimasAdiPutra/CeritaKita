@@ -5,7 +5,7 @@ const MainLayouts = ({ children }) => {
 	return (
 		<>
 			<Navbar />
-			<div className="p-2">{children}</div>
+			<div className="flex-grow flex flex-col">{children}</div>
 			<Footer />
 		</>
 	)

@@ -7,7 +7,7 @@ const BlogPage = () => {
 				<title>Blog - CeritaKita</title>
 			</Helmet>
 
-			<div className="text-2xl">BlogPage</div>
+			<div className="text-2xl mt-20">BlogPage</div>
 		</>
 	)
 }
