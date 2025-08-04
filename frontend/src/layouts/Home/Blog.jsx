@@ -4,10 +4,13 @@ import { motion } from 'motion/react'
 
 import Input from '../../components/Input'
 
-import { Search, ChevronDown } from 'lucide-react'
-import { ListFilter } from 'lucide-react'
 import BlogCard from '../../components/BlogCard'
 import Button from '../../components/Button'
+
+// Import Icons
+import { FiSearch } from "react-icons/fi";
+import { IoIosArrowDown } from "react-icons/io";
+import { LuListFilter } from "react-icons/lu";
 
 const Blog = () => {
 	const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false)
@@ -44,7 +47,7 @@ const Blog = () => {
 					{/* Input Search */}
 					<Input
 						iconLeft={
-							<Search
+							<FiSearch
 								size={16}
 								strokeWidth={1.6}
 								className="text-clr-text-light"
@@ -70,7 +73,7 @@ const Blog = () => {
 									onClick={handleFilterDropdown}
 									className="flex items-center gap-1 h-full p-2 cursor-pointer border border-clr-container-dark rounded text-clr-text-light hover:bg-gray-50" aria-label='kategori'>
 									<span className="">Semua</span>
-									<ChevronDown
+									<IoIosArrowDown
 										size={18}
 										strokeWidth={1.5}
 										className="text-black"
@@ -132,7 +135,7 @@ const Blog = () => {
 						{/* Sort */}
 						<div className="relative">
 							<button onClick={handleSortDropdown} aria-label='filter'>
-								<ListFilter
+								<LuListFilter
 									size={32}
 									strokeWidth={2}
 									className="text-clr-text-light cursor-pointer"

@@ -9,7 +9,8 @@ import HamburgerMenu from '../components/HamburgerMenu'
 import Button from '../components/Button'
 
 // Import Icons
-import { Search, ChevronDown } from 'lucide-react'
+import { FiSearch } from "react-icons/fi";
+import { IoIosArrowDown } from "react-icons/io";
 
 const Navbar = () => {
 	// nav menu
@@ -75,9 +76,8 @@ const Navbar = () => {
 
 	return (
 		<nav
-			className={`${
-				isTransparent ? 'bg-transparent' : 'bg-clr-container-light shadow'
-			} fixed top-0 z-30 w-full h-20 flex items-center transition`}>
+			className={`${isTransparent ? 'bg-transparent' : 'bg-clr-container-light shadow'
+				} fixed top-0 z-30 w-full h-20 flex items-center transition`}>
 			<div className="container">
 				<div className="flex h-16 items-center justify-between w-full relative">
 					{/* LOGO */}
@@ -96,7 +96,7 @@ const Navbar = () => {
 							label="Search"
 							type="text"
 							iconRight={
-								<Search
+								<FiSearch
 									strokeWidth={1.5}
 									size={16}
 									className={
@@ -119,17 +119,15 @@ const Navbar = () => {
 										to="/"
 										className={({ isActive }) =>
 											isTransparent
-												? `${
-														isActive
-															? 'text-clr-text-dark-hover'
-															: 'text-clr-text-dark'
-												  }
+												? `${isActive
+													? 'text-clr-text-dark-hover'
+													: 'text-clr-text-dark'
+												}
 											transition hover:text-clr-text-dark-hover`
-												: `${
-														isActive
-															? 'text-clr-text-light-hover'
-															: 'text-clr-text-light'
-												  }
+												: `${isActive
+													? 'text-clr-text-light-hover'
+													: 'text-clr-text-light'
+												}
 											transition hover:text-clr-text-light-hover`
 										}>
 										Beranda
@@ -143,17 +141,15 @@ const Navbar = () => {
 										to="/blog"
 										className={({ isActive }) =>
 											isTransparent
-												? `${
-														isActive
-															? 'text-clr-text-dark-hover'
-															: 'text-clr-text-dark'
-												  }
+												? `${isActive
+													? 'text-clr-text-dark-hover'
+													: 'text-clr-text-dark'
+												}
 											transition hover:text-clr-text-dark-hover`
-												: `${
-														isActive
-															? 'text-clr-text-light-hover'
-															: 'text-clr-text-light'
-												  }
+												: `${isActive
+													? 'text-clr-text-light-hover'
+													: 'text-clr-text-light'
+												}
 											transition hover:text-clr-text-light-hover`
 										}>
 										Blog
@@ -237,9 +233,8 @@ const Navbar = () => {
 						animate={{ x: isOpen ? '1%' : '100%' }} // Muncul ke kiri saat isOpen = true
 						exit={{ x: '100%' }} // Pergi ke kanan saat isOpen = false
 						transition={{ type: 'spring', stiffness: 200, damping: 30 }} // Animasi halus
-						className={`${
-							isOpen ? 'shadow-xl' : ''
-						} flex h-screen flex-col justify-between border-e bg-clr-container-light fixed top-0 right-0 w-max min-w-72 z-40 px-4 pb-10 pt-24`}>
+						className={`${isOpen ? 'shadow-xl' : ''
+							} flex h-screen flex-col justify-between border-e bg-clr-container-light fixed top-0 right-0 w-max min-w-72 z-40 px-4 pb-10 pt-24`}>
 						<div className="w-full">
 							{/* Mobile Search */}
 							<Input
@@ -248,7 +243,7 @@ const Navbar = () => {
 								label="Search"
 								type="text"
 								iconRight={
-									<Search
+									<FiSearch
 										strokeWidth={1.5}
 										size={16}
 										className="text-clr-text-light"
@@ -292,7 +287,7 @@ const Navbar = () => {
 											</span>
 
 											<span className="shrink-0 transition duration-300 group-open:-rotate-180">
-												<ChevronDown
+												<IoIosArrowDown
 													strokeWidth={1.5}
 													className="text-clr-text-light"
 												/>
