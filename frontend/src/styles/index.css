@@ -48,6 +48,10 @@
 	body {
 		@apply bg-clr-background;
 	}
+
+	#root {
+		@apply min-h-screen flex flex-col;
+	}
 }
 
 @layer components {

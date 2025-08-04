@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import compression from 'vite-plugin-compression2'
 import { VitePWA } from 'vite-plugin-pwa'
+import svgr from 'vite-plugin-svgr'
 
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -14,6 +15,7 @@ const __dirname = dirname(__filename)
 export default defineConfig({
 	plugins: [
 		react(),
+		svgr(),
 		tailwindcss(),
 		compression(),
 		VitePWA({
