@@ -1,5 +1,5 @@
 import { Link, NavLink, useLocation } from 'react-router'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
 
 // Import Components
@@ -10,7 +10,6 @@ import Button from '../components/Button'
 
 // Import Icons
 import { FiSearch } from "react-icons/fi";
-import { IoIosArrowDown } from "react-icons/io";
 
 const Navbar = () => {
 	// nav menu
@@ -21,22 +20,6 @@ const Navbar = () => {
 
 	// Ambil lokasi url saat ini
 	const location = useLocation()
-
-	// dropdown
-	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-	const dropdownRef = useRef(null)
-
-	// Handle toggle dropdown
-	const handleToggleDropdown = () => {
-		setIsDropdownOpen((prev) => !prev)
-	}
-
-	// Handle ketika klik di luar dropdown
-	const handleClickOutside = (e) => {
-		if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-			setIsDropdownOpen(false)
-		}
-	}
 
 	// Handle untuk perubahan bg navbar ketika user ada di halaman home dan di hero section
 	useEffect(() => {
@@ -61,18 +44,6 @@ const Navbar = () => {
 		}
 	}, [location])
 
-	// tambahkan event ketika terdeteksi ada klik di luar dropdown
-	useEffect(() => {
-		if (isDropdownOpen) {
-			document.addEventListener('click', handleClickOutside)
-		} else {
-			document.removeEventListener('click', handleClickOutside)
-		}
-
-		return () => {
-			document.removeEventListener('click', handleClickOutside)
-		}
-	}, [isDropdownOpen])
 
 	return (
 		<nav
@@ -157,54 +128,27 @@ const Navbar = () => {
 								</li>
 								{/* Blog */}
 
-								{/* Kategori */}
-								<li className="relative">
-									<span
-										ref={dropdownRef}
-										className={`${isTransparent ? "text-clr-text-dark hover:text-clr-text-dark-hover" : "text-clr-text-light hover:text-clr-text-light-hover"} cursor-pointer transition`}
-										onClick={handleToggleDropdown}>
-										Kategori
-									</span>
-
-									{/* Dropdown Menu */}
-									<motion.ul
-										initial={{ height: 0 }}
-										animate={{ height: isDropdownOpen ? 'auto' : 0 }}
-										exit={{ height: 0 }}
-										transition={{ duration: 0.3, ease: 'easeInOut' }}
-										className="absolute right-0 mt-2 w-40 bg-clr-container-light shadow-lg rounded-lg overflow-hidden">
-										<li>
-											<NavLink
-												to="/kategori/destinasi"
-												className="block px-4 py-2 text-clr-text-light hover:text-clr-primary">
-												Destinasi
-											</NavLink>
-										</li>
-										<li>
-											<NavLink
-												to="/kategori/kuliner"
-												className="block px-4 py-2 text-clr-text-light hover:text-clr-primary">
-												Kuliner
-											</NavLink>
-										</li>
-										<li>
-											<NavLink
-												to="/kategori/lifestyle"
-												className="block px-4 py-2 text-clr-text-light hover:text-clr-primary">
-												Lifestyle
-											</NavLink>
-										</li>
-										<li>
-											<NavLink
-												to="/kategori/tipsnhacks"
-												className="block px-4 py-2 text-clr-text-light hover:text-clr-primary">
-												Tips & Hacks
-											</NavLink>
-										</li>
-									</motion.ul>
-									{/* Dropdown Menu */}
+								{/* Tentang Kami */}
+								<li>
+									<NavLink
+										to="/about"
+										className={({ isActive }) =>
+											isTransparent
+												? `${isActive
+													? 'text-clr-text-dark-hover'
+													: 'text-clr-text-dark'
+												}
+											transition hover:text-clr-text-dark-hover`
+												: `${isActive
+													? 'text-clr-text-light-hover'
+													: 'text-clr-text-light'
+												}
+											transition hover:text-clr-text-light-hover`
+										}>
+										Tentang Kami
+									</NavLink>
 								</li>
-								{/* Kategori */}
+								{/* Tentang Kami */}
 							</ul>
 						</nav>
 						{/* NAVLINK === DESKTOP */}
@@ -278,66 +222,17 @@ const Navbar = () => {
 								</li>
 								{/* Blog */}
 
-								{/* Kategori */}
+								{/* Tentang Kami */}
 								<li>
-									<details className="group [&_summary::-webkit-details-marker]:hidden">
-										<summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-clr-text-light">
-											<span className="text-body-small-base font-medium">
-												Kategori
-											</span>
-
-											<span className="shrink-0 transition duration-300 group-open:-rotate-180">
-												<IoIosArrowDown
-													strokeWidth={1.5}
-													className="text-clr-text-light"
-												/>
-											</span>
-										</summary>
-
-										<ul className="mt-2 space-y-1 px-4">
-											<li>
-												<NavLink
-													to="/kategori/destinasi"
-													className={({ isActive }) =>
-														isActive ? 'navlink-active' : 'navlink'
-													}>
-													Destinasi
-												</NavLink>
-											</li>
-
-											<li>
-												<NavLink
-													to="/kategori/kuliner"
-													className={({ isActive }) =>
-														isActive ? 'navlink-active' : 'navlink'
-													}>
-													Kuliner
-												</NavLink>
-											</li>
-
-											<li>
-												<NavLink
-													to="/kategori/lifestyle"
-													className={({ isActive }) =>
-														isActive ? 'navlink-active' : 'navlink'
-													}>
-													Lifestyle
-												</NavLink>
-											</li>
-
-											<li>
-												<NavLink
-													to="/kategori/tipsnhacks"
-													className={({ isActive }) =>
-														isActive ? 'navlink-active' : 'navlink'
-													}>
-													Tips & Hacks
-												</NavLink>
-											</li>
-										</ul>
-									</details>
+									<NavLink
+										to="/about"
+										className={({ isActive }) =>
+											isActive ? 'navlink-active' : 'navlink'
+										}>
+										Tentang Kami
+									</NavLink>
 								</li>
-								{/* Kategori */}
+								{/* Tentang Kami */}
 							</ul>
 							{/* NAVLINK === MOBILE */}
 						</div>
