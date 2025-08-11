@@ -17,11 +17,13 @@ export const createUser = async (req, res) => {
 
 		const savedUser = await user.save()
 		res.status(201).json({
+			success: true,
 			message: 'User berhasil dibuat',
 			user: savedUser,
 		})
 	} catch (error) {
 		res.status(400).json({
+			success: false,
 			message: 'Gagal membuat user',
 			error: error.message,
 		})

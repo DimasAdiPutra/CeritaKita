@@ -63,8 +63,19 @@ describe('Stories API', () => {
 			})
 
 		expect(res.statusCode).toBe(201)
-		expect(res.body.slug).toBe('cerita-pertama')
-		slug = res.body.slug // simpan untuk test berikutnya
+		expect(res.body.success).toBe(true)
+		expect(res.body.data.slug).toBe('cerita-pertama')
+		slug = res.body.data.slug // simpan untuk test berikutnya
+	})
+
+	it('GET /api/stories/:slug -> harus mengembalikan detail story berdasarkan slug', async () => {
+		// Pastikan slug ini ada di database dummy test
+		const res = await request(app).get('/api/stories/cerita-pertama')
+
+		expect(res.statusCode).toBe(200)
+		expect(res.body.success).toBe(true)
+		expect(res.body.data.slug).toBe('cerita-pertama')
+		expect(res.body.data).toHaveProperty('title')
 	})
 
 	it('PUT /api/stories/:slug → harus bisa update story', async () => {
@@ -86,7 +97,7 @@ describe('Stories API', () => {
 			})
 
 		expect(res.statusCode).toBe(200)
-		expect(res.body.title).toBe('Cerita Pertama Updated')
+		expect(res.body.data.title).toBe('Cerita Pertama Updated')
 	})
 
 	it('DELETE /api/stories/:slug → harus bisa hapus story', async () => {
