@@ -4,6 +4,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import connectDB from './config/db.js'
 import storyRoutes from './routes/story.routes.js'
+import userRoutes from './routes/user.routes.js'
 
 dotenv.config()
 connectDB()
@@ -17,5 +18,6 @@ app.use(express.json())
 
 // Routes
 app.use('/api/stories', storyRoutes)
+app.use('/api/user', userRoutes)
 
 export default app
