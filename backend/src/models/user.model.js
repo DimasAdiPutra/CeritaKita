@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			default: '',
 		},
+		job: {
+			type: String,
+			default: '',
+		},
 	},
 	{ timestamps: true }
 )

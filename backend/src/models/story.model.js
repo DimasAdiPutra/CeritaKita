@@ -13,6 +13,11 @@ const storySchema = new mongoose.Schema(
 			unique: true,
 			lowercase: true,
 		},
+		excerpt: {
+			type: String,
+			trim: true,
+			default: '',
+		},
 		author: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User',

@@ -4,7 +4,9 @@ import Story from '../models/story.model.js'
 // GET all stories
 export const getStories = async (req, res) => {
 	try {
-		const stories = await Story.find().sort({ publishedAt: -1 })
+		const stories = await Story.find()
+			.sort({ publishedAt: -1 })
+			.populate('author', 'name avatar job')
 		res.json({
 			success: true,
 			message: 'Berhasil mengambil stories',
