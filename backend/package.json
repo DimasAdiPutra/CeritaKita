@@ -1,0 +1,40 @@
+{
+  "name": "ceritakita-backend",
+  "version": "1.0.0",
+  "description": "Backend untuk proyek CeritaKita menggunakan Express.js dan MongoDB",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon --delay 500ms src/server.js",
+    "start": "node src/server.js",
+    "seed": "node src/tests/seeds/main.seed.js",
+    "test": "jest --runInBand --detectOpenHandles"
+  },
+  "keywords": [
+    "express",
+    "mongodb",
+    "ceritakita",
+    "api",
+    "backend"
+  ],
+  "author": "dimasadiputra528@gmail.com",
+  "license": "ISC",
+  "packageManager": "pnpm@10.14.0",
+  "dependencies": {
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-typescript": "^7.27.1",
+    "@babel/register": "^7.27.1",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "jest": "^30.0.5",
+    "mongoose": "^8.17.1",
+    "morgan": "^1.10.1",
+    "supertest": "^7.1.4"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^10.2.0",
+    "nodemon": "^3.1.10"
+  }
+}
