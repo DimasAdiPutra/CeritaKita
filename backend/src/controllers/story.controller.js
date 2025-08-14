@@ -1,4 +1,3 @@
-// controllers/storiesController.js
 import Story from '../models/story.model.js'
 
 // GET all stories
@@ -7,15 +6,16 @@ export const getStories = async (req, res) => {
 		const stories = await Story.find()
 			.sort({ publishedAt: -1 })
 			.populate('author', 'name avatar job')
+
 		res.json({
 			success: true,
-			message: 'Berhasil mengambil stories',
+			message: 'Berhasil mengambil Cerita',
 			data: stories,
 		})
 	} catch (error) {
 		res
 			.status(500)
-			.json({ success: false, message: 'Gagal mengambil stories', error })
+			.json({ success: false, message: 'Gagal mengambil Cerita', error })
 	}
 }
 
@@ -28,18 +28,18 @@ export const getStoryBySlug = async (req, res) => {
 		if (!story) {
 			return res.status(404).json({
 				success: false,
-				message: 'Story tidak ditemukan',
+				message: 'Cerita tidak ditemukan',
 			})
 		}
 		res.json({
 			success: true,
-			message: 'Story berhasil di temukan',
+			message: 'Cerita berhasil di temukan',
 			data: story,
 		})
 	} catch (error) {
 		res
 			.status(500)
-			.json({ success: false, message: 'Gagal mengambil story', error })
+			.json({ success: false, message: 'Gagal mengambil Cerita', error })
 	}
 }
 
@@ -50,13 +50,13 @@ export const createStory = async (req, res) => {
 		await story.save()
 		res.status(201).json({
 			success: true,
-			message: 'Berhasil membuat story',
+			message: 'Berhasil membuat Cerita',
 			data: story,
 		})
 	} catch (error) {
 		res
 			.status(400)
-			.json({ success: false, message: 'Gagal membuat story', error })
+			.json({ success: false, message: 'Gagal membuat Cerita', error })
 	}
 }
 
@@ -71,17 +71,17 @@ export const updateStory = async (req, res) => {
 		if (!story) {
 			return res
 				.status(404)
-				.json({ success: false, message: 'Story tidak ditemukan' })
+				.json({ success: false, message: 'Cerita tidak ditemukan' })
 		}
 		res.json({
 			success: true,
-			message: 'Berhasil mengupdate story',
+			message: 'Berhasil mengupdate Cerita',
 			data: story,
 		})
 	} catch (error) {
 		res
 			.status(400)
-			.json({ success: false, message: 'Gagal mengupdate story', error })
+			.json({ success: false, message: 'Gagal mengupdate Cerita', error })
 	}
 }
 
@@ -92,12 +92,12 @@ export const deleteStory = async (req, res) => {
 		if (!story) {
 			return res
 				.status(404)
-				.json({ success: false, message: 'Story tidak ditemukan' })
+				.json({ success: false, message: 'Cerita tidak ditemukan' })
 		}
-		res.json({ success: true, message: 'Story berhasil dihapus' })
+		res.json({ success: true, message: 'Cerita berhasil dihapus' })
 	} catch (error) {
 		res
 			.status(500)
-			.json({ success: false, message: 'Gagal menghapus story', error })
+			.json({ success: false, message: 'Gagal menghapus Cerita', error })
 	}
 }

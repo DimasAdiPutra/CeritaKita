@@ -1,19 +1,27 @@
+// Package
 import { Helmet } from 'react-helmet-async'
 import { useEffect, useState } from "react";
-import { getStories } from "../services/api";
-import { FiSearch } from 'react-icons/fi';
-import Input from '../components/Input';
-import { IoIosArrowDown } from 'react-icons/io';
 import { Link } from 'react-router'
 import { motion } from 'motion/react'
+
+// Icons
+import { FiSearch } from 'react-icons/fi';
+import { IoIosArrowDown } from 'react-icons/io';
 import { LuListFilter } from 'react-icons/lu';
+
+// Components
+import Input from '../components/Input';
 import BlogCard from '../components/BlogCard';
+
+// Services
+import { getStories } from "../services/stories.api";
 
 
 const BlogPage = () => {
 
 	const [stories, setStories] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState('');
 
 	const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false)
 	const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
@@ -29,20 +37,20 @@ const BlogPage = () => {
 	}
 
 	useEffect(() => {
-		getStories()
-			.then((res) => {
-				setStories(res.data);
+		const loadData = async () => {
+			try {
+				const data = await getStories();
+				setStories(data);
+			} catch (err) {
+				console.log(err)
+				setError(err);
+			} finally {
 				setLoading(false);
-			})
-			.catch((err) => {
-				console.error("Gagal fetch stories:", err);
-				setLoading(false);
-			});
+			}
+		};
+
+		loadData();
 	}, []);
-
-	console.log(stories)
-
-	if (loading) return <p className="text-center mt-10">Loading...</p>;
 
 
 	return (
@@ -52,6 +60,7 @@ const BlogPage = () => {
 			</Helmet>
 
 			<div className='mt-20 container py-10'>
+
 				{/* Filter, Sort and Search */}
 				<div className="md:flex md:items-center md:justify-between md:gap-3 mb-10">
 					{/* Input Search */}
@@ -209,24 +218,41 @@ const BlogPage = () => {
 				</div>
 				{/* Filter, Sort and Search */}
 
+				{/* Card Blog */}
 				<div className="flex flex-wrap w-full gap-6 justify-center xl:justify-between">
 
-					{stories.data.map((story) => (
-						<Link to={`/${story.slug}`} key={story._id} >
-							<BlogCard
-								imageUrl={story.coverImage}
-								categories={story.tags}
-								date={story.publishedAt}
-								title={story.title}
-								description={story.excerpt}
-								profileImageUrl={story.author.avatar}
-								profileName={story.author.name}
-								profileJob={story.author.job}
-							/>
-						</Link>
-					))}
+					{loading && <p className='text-subtitle m-auto'>Memuat cerita...</p>}
+
+					{error && (
+						<p className='text-subtitle m-auto'>
+							{error}
+						</p>
+					)}
+
+					{!loading && !error && stories.length > 0 && (
+						stories.map((story) => (
+							<Link to={`/story/${story.slug}`} key={story._id}>
+								<BlogCard
+									imageUrl={story.coverImage}
+									categories={story.tags}
+									date={story.publishedAt}
+									title={story.title}
+									description={story.excerpt}
+									profileImageUrl={story.author.avatar}
+									profileName={story.author.name}
+									profileJob={story.author.job}
+								/>
+							</Link>
+						))
+					)}
+
+					{!loading && !error && stories.length === 0 && (
+						<p className='text-subtitle m-auto'>Tidak ada cerita ditemukan</p>
+					)}
 
 				</div>
+				{/* Card Blog */}
+
 			</div>
 		</>
 	);

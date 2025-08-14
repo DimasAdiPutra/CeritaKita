@@ -5,7 +5,7 @@ import morgan from 'morgan'
 import storyRoutes from './routes/story.routes.js'
 import userRoutes from './routes/user.routes.js'
 
-dotenv.config()
+dotenv.config({ debug: true })
 
 const app = express()
 

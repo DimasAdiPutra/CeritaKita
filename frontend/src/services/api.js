@@ -23,7 +23,4 @@ api.interceptors.response.use(
 	}
 )
 
-// * GET ALL STORIES
-export const getStories = () => api.get('/stories')
-
 export default api
