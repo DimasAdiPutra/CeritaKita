@@ -4,6 +4,7 @@ const seedUsers = async () => {
 	const users = [
 		{
 			name: 'Budi Santoso',
+			username: 'budi_santoso',
 			email: 'budi@example.com',
 			password: 'password123',
 			avatar:
@@ -13,6 +14,7 @@ const seedUsers = async () => {
 		},
 		{
 			name: 'Siti Rahma',
+			username: 'siti_rahma123',
 			email: 'siti@example.com',
 			password: 'rahma456',
 			avatar:
@@ -22,6 +24,7 @@ const seedUsers = async () => {
 		},
 		{
 			name: 'Andi Wijaya',
+			username: 'andiwijaya77',
 			email: 'andi@example.com',
 			password: 'andi789',
 			avatar:
@@ -31,6 +34,7 @@ const seedUsers = async () => {
 		},
 		{
 			name: 'Rina Dewi',
+			username: 'dewi00',
 			email: 'rina@example.com',
 			password: 'rinadewi321',
 			avatar:

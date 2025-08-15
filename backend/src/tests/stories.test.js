@@ -16,6 +16,7 @@ beforeAll(async () => {
 	// Buat user dummy
 	const user = await User.create({
 		name: 'Andi Prasetyo',
+		username: 'Andi_Prasetyo',
 		email: 'andi@example.com',
 		password: 'password123',
 	})
@@ -104,6 +105,6 @@ describe('Stories API', () => {
 		const res = await request(app).delete(`/api/stories/${slug}`)
 
 		expect(res.statusCode).toBe(200)
-		expect(res.body.message).toBe('Story berhasil dihapus')
+		expect(res.body.message).toBe('Cerita berhasil dihapus')
 	})
 })
