@@ -8,22 +8,23 @@ import User from '../models/user.model.js'
 let mongoServer
 const TIME_OUT = 1000 * 10
 
-beforeAll(async () => {
-	// Jalankan database MongoDB in-memory
-	mongoServer = await MongoMemoryServer.create()
-	const uri = mongoServer.getUri()
-	await mongoose.connect(uri)
-})
+// * Test Register
+describe('User API Register', () => {
+	beforeAll(async () => {
+		// Jalankan database MongoDB in-memory
+		mongoServer = await MongoMemoryServer.create()
+		const uri = mongoServer.getUri()
+		await mongoose.connect(uri)
+	})
 
-afterAll(async () => {
-	// Bersihkan database setelah test
-	await mongoose.connection.dropDatabase()
-	await mongoose.connection.close()
-	await mongoose.disconnect()
-	await mongoServer.stop()
-})
+	afterAll(async () => {
+		// Bersihkan database setelah test
+		await mongoose.connection.dropDatabase()
+		await mongoose.connection.close()
+		await mongoose.disconnect()
+		await mongoServer.stop()
+	})
 
-describe('User API', () => {
 	it(
 		'POST /api/users/register → harus bisa register user baru',
 		async () => {
@@ -97,4 +98,32 @@ describe('User API', () => {
 		expect(res.body.status).toBe('fail')
 		expect(res.body.errors.email).toMatch(/Format email tidak valid/i)
 	})
+
+	it(
+		'POST /api/users/register → harus gagal jika melebihi rate limit',
+		async () => {
+			for (let i = 0; i < 9; i++) {
+				await request(app)
+					.post('/api/users/register')
+					.send({
+						name: `Test ${i}`,
+						username: `user_${i}`,
+						email: `user_${i}@example.com`,
+						password: 'password123',
+					})
+			}
+
+			const res = await request(app).post('/api/users/register').send({
+				name: 'Over Limit',
+				username: 'over_limit',
+				email: 'over_limit@example.com',
+				password: 'password123',
+			})
+
+			expect(res.statusCode).toBe(429)
+			expect(res.body.status).toBe('fail')
+			expect(res.body.message || res.text).toMatch(/Terlalu banyak percobaan/i)
+		},
+		TIME_OUT
+	)
 })
