@@ -43,7 +43,6 @@
 @layer base {
 	* {
 		font-family: var(--font-nunito);
-		@apply text-clr-text-light;
 	}
 
 	body {

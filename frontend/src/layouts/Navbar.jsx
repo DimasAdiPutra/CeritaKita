@@ -166,6 +166,7 @@ const Navbar = () => {
 								onClick={() => setIsOpen(!isOpen)}
 								isOpen={isOpen}
 								dark={isOpen || !isTransparent}
+								aria-controls="mobile-menu"
 							/>
 						</div>
 						{/* Hamburger Menu */}
@@ -173,6 +174,9 @@ const Navbar = () => {
 
 					{/* NAVMENU === MOBILE */}
 					<motion.div
+						id='mobile-menu'
+						aria-hidden={!isOpen}
+						inert={!isOpen ? "" : undefined}   // Non-aktifkan interaksi saat tertutup
 						initial={{ x: '100%' }} // Mulai dari luar layar (kanan)
 						animate={{ x: isOpen ? '1%' : '100%' }} // Muncul ke kiri saat isOpen = true
 						exit={{ x: '100%' }} // Pergi ke kanan saat isOpen = false
