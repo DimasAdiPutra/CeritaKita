@@ -225,7 +225,7 @@ const BlogPage = () => {
 
 					{error && (
 						<p className='text-subtitle m-auto'>
-							{error}
+							{error.message}
 						</p>
 					)}
 

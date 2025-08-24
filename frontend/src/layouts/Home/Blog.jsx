@@ -12,7 +12,15 @@ import { FiSearch } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
 import { LuListFilter } from "react-icons/lu";
 
+// Services
+import { getStories } from "../../services/stories.api";
+import { useEffect } from 'react'
+
 const Blog = () => {
+	const [stories, setStories] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState('');
+
 	const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false)
 	const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
 
@@ -25,6 +33,22 @@ const Blog = () => {
 	const handleSortDropdown = () => {
 		setIsSortDropdownOpen((prev) => !prev)
 	}
+
+	useEffect(() => {
+		const loadData = async () => {
+			try {
+				const data = await getStories();
+				setStories(data);
+			} catch (err) {
+				console.log(err)
+				setError(err);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		loadData();
+	}, []);
 
 	return (
 		<section className="pt-16">
@@ -201,7 +225,35 @@ const Blog = () => {
 
 				{/*  Blog Cards */}
 				<div className='flex flex-wrap w-full gap-6 justify-center xl:justify-between'>
-					<Link to='/' >
+					{loading && <p className='text-subtitle m-auto'>Memuat cerita...</p>}
+
+					{error && (
+						<p className='text-subtitle m-auto'>
+							{error.message}
+						</p>
+					)}
+
+					{!loading && !error && stories.length > 0 && (
+						stories.map((story) => (
+							<Link to={`/story/${story.slug}`} key={story._id}>
+								<BlogCard
+									imageUrl={story.coverImage}
+									categories={story.tags}
+									date={story.publishedAt}
+									title={story.title}
+									description={story.excerpt}
+									profileImageUrl={story.author.avatar}
+									profileName={story.author.name}
+									profileJob={story.author.job}
+								/>
+							</Link>
+						))
+					)}
+
+					{!loading && !error && stories.length === 0 && (
+						<p className='text-subtitle m-auto'>Tidak ada cerita ditemukan</p>
+					)}
+					{/* <Link to='/' >
 						<BlogCard
 							imageUrl="https://ik.imagekit.io/dimasadiputra/easter-island-1661655_1920.jpg?updatedAt=1754110562285"
 							categories={["Lifestyle", "Interior", "Design"]}
@@ -248,7 +300,7 @@ const Blog = () => {
 							profileName="Jane Smith"
 							profileJob="Workspace Designer"
 						/>
-					</Link>
+					</Link> */}
 				</div>
 				{/*  Blog Cards */}
 
