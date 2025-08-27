@@ -15,11 +15,7 @@
 	--text-heading: 1.5rem;
 	--text-subheading: 1.25rem;
 	--text-body-base: 1rem;
-	--text-body-bold: 1rem;
-	--text-body-light: 1rem;
 	--text-body-small-base: 0.875rem;
-	--text-body-small-bold: 0.875rem;
-	--text-body-small-light: 0.875rem;
 
 	/* Colors */
 	--color-clr-background: #f8f9fa;
@@ -38,6 +34,7 @@
 	--color-clr-tertiary: #728f40;
 	--color-clr-tertiary-active: #5c7334;
 	--color-clr-tertiary-hover: #677e3a;
+	--color-clr-warning: #e7000b;
 }
 
 @layer base {
@@ -45,12 +42,8 @@
 		font-family: var(--font-nunito);
 	}
 
-	body {
-		@apply bg-clr-background;
-	}
-
 	#root {
-		@apply min-h-screen flex flex-col;
+		@apply min-h-screen flex flex-col bg-clr-background;
 	}
 }
 

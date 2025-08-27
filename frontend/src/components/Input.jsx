@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import clsx from 'clsx' // Pastikan install: npm install clsx
+import React from 'react'
 
-export default function Input({
+const Input = React.forwardRef(function Input({
 	label,
 	showLabel = false,
 	text = '',
@@ -11,7 +12,8 @@ export default function Input({
 	iconRight,
 	transparent = false,
 	className = '',
-}) {
+	...props
+}, ref) {
 	return (
 		<div className={clsx({ relative: !showLabel })}>
 			{showLabel && (
@@ -33,6 +35,7 @@ export default function Input({
 				)}
 
 				<input
+					ref={ref}
 					type={type}
 					id={id}
 					placeholder={text}
@@ -47,6 +50,7 @@ export default function Input({
 						},
 						className
 					)}
+					{...props}
 				/>
 
 				{iconRight && (
@@ -57,7 +61,7 @@ export default function Input({
 			</div>
 		</div>
 	)
-}
+})
 
 Input.propTypes = {
 	label: PropTypes.string,
@@ -70,3 +74,5 @@ Input.propTypes = {
 	transparent: PropTypes.bool,
 	className: PropTypes.string,
 }
+
+export default Input
