@@ -17,3 +17,18 @@ export async function registerUser(payload) {
 		throw err
 	}
 }
+
+// Login
+export async function loginUser(payload) {
+	try {
+		const res = await axios.post(`${API_URL}/users/login`, payload, {
+			withCredentials: true, // biar session/token cookie tersimpan
+		})
+		return res.data
+	} catch (err) {
+		if (err.response) {
+			return err.response.data
+		}
+		throw err
+	}
+}

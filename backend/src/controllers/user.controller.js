@@ -95,9 +95,7 @@ export const loginUser = async (req, res) => {
 		if (!user) {
 			return res.status(400).json({
 				status: 'fail',
-				errors: {
-					email: 'Email atau Password salah',
-				},
+				message: 'Email atau Password salah',
 			})
 		}
 
@@ -106,7 +104,7 @@ export const loginUser = async (req, res) => {
 		if (!isMatch) {
 			return res.status(400).json({
 				status: 'fail',
-				errors: { password: 'Email atau Password salah' },
+				message: 'Email atau Password salah',
 			})
 		}
 

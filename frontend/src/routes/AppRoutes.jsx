@@ -6,6 +6,7 @@ const HomePage = lazy(() => import('../pages/HomePage'))
 const BlogPage = lazy(() => import('../pages/BlogPage'))
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
 const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'))
+const LoginPage = lazy(() => import('../pages/auth/LoginPage'))
 
 // import components
 import Loading from '../components/Loading'
@@ -24,6 +25,7 @@ const AppRoutes = () => {
 
 						{/* Auth */}
 						<Route path="/register" element={<RegisterPage />} />
+						<Route path="/login" element={<LoginPage />} />
 
 						{/* Halaman 404 Not Found */}
 						<Route path='*' element={<NotFoundPage />} />
