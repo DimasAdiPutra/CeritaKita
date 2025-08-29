@@ -18,13 +18,13 @@ describe('Button Component', () => {
 		expect(handleClick).toHaveBeenCalledTimes(1)
 	})
 
-	test('merender sebagai <Link> saat prop `to` disediakan', () => {
+	test('merender sebagai <a> saat prop `to` disediakan', () => {
 		render(
 			<BrowserRouter>
 				<Button text="Pergi ke Halaman" to="/halaman" />
 			</BrowserRouter>
 		)
-		const link = screen.getByRole('link', { name: /pergi ke halaman/i })
+		const link = screen.getByRole('button', { name: /pergi ke halaman/i })
 		expect(link).toHaveAttribute('href', '/halaman')
 	})
 
@@ -64,7 +64,7 @@ describe('Button Component', () => {
 				<Button text="Pergi ke Halaman" to="/halaman" disabled />
 			</BrowserRouter>
 		)
-		const link = screen.getByRole('link', { name: /pergi ke halaman/i })
+		const link = screen.getByRole('button', { name: /pergi ke halaman/i })
 		expect(link).toHaveAttribute('aria-disabled', 'true')
 	})
 
