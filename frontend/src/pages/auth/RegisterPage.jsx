@@ -7,6 +7,7 @@ import Input from "../../components/Input"
 import { Link, useNavigate } from "react-router"
 import { Helmet } from "react-helmet-async"
 import Button from "../../components/Button"
+import { successToast } from "../../utils/alerts"
 
 // 🔹 Zod Schema
 const registerSchema = z.object({
@@ -52,6 +53,7 @@ export default function RegisterPage() {
           setError("root", { type: "server", message: res.message })
         }
       } else if (res.status === "success") {
+        successToast('Berhasil Mendaftar')
         navigate('/')
         // redirect ke login page
       }
