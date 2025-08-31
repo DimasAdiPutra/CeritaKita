@@ -1,16 +1,22 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import User from '../models/user.model.js'
+import { errorResponse, successResponse } from '../utils/response.helpers.js'
 
 // * REGISTRASI USER
 export const registerUser = async (req, res) => {
 	try {
 		// ✅ Cek apakah sudah ada cookie token
 		if (req.cookies.token) {
-			return res.status(400).json({
-				status: 'fail',
-				message: 'Anda sudah login, silakan logout terlebih dahulu',
-			})
+			return res.status(400).json(
+				errorResponse(
+					{
+						auth: 'Gagal Register',
+					},
+					'Anda sudah Login, Silahkan Logout terlebih dahulu',
+					400
+				)
+			)
 		}
 
 		const { name, username, email, password } = req.body
@@ -39,38 +45,49 @@ export const registerUser = async (req, res) => {
 			maxAge: 24 * 60 * 60 * 1000, // 1 hari
 		})
 
-		res.status(201).json({
-			status: 'success',
-			data: {
-				user: {
-					id: newUser._id,
-					name: newUser.name,
-					username: newUser.username,
-					email: newUser.email,
+		res.status(201).json(
+			successResponse(
+				{
+					user: {
+						id: newUser._id,
+						name: newUser.name,
+						username: newUser.username,
+						email: newUser.email,
+					},
+					token,
 				},
-				token,
-			},
-		})
+				'Berhasil Register',
+				201
+			)
+		)
 	} catch (error) {
 		console.error('Register Error:', error)
 
 		// Tangani duplikat key error dari MongoDB
 		if (error.code === 11000) {
 			const field = Object.keys(error.keyPattern)[0]
-			return res.status(400).json({
-				status: 'fail',
-				errors: {
-					[field]: `${
-						field.charAt(0).toUpperCase() + field.slice(1)
-					} sudah digunakan`,
-				},
-			})
+			return res.status(400).json(
+				errorResponse(
+					{
+						[field]: `${
+							field.charAt(0).toUpperCase() + field.slice(1)
+						} sudah digunakan`,
+					},
+					'Gagal Register',
+					400
+				)
+			)
 		}
 
-		res.status(500).json({
-			status: 'error',
-			message: 'Terjadi kesalahan pada server',
-		})
+		res.status(500).json(
+			errorResponse(
+				{
+					error,
+				},
+				'Terjadi kesalahan pada server',
+				500
+			)
+		)
 	}
 }
 
@@ -79,10 +96,15 @@ export const loginUser = async (req, res) => {
 	try {
 		// ✅ Cek apakah sudah ada cookie token
 		if (req.cookies.token) {
-			return res.status(400).json({
-				status: 'fail',
-				message: 'Anda sudah login, silakan logout terlebih dahulu',
-			})
+			return res.status(400).json(
+				errorResponse(
+					{
+						auth: 'Gagal Login',
+					},
+					'Anda sudah login, Silahkan logout terlebih dahulu',
+					400
+				)
+			)
 		}
 
 		const { email, password } = req.body
@@ -93,19 +115,29 @@ export const loginUser = async (req, res) => {
 		}).select('+password')
 
 		if (!user) {
-			return res.status(400).json({
-				status: 'fail',
-				message: 'Email atau Password salah',
-			})
+			return res.status(400).json(
+				errorResponse(
+					{
+						auth: 'Gagal Login',
+					},
+					'Email atau Password salah',
+					400
+				)
+			)
 		}
 
 		// Cek password
 		const isMatch = await bcrypt.compare(password, user.password)
 		if (!isMatch) {
-			return res.status(400).json({
-				status: 'fail',
-				message: 'Email atau Password salah',
-			})
+			return res.status(400).json(
+				errorResponse(
+					{
+						auth: 'Gagal Login',
+					},
+					'Email atau Password salah',
+					400
+				)
+			)
 		}
 
 		// Generate JWT
@@ -121,24 +153,31 @@ export const loginUser = async (req, res) => {
 			maxAge: 24 * 60 * 60 * 1000, // 1 hari
 		})
 
-		res.status(200).json({
-			status: 'success',
-			data: {
-				user: {
-					id: user._id,
-					name: user.name,
-					username: user.username,
-					email: user.email,
+		res.status(200).json(
+			successResponse(
+				{
+					user: {
+						id: user._id,
+						name: user.name,
+						username: user.username,
+						email: user.email,
+					},
+					token,
 				},
-				token,
-			},
-		})
+				'Berhasil Login'
+			)
+		)
 	} catch (error) {
 		console.error('Login Error:', error)
-		res.status(500).json({
-			status: 'error',
-			message: 'Terjadi kesalahan pada server',
-		})
+		res.status(500).json(
+			errorResponse(
+				{
+					error,
+				},
+				'Terjadi kesalahan pada server',
+				500
+			)
+		)
 	}
 }
 
@@ -147,10 +186,15 @@ export const logoutUser = async (req, res) => {
 	try {
 		// ✅ Cek apakah sudah ada cookie token
 		if (!req.cookies.token) {
-			return res.status(400).json({
-				status: 'fail',
-				message: 'Anda belum login, silahkan login terlebih dahulu.',
-			})
+			return res.status(400).json(
+				errorResponse(
+					{
+						auth: 'Gagal Logout',
+					},
+					'Anda belum Login, Silahkan Login terlebih dahulu',
+					400
+				)
+			)
 		}
 
 		res.clearCookie('token', {
@@ -159,14 +203,16 @@ export const logoutUser = async (req, res) => {
 			sameSite: 'strict',
 		})
 
-		res.status(200).json({
-			status: 'success',
-			message: 'Logout berhasil',
-		})
+		res.status(200).json(successResponse({}, 'Logout berhasil', 200))
 	} catch (error) {
-		res.status(500).json({
-			status: 'error',
-			message: 'Terjadi kesalahan saat logout',
-		})
+		res.status(500).json(
+			errorResponse(
+				{
+					error,
+				},
+				'Terjadi kesalahan pada server',
+				500
+			)
+		)
 	}
 }

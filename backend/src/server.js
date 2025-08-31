@@ -1,26 +1,45 @@
 import app from './app.js'
 import connectDB from './config/db.js'
+import dotenv from 'dotenv'
+
+// Load environment variables
+dotenv.config({ debug: process.env.NODE_ENV == 'development' })
 
 const PORT = process.env.PORT || 5000
 
-// logging method, dan url yang di request
-app.use((req, res, next) => {
-	console.log(
-		`[${new Date().toISOString()}] ${req.method} ${req.url}`,
-		req.body
-	)
-	next()
+// Handle graceful shutdown
+process.on('SIGTERM', () => {
+	console.log('SIGTERM received, shutting down gracefully')
+	process.exit(0)
 })
 
-// logging jika terjadi error
-app.use((err, req, res, next) => {
-	console.error('🔥 Server Error:', err.stack)
-	res.status(500).json({ message: 'Internal Server Error', error: err.message })
+process.on('SIGINT', () => {
+	console.log('SIGINT received, shutting down gracefully')
+	process.exit(0)
 })
 
-// Konek Database dan jalankan server
-connectDB().then(() => {
-	app.listen(PORT, () => {
-		console.log(`🚀 Server running on port ${PORT}`)
-	})
-})
+// Start server function
+const startServer = async () => {
+	try {
+		// Connect to database
+		await connectDB()
+
+		// Start server
+		const server = app.listen(PORT, () => {
+			console.log(`🚀 Server running on port ${PORT}`)
+			console.log(`📡 Environment: ${process.env.NODE_ENV || 'development'}`)
+			console.log(`📅 ${new Date().toISOString()}`)
+		})
+
+		// Handle server errors
+		server.on('error', (error) => {
+			console.error('❌ Server error:', error.message)
+			process.exit(1)
+		})
+	} catch (error) {
+		console.error('❌ Failed to start server:', error.message)
+		process.exit(1)
+	}
+}
+
+startServer()

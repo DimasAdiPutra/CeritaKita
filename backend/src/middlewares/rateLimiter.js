@@ -1,4 +1,5 @@
 import rateLimit from 'express-rate-limit'
+import { errorResponse } from '../utils/response.helpers.js'
 
 /**
  * Membuat rate limiter reusable
@@ -9,10 +10,9 @@ export const createRateLimiter = (options = {}) => {
 	return rateLimit({
 		windowMs: options.windowMs || 15 * 60 * 1000, // default 15 menit
 		max: options.max || 10, // default 10 request per window
-		message: options.message || {
-			status: 'fail',
-			message: 'Terlalu banyak permintaan, coba lagi nanti.',
-		},
+		message:
+			options.message ||
+			errorResponse({}, 'Terlalu banyak permintaan, Coba lagi nanti', 400),
 		standardHeaders: true,
 		legacyHeaders: false,
 	})

@@ -1,10 +1,12 @@
 // tests/login.test.js
 import mongoose from 'mongoose'
 import request from 'supertest'
-import { MongoMemoryServer } from 'mongodb-memory-server'
-import app from '../app.js'
-import User from '../models/user.model.js'
 import bcrypt from 'bcryptjs'
+import { MongoMemoryServer } from 'mongodb-memory-server'
+
+import app from '../app.js'
+
+import User from '../models/user.model.js'
 
 let mongoServer
 const TIME_OUT = 1000 * 10
@@ -42,9 +44,9 @@ describe('User API Login', () => {
 	})
 
 	it(
-		'POST /api/users/login → harus berhasil login dengan email dan password benar',
+		'POST /api/auth/login → harus berhasil login dengan email dan password benar',
 		async () => {
-			const res = await request(app).post('/api/users/login').send({
+			const res = await request(app).post('/api/auth/login').send({
 				email: 'budi_login@example.com',
 				password: 'password123',
 			})
@@ -59,48 +61,50 @@ describe('User API Login', () => {
 	)
 
 	it(
-		'POST /api/users/login → harus gagal jika password salah',
+		'POST /api/auth/login → harus gagal jika password salah',
 		async () => {
-			const res = await request(app).post('/api/users/login').send({
+			const res = await request(app).post('/api/auth/login').send({
 				email: 'budi_login@example.com',
 				password: 'password_salah',
 			})
 
 			expect(res.statusCode).toBe(400)
-			expect(res.body.status).toBe('fail')
-			expect(res.body.errors).toHaveProperty('password')
+			expect(res.body.status).toBe('error')
+			expect(res.body.errors).toHaveProperty('auth')
+			expect(res.body.errors.auth).toBe('Gagal Login')
 		},
 		TIME_OUT
 	)
 
 	it(
-		'POST /api/users/login → harus gagal jika email tidak terdaftar',
+		'POST /api/auth/login → harus gagal jika email tidak terdaftar',
 		async () => {
-			const res = await request(app).post('/api/users/login').send({
+			const res = await request(app).post('/api/auth/login').send({
 				email: 'tidakada@example.com',
 				password: 'password123',
 			})
 
 			expect(res.statusCode).toBe(400)
-			expect(res.body.status).toBe('fail')
-			expect(res.body.errors).toHaveProperty('email')
+			expect(res.body.status).toBe('error')
+			expect(res.body.errors).toHaveProperty('auth')
+			expect(res.body.errors.auth).toBe('Gagal Login')
 		},
 		TIME_OUT
 	)
 
 	it(
-		'POST /api/users/login → harus gagal jika melebihi rate limit',
+		'POST /api/auth/login → harus gagal jika melebihi rate limit',
 		async () => {
 			for (let i = 0; i < 16; i++) {
 				await request(app)
-					.post('/api/users/login')
+					.post('/api/auth/login')
 					.send({
 						email: `user@example.com`,
 						password: `password${i}`,
 					})
 			}
 
-			const res = await request(app).post('/api/users/login').send({
+			const res = await request(app).post('/api/auth/login').send({
 				name: 'Over Limit',
 				username: 'over_limit',
 				email: 'over_limit@example.com',
@@ -108,7 +112,7 @@ describe('User API Login', () => {
 			})
 
 			expect(res.statusCode).toBe(429)
-			expect(res.body.status).toBe('fail')
+			expect(res.body.status).toBe('error')
 			expect(res.body.message || res.text).toMatch(/Terlalu banyak percobaan/i)
 		},
 		TIME_OUT

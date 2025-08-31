@@ -64,7 +64,7 @@ describe('Stories API', () => {
 			})
 
 		expect(res.statusCode).toBe(201)
-		expect(res.body.success).toBe(true)
+		expect(res.body.status).toBe('success')
 		expect(res.body.data.slug).toBe('cerita-pertama')
 		slug = res.body.data.slug // simpan untuk test berikutnya
 	})
@@ -74,7 +74,7 @@ describe('Stories API', () => {
 		const res = await request(app).get('/api/stories/cerita-pertama')
 
 		expect(res.statusCode).toBe(200)
-		expect(res.body.success).toBe(true)
+		expect(res.body.status).toBe('success')
 		expect(res.body.data.slug).toBe('cerita-pertama')
 		expect(res.body.data).toHaveProperty('title')
 	})

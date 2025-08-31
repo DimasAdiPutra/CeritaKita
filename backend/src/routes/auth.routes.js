@@ -3,11 +3,15 @@ import {
 	loginUser,
 	logoutUser,
 	registerUser,
-} from '../controllers/user.controller.js'
-import { loginSchema, registerSchema } from '../validators/user.validator.js'
+} from '../controllers/auth.controller.js'
+import {
+	loginSchema,
+	registerSchema,
+} from '../utils/validators/user.validator.js'
 import { validate } from '../middlewares/validate.js'
 import { checkUniqueUser } from '../middlewares/checkUniqueUser.js'
 import { createRateLimiter } from '../middlewares/rateLimiter.js'
+import { errorResponse } from '../utils/response.helpers.js'
 
 const router = express.Router()
 
@@ -15,20 +19,22 @@ const router = express.Router()
 const registerLimiter = createRateLimiter({
 	windowMs: 60 * 60 * 1000, // 1 jam
 	max: 10,
-	message: {
-		status: 'fail',
-		message: 'Terlalu banyak percobaan register. Silakan coba lagi nanti.',
-	},
+	message: errorResponse(
+		{},
+		'Terlalu banyak percobaan. Coba lagi setelah 10 menit',
+		400
+	),
 })
 
 // limiter untuk login (sedikit longgar)
 const loginLimiter = createRateLimiter({
 	windowMs: 15 * 60 * 1000, // 15 menit
 	max: 15,
-	message: {
-		status: 'fail',
-		message: 'Terlalu banyak percobaan login. Coba lagi setelah 15 menit.',
-	},
+	message: errorResponse(
+		{},
+		'Terlalu banyak percobaan. Coba lagi setelah 5 menit',
+		400
+	),
 })
 
 // POST /api/users -> register

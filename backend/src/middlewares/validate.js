@@ -1,3 +1,5 @@
+import { errorResponse } from '../utils/response.helpers.js'
+
 export const validate = (schema) => {
 	return (req, res, next) => {
 		const { error } = schema.validate(req.body, { abortEarly: false })
@@ -10,10 +12,9 @@ export const validate = (schema) => {
 				errors[field] = err.message
 			})
 
-			return res.status(400).json({
-				status: 'fail',
-				errors,
-			})
+			return res
+				.status(400)
+				.json(errorResponse(errors, 'Gagal Validasi Input', 400))
 		}
 
 		next()

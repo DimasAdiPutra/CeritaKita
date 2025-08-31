@@ -1,16 +1,16 @@
 import mongoose from 'mongoose'
 
 const connectDB = async () => {
-	try {
-		const uri =
-			process.env.NODE_ENV === 'production'
-				? process.env.PROD_MONGO_URI
-				: process.env.DEV_MONGO_URI
+	const uri =
+		process.env.NODE_ENV === 'production'
+			? process.env.PROD_MONGO_URI
+			: process.env.DEV_MONGO_URI
 
-		await mongoose.connect(uri)
-		console.log(`✅ MongoDB Connected (${process.env.NODE_ENV})`)
+	try {
+		const conn = await mongoose.connect(uri)
+		console.log(`✅ MongoDB Connected: ${conn.connection.host}`)
 	} catch (error) {
-		console.error('❌ MongoDB Connection Error:', error.message)
+		console.error('❌ MongoDB connection error:', error.message)
 		process.exit(1)
 	}
 }

@@ -1,4 +1,5 @@
 import Story from '../models/story.model.js'
+import { errorResponse, successResponse } from '../utils/response.helpers.js'
 
 // GET all stories
 export const getStories = async (req, res) => {
@@ -7,15 +8,11 @@ export const getStories = async (req, res) => {
 			.sort({ publishedAt: -1 })
 			.populate('author', 'name avatar job')
 
-		res.json({
-			success: true,
-			message: 'Berhasil mengambil Cerita',
-			data: stories,
-		})
+		res.json(successResponse(stories, 'Berhasil mengambil Cerita'))
 	} catch (error) {
 		res
 			.status(500)
-			.json({ success: false, message: 'Gagal mengambil Cerita', error })
+			.json(errorResponse(error, 'Terjadi kesalahan pada server', 500))
 	}
 }
 
@@ -26,20 +23,21 @@ export const getStoryBySlug = async (req, res) => {
 			.select('title slug contentHTML author publishedAt')
 			.populate('author', 'name avatar')
 		if (!story) {
-			return res.status(404).json({
-				success: false,
-				message: 'Cerita tidak ditemukan',
-			})
+			return res.status(404).json(
+				errorResponse(
+					{
+						story: `Cerita ${req.params.slug} tidak ditemukan`,
+					},
+					'Cerita tidak di temukan',
+					404
+				)
+			)
 		}
-		res.json({
-			success: true,
-			message: 'Cerita berhasil di temukan',
-			data: story,
-		})
+		res.json(successResponse(story, 'Cerita berhasil di temukan'))
 	} catch (error) {
 		res
 			.status(500)
-			.json({ success: false, message: 'Gagal mengambil Cerita', error })
+			.json(errorResponse(error, 'Terjadi kesalahan pada server', 500))
 	}
 }
 
@@ -48,15 +46,11 @@ export const createStory = async (req, res) => {
 	try {
 		const story = new Story(req.body)
 		await story.save()
-		res.status(201).json({
-			success: true,
-			message: 'Berhasil membuat Cerita',
-			data: story,
-		})
+		res.status(201).json(successResponse(story, 'Berhasil membuat Cerita'))
 	} catch (error) {
 		res
 			.status(400)
-			.json({ success: false, message: 'Gagal membuat Cerita', error })
+			.json(errorResponse(error, 'Terjadi kesalahan pada server', 400))
 	}
 }
 
@@ -71,17 +65,15 @@ export const updateStory = async (req, res) => {
 		if (!story) {
 			return res
 				.status(404)
-				.json({ success: false, message: 'Cerita tidak ditemukan' })
+				.json(
+					errorResponse({}, `Cerita ${req.params.slug} tidak di temukan`, 404)
+				)
 		}
-		res.json({
-			success: true,
-			message: 'Berhasil mengupdate Cerita',
-			data: story,
-		})
+		res.json(successResponse(story, 'Berhasil mengupdate Cerita'))
 	} catch (error) {
 		res
 			.status(400)
-			.json({ success: false, message: 'Gagal mengupdate Cerita', error })
+			.json(errorResponse(error, 'Terjadi kesalahan pada server', 400))
 	}
 }
 
@@ -92,12 +84,14 @@ export const deleteStory = async (req, res) => {
 		if (!story) {
 			return res
 				.status(404)
-				.json({ success: false, message: 'Cerita tidak ditemukan' })
+				.json(
+					errorResponse({}, `Cerita ${req.params.slug} tidak ditemukan`, 404)
+				)
 		}
-		res.json({ success: true, message: 'Cerita berhasil dihapus' })
+		res.json(successResponse({}, 'Cerita berhasil dihapus'))
 	} catch (error) {
 		res
 			.status(500)
-			.json({ success: false, message: 'Gagal menghapus Cerita', error })
+			.json(errorResponse(error, 'Terjadi kesalahan pada server', 500))
 	}
 }

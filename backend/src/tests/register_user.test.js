@@ -26,9 +26,9 @@ describe('User API Register', () => {
 	})
 
 	it(
-		'POST /api/users/register → harus bisa register user baru',
+		'POST /api/auth/register → harus bisa register user baru',
 		async () => {
-			const res = await request(app).post('/api/users/register').send({
+			const res = await request(app).post('/api/auth/register').send({
 				name: 'Budi Santoso',
 				username: 'budi_santoso',
 				email: 'budi@example.com',
@@ -42,7 +42,7 @@ describe('User API Register', () => {
 		TIME_OUT
 	)
 
-	it('POST /api/users/register → harus gagal jika email sudah terdaftar', async () => {
+	it('POST /api/auth/register → harus gagal jika email sudah terdaftar', async () => {
 		// Tambah user pertama
 		await User.create({
 			name: 'Siti Aisyah',
@@ -52,7 +52,7 @@ describe('User API Register', () => {
 		})
 
 		// Coba daftar lagi dengan email yang sama
-		const res = await request(app).post('/api/users/register').send({
+		const res = await request(app).post('/api/auth/register').send({
 			name: 'Siti Duplikat',
 			username: 'siti_duplikat',
 			email: 'siti@example.com',
@@ -60,11 +60,11 @@ describe('User API Register', () => {
 		})
 
 		expect(res.statusCode).toBe(400)
-		expect(res.body.status).toBe('fail')
+		expect(res.body.status).toBe('error')
 		expect(res.body.errors.email).toMatch(/Email sudah digunakan/i)
 	})
 
-	it('POST /api/users/register → harus gagal jika username sudah terdaftar', async () => {
+	it('POST /api/auth/register → harus gagal jika username sudah terdaftar', async () => {
 		// Tambah user pertama
 		await User.create({
 			name: 'Agus Pratama',
@@ -74,7 +74,7 @@ describe('User API Register', () => {
 		})
 
 		// Coba daftar lagi dengan username yang sama
-		const res = await request(app).post('/api/users/register').send({
+		const res = await request(app).post('/api/auth/register').send({
 			name: 'Agus Duplikat',
 			username: 'agus_pratama',
 			email: 'agus2@example.com',
@@ -82,12 +82,12 @@ describe('User API Register', () => {
 		})
 
 		expect(res.statusCode).toBe(400)
-		expect(res.body.status).toBe('fail')
+		expect(res.body.status).toBe('error')
 		expect(res.body.errors.username).toMatch(/Username sudah digunakan/i)
 	})
 
-	it('POST /api/users/register → harus gagal jika format email salah', async () => {
-		const res = await request(app).post('/api/users/register').send({
+	it('POST /api/auth/register → harus gagal jika format email salah', async () => {
+		const res = await request(app).post('/api/auth/register').send({
 			name: 'Joko Widodo',
 			username: 'joko_widodo',
 			email: 'email_tidak_valid',
@@ -95,16 +95,16 @@ describe('User API Register', () => {
 		})
 
 		expect(res.statusCode).toBe(400)
-		expect(res.body.status).toBe('fail')
+		expect(res.body.status).toBe('error')
 		expect(res.body.errors.email).toMatch(/Format email tidak valid/i)
 	})
 
 	it(
-		'POST /api/users/register → harus gagal jika melebihi rate limit',
+		'POST /api/auth/register → harus gagal jika melebihi rate limit',
 		async () => {
 			for (let i = 0; i < 9; i++) {
 				await request(app)
-					.post('/api/users/register')
+					.post('/api/auth/register')
 					.send({
 						name: `Test ${i}`,
 						username: `user_${i}`,
@@ -113,7 +113,7 @@ describe('User API Register', () => {
 					})
 			}
 
-			const res = await request(app).post('/api/users/register').send({
+			const res = await request(app).post('/api/auth/register').send({
 				name: 'Over Limit',
 				username: 'over_limit',
 				email: 'over_limit@example.com',
@@ -121,7 +121,7 @@ describe('User API Register', () => {
 			})
 
 			expect(res.statusCode).toBe(429)
-			expect(res.body.status).toBe('fail')
+			expect(res.body.status).toBe('error')
 			expect(res.body.message || res.text).toMatch(/Terlalu banyak percobaan/i)
 		},
 		TIME_OUT

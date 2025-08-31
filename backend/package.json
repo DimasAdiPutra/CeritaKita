@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon --delay 500ms src/server.js",
     "start": "node src/server.js",
-    "seed": "node src/tests/seeds/main.seed.js",
+    "seed": "node src/scripts/seeds/main.seed.js",
     "test": "jest --runInBand --detectOpenHandles"
   },
   "keywords": [
@@ -30,6 +30,7 @@
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "express-rate-limit": "^8.0.1",
+    "helmet": "^8.1.0",
     "jest": "^30.0.5",
     "joi": "^18.0.0",
     "jsonwebtoken": "^9.0.2",
