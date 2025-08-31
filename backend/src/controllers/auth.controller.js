@@ -1,7 +1,17 @@
+// Import package
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+
+// Import Models
 import User from '../models/user.model.js'
+
+// Import Helpers
 import { errorResponse, successResponse } from '../utils/response.helpers.js'
+import {
+	clearTokenCookie,
+	formatUserResponse,
+	generateToken,
+	setTokenCookie,
+} from '../utils/auth.helpers.js'
 
 // * REGISTRASI USER
 export const registerUser = async (req, res) => {
@@ -33,27 +43,13 @@ export const registerUser = async (req, res) => {
 		})
 
 		// Generate token
-		const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-			expiresIn: '1d',
-		})
-
-		// Simpan token ke cookies (HttpOnly agar lebih aman)
-		res.cookie('token', token, {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === 'production', // hanya https di production
-			sameSite: 'strict',
-			maxAge: 24 * 60 * 60 * 1000, // 1 hari
-		})
+		const token = generateToken(newUser._id)
+		setTokenCookie(res, token)
 
 		res.status(201).json(
 			successResponse(
 				{
-					user: {
-						id: newUser._id,
-						name: newUser.name,
-						username: newUser.username,
-						email: newUser.email,
-					},
+					user: formatUserResponse(newUser),
 					token,
 				},
 				'Berhasil Register',
@@ -140,28 +136,14 @@ export const loginUser = async (req, res) => {
 			)
 		}
 
-		// Generate JWT
-		const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-			expiresIn: '1d',
-		})
-
-		// Simpan token ke cookies (HttpOnly agar lebih aman)
-		res.cookie('token', token, {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === 'production', // hanya https di production
-			sameSite: 'strict',
-			maxAge: 24 * 60 * 60 * 1000, // 1 hari
-		})
+		// Generate token dan set cookie
+		const token = generateToken(user._id)
+		setTokenCookie(res, token)
 
 		res.status(200).json(
 			successResponse(
 				{
-					user: {
-						id: user._id,
-						name: user.name,
-						username: user.username,
-						email: user.email,
-					},
+					user: formatUserResponse(user),
 					token,
 				},
 				'Berhasil Login'
@@ -197,11 +179,8 @@ export const logoutUser = async (req, res) => {
 			)
 		}
 
-		res.clearCookie('token', {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === 'production',
-			sameSite: 'strict',
-		})
+		// Clear cookie
+		clearTokenCookie(res)
 
 		res.status(200).json(successResponse({}, 'Logout berhasil', 200))
 	} catch (error) {
