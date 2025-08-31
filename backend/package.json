@@ -8,7 +8,9 @@
     "dev": "nodemon --delay 500ms src/server.js",
     "start": "node src/server.js",
     "seed": "node src/scripts/seeds/main.seed.js",
-    "test": "jest --runInBand --detectOpenHandles"
+    "test": "jest --runInBand --detectOpenHandles",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "keywords": [
     "express",
@@ -39,6 +41,11 @@
     "supertest": "^7.1.4"
   },
   "devDependencies": {
+    "@eslint/js": "^9.34.0",
+    "eslint": "^9.34.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^16.3.0",
     "mongodb-memory-server": "^10.2.0",
     "nodemon": "^3.1.10"
   }
