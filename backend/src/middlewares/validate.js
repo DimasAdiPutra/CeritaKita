@@ -1,4 +1,5 @@
-import { errorResponse } from '../utils/response.helpers.js'
+import { ERROR_CODES } from '../utils/errors.helper.js'
+import { sendResponse } from '../utils/response.helper.js'
 
 export const validate = (schema) => {
 	return (req, res, next) => {
@@ -12,9 +13,10 @@ export const validate = (schema) => {
 				errors[field] = err.message
 			})
 
-			return res
-				.status(400)
-				.json(errorResponse(errors, 'Gagal Validasi Input', 400))
+			return sendResponse(res, {
+				code: ERROR_CODES.VALIDATION_ERROR,
+				details: { ...errors },
+			})
 		}
 
 		next()

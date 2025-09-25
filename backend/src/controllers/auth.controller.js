@@ -5,7 +5,8 @@ import bcrypt from 'bcryptjs'
 import User from '../models/user.model.js'
 
 // Import Helpers
-import { errorResponse, successResponse } from '../utils/response.helpers.js'
+import { ERROR_CODES } from '../utils/errors.helper.js'
+import { sendResponse } from '../utils/response.helper.js'
 import {
 	clearTokenCookie,
 	formatUserResponse,
@@ -18,15 +19,7 @@ export const registerUser = async (req, res) => {
 	try {
 		// ✅ Cek apakah sudah ada cookie token
 		if (req.cookies.token) {
-			return res.status(400).json(
-				errorResponse(
-					{
-						auth: 'Gagal Register',
-					},
-					'Anda sudah Login, Silahkan Logout terlebih dahulu',
-					400
-				)
-			)
+			return sendResponse(res, { code: ERROR_CODES.ALREADY_AUTHENTICATED })
 		}
 
 		const { name, username, email, password } = req.body
@@ -46,44 +39,31 @@ export const registerUser = async (req, res) => {
 		const token = generateToken(newUser._id)
 		setTokenCookie(res, token)
 
-		res.status(201).json(
-			successResponse(
-				{
-					user: formatUserResponse(newUser),
-					token,
-				},
-				'Berhasil Register',
-				201
-			)
-		)
+		sendResponse(res, {
+			message: 'Successfully register',
+			data: { user: formatUserResponse(newUser), token },
+			statusCode: 201,
+		})
 	} catch (error) {
 		console.error('Register Error:', error)
 
 		// Tangani duplikat key error dari MongoDB
 		if (error.code === 11000) {
 			const field = Object.keys(error.keyPattern)[0]
-			return res.status(400).json(
-				errorResponse(
-					{
-						[field]: `${
-							field.charAt(0).toUpperCase() + field.slice(1)
-						} sudah digunakan`,
-					},
-					'Gagal Register',
-					400
-				)
-			)
+			return sendResponse(res, {
+				code: ERROR_CODES.USER_ALREADY_EXISTS,
+				details: {
+					[field]: `${
+						field.charAt(0).toUpperCase() + field.slice(1)
+					} sudah digunakan`,
+				},
+			})
 		}
 
-		res.status(500).json(
-			errorResponse(
-				{
-					error,
-				},
-				'Terjadi kesalahan pada server',
-				500
-			)
-		)
+		sendResponse(res, {
+			code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+			details: { ...error },
+		})
 	}
 }
 
@@ -92,15 +72,7 @@ export const loginUser = async (req, res) => {
 	try {
 		// ✅ Cek apakah sudah ada cookie token
 		if (req.cookies.token) {
-			return res.status(400).json(
-				errorResponse(
-					{
-						auth: 'Gagal Login',
-					},
-					'Anda sudah login, Silahkan logout terlebih dahulu',
-					400
-				)
-			)
+			return sendResponse(res, { code: ERROR_CODES.ALREADY_AUTHENTICATED })
 		}
 
 		const { email, password } = req.body
@@ -111,87 +83,52 @@ export const loginUser = async (req, res) => {
 		}).select('+password')
 
 		if (!user) {
-			return res.status(400).json(
-				errorResponse(
-					{
-						auth: 'Gagal Login',
-					},
-					'Email atau Password salah',
-					400
-				)
-			)
+			return sendResponse(res, {
+				code: ERROR_CODES.VALIDATION_ERROR,
+				message: 'Email atau password salah.',
+			})
 		}
 
 		// Cek password
 		const isMatch = await bcrypt.compare(password, user.password)
 		if (!isMatch) {
-			return res.status(400).json(
-				errorResponse(
-					{
-						auth: 'Gagal Login',
-					},
-					'Email atau Password salah',
-					400
-				)
-			)
+			return sendResponse(res, {
+				code: ERROR_CODES.VALIDATION_ERROR,
+				message: 'Email atau password salah.',
+			})
 		}
 
 		// Generate token dan set cookie
 		const token = generateToken(user._id)
 		setTokenCookie(res, token)
 
-		res.status(200).json(
-			successResponse(
-				{
-					user: formatUserResponse(user),
-					token,
-				},
-				'Berhasil Login'
-			)
-		)
+		sendResponse(res, {
+			data: { user: formatUserResponse(user), token },
+			message: 'Successfully logged in',
+		})
 	} catch (error) {
 		console.error('Login Error:', error)
-		res.status(500).json(
-			errorResponse(
-				{
-					error,
-				},
-				'Terjadi kesalahan pada server',
-				500
-			)
-		)
+		sendResponse(res, {
+			code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+			details: { ...error },
+		})
 	}
 }
 
 // * LOGOUT USER
 export const logoutUser = async (req, res) => {
 	try {
-		// ✅ Cek apakah sudah ada cookie token
-		if (!req.cookies.token) {
-			return res.status(400).json(
-				errorResponse(
-					{
-						auth: 'Gagal Logout',
-					},
-					'Anda belum Login, Silahkan Login terlebih dahulu',
-					400
-				)
-			)
-		}
-
 		// Clear cookie
 		clearTokenCookie(res)
 
-		res.status(200).json(successResponse({}, 'Logout berhasil', 200))
+		sendResponse(res, {
+			message: 'You have been logged out successfully',
+			data: { loggedOut: true, timestamp: new Date().toISOString },
+		})
 	} catch (error) {
-		res.status(500).json(
-			errorResponse(
-				{
-					error,
-				},
-				'Terjadi kesalahan pada server',
-				500
-			)
-		)
+		sendResponse(res, {
+			code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+			details: { ...error },
+		})
 	}
 }

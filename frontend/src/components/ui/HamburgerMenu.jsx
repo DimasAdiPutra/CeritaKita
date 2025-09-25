@@ -1,0 +1,46 @@
+import { motion } from "motion/react"
+import clsx from "clsx"
+
+export default function HamburgerMenu({ onClick, isOpen, dark = false }) {
+	const barClass = clsx(
+		"w-8 h-1 rounded-md transition-colors",
+		dark ? "bg-clr-text-light" : "bg-clr-text-dark"
+	)
+
+	return (
+		<button
+			onClick={onClick}
+			className="flex flex-col items-center justify-center w-10 h-10 relative focus:outline-none focus:ring-2 focus:ring-clr-primary rounded-md"
+			aria-label={isOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
+			aria-expanded={isOpen}
+			aria-controls="navbar-menu"
+		>
+			{/* Bar Atas */}
+			<motion.span
+				role="presentation"
+				initial={false}
+				animate={{ rotate: isOpen ? 45 : 0, y: isOpen ? 8 : 0 }}
+				transition={{ duration: 0.3 }}
+				className={barClass}
+			/>
+
+			{/* Bar Tengah */}
+			<motion.span
+				role="presentation"
+				initial={false}
+				animate={{ opacity: isOpen ? 0 : 1 }}
+				transition={{ duration: 0.2 }}
+				className={clsx(barClass, "my-1")}
+			/>
+
+			{/* Bar Bawah */}
+			<motion.span
+				role="presentation"
+				initial={false}
+				animate={{ rotate: isOpen ? -45 : 0, y: isOpen ? -8 : 0 }}
+				transition={{ duration: 0.3 }}
+				className={barClass}
+			/>
+		</button>
+	)
+}

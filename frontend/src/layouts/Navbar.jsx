@@ -1,258 +1,173 @@
-import { Link, NavLink, useLocation } from 'react-router'
-import { useState, useEffect } from 'react'
-import { motion } from 'motion/react'
+import { Link, NavLink, useLocation } from "react-router"
+import { useState, useEffect } from "react"
+import { motion } from "motion/react"
+import clsx from "clsx"
 
-// Import Components
-import Logo from '../components/Logo'
-import Input from '../components/Input'
-import HamburgerMenu from '../components/HamburgerMenu'
-import Button from '../components/Button'
+// Components
+import Logo from "../components/ui/Logo"
+import Input from "../components/ui/Input"
+import HamburgerMenu from "../components/ui/HamburgerMenu"
+import Button from "../components/ui/Button"
 
-// Import Icons
-import { FiSearch } from "react-icons/fi";
+// Icons
+import { FiSearch } from "react-icons/fi"
 
-const Navbar = () => {
-	// nav menu
+// Data: daftar link navbar
+const NAV_ITEMS = [
+	{ to: "/", label: "Beranda" },
+	{ to: "/blog", label: "Blog" },
+	{ to: "/about", label: "Tentang Kami" },
+]
+
+export default function Navbar() {
 	const [isOpen, setIsOpen] = useState(false)
-
-	// Set background transparent
 	const [isTransparent, setIsTransparent] = useState(true)
-
-	// Ambil lokasi url saat ini
 	const location = useLocation()
 
-	// Handle untuk perubahan bg navbar ketika user ada di halaman home dan di hero section
+	// Ubah transparansi navbar saat scroll
 	useEffect(() => {
 		const handleScroll = () => {
-			const heroSectionHeight = 10
-			if (window.scrollY > heroSectionHeight) {
-				setIsTransparent(false)
-			} else {
-				setIsTransparent(true)
-			}
+			setIsTransparent(window.scrollY <= 10)
 		}
 
-		if (location.pathname === '/') {
-			window.addEventListener('scroll', handleScroll)
-			handleScroll() // Jalankan saat komponen dimount untuk cek posisi awal
+		if (location.pathname === "/") {
+			window.addEventListener("scroll", handleScroll)
+			handleScroll()
 		} else {
 			setIsTransparent(false)
 		}
 
-		return () => {
-			window.removeEventListener('scroll', handleScroll)
-		}
+		return () => window.removeEventListener("scroll", handleScroll)
 	}, [location])
 
+	// Komponen kecil untuk Search Input
+	const SearchInput = ({ id, transparent, mobile }) => (
+		<Input
+			id={id}
+			label="Search"
+			type="text"
+			text="Search"
+			iconRight={
+				<FiSearch
+					strokeWidth={1.5}
+					size={16}
+					className={clsx(
+						mobile ? "text-clr-text-light" : isTransparent ? "text-clr-text-dark" : "text-clr-text-light"
+					)}
+				/>
+			}
+			transparent={transparent}
+		/>
+	)
 
 	return (
 		<nav
-			className={`${isTransparent ? 'bg-transparent' : 'bg-clr-container-light shadow'
-				} fixed top-0 z-30 w-full h-20 flex items-center transition`}>
+			className={clsx(
+				"fixed top-0 z-30 w-full h-20 flex items-center transition",
+				isTransparent ? "bg-transparent" : "bg-clr-container-light shadow"
+			)}
+		>
 			<div className="container">
 				<div className="flex h-16 items-center justify-between w-full relative">
-					{/* LOGO */}
-					<div className="md:flex md:items-center md:gap-12">
-						<Link to="/">
-							<Logo dark={!isTransparent} />
-						</Link>
-					</div>
-					{/* LOGO */}
+					{/* Logo */}
+					<Link to="/">
+						<Logo dark={!isTransparent} />
+					</Link>
 
-					{/* Search */}
+					{/* Search (Desktop) */}
 					<div className="hidden lg:block">
-						<Input
-							text="Search"
-							id="search"
-							label="Search"
-							type="text"
-							iconRight={
-								<FiSearch
-									strokeWidth={1.5}
-									size={16}
-									className={
-										isTransparent ? 'text-clr-text-dark' : 'text-clr-text-light'
-									}
-								/>
-							}
-							transparent={isTransparent}
-						/>
+						<SearchInput id="search" transparent={isTransparent} />
 					</div>
-					{/* Search */}
 
 					<div className="flex items-center gap-10">
-						{/* NAVLINK === DESKTOP */}
+						{/* Nav links (Desktop) */}
 						<nav className="hidden lg:flex" aria-label="Global">
-							<ul className="relative flex items-center gap-6 text-sm">
-								{/* Beranda */}
-								<li>
-									<NavLink
-										to="/"
-										className={({ isActive }) =>
-											isTransparent
-												? `${isActive
-													? 'text-clr-text-dark-hover'
-													: 'text-clr-text-dark'
-												}
-											transition hover:text-clr-text-dark-hover`
-												: `${isActive
-													? 'text-clr-text-light-hover'
-													: 'text-clr-text-light'
-												}
-											transition hover:text-clr-text-light-hover`
-										}>
-										Beranda
-									</NavLink>
-								</li>
-								{/* Beranda */}
-
-								{/* Blog */}
-								<li>
-									<NavLink
-										to="/blog"
-										className={({ isActive }) =>
-											isTransparent
-												? `${isActive
-													? 'text-clr-text-dark-hover'
-													: 'text-clr-text-dark'
-												}
-											transition hover:text-clr-text-dark-hover`
-												: `${isActive
-													? 'text-clr-text-light-hover'
-													: 'text-clr-text-light'
-												}
-											transition hover:text-clr-text-light-hover`
-										}>
-										Blog
-									</NavLink>
-								</li>
-								{/* Blog */}
-
-								{/* Tentang Kami */}
-								<li>
-									<NavLink
-										to="/about"
-										className={({ isActive }) =>
-											isTransparent
-												? `${isActive
-													? 'text-clr-text-dark-hover'
-													: 'text-clr-text-dark'
-												}
-											transition hover:text-clr-text-dark-hover`
-												: `${isActive
-													? 'text-clr-text-light-hover'
-													: 'text-clr-text-light'
-												}
-											transition hover:text-clr-text-light-hover`
-										}>
-										Tentang Kami
-									</NavLink>
-								</li>
-								{/* Tentang Kami */}
+							<ul className="flex items-center gap-6 text-sm">
+								{NAV_ITEMS.map(({ to, label }) => (
+									<li key={to}>
+										<NavLink
+											to={to}
+											className={({ isActive }) =>
+												clsx(
+													isTransparent
+														? isActive
+															? "text-clr-text-dark-hover"
+															: "text-clr-text-dark"
+														: isActive
+															? "text-clr-text-light-hover"
+															: "text-clr-text-light",
+													"transition hover:opacity-80"
+												)
+											}
+										>
+											{label}
+										</NavLink>
+									</li>
+								))}
 							</ul>
 						</nav>
-						{/* NAVLINK === DESKTOP */}
 
-						{/* Action Button */}
+						{/* Action Buttons (Desktop) */}
 						<div className="hidden lg:flex sm:gap-4">
 							<Button to="/login" text="Masuk" />
 							<Button to="/register" text="Daftar" style="secondary" />
 						</div>
-						{/* Action Button */}
 
-						{/* Hamburger Menu */}
+						{/* Hamburger Menu (Mobile) */}
 						<div className="block lg:hidden relative z-50">
 							<HamburgerMenu
-								onClick={() => setIsOpen(!isOpen)}
+								onClick={() => setIsOpen((prev) => !prev)}
 								isOpen={isOpen}
 								dark={isOpen || !isTransparent}
-								aria-controls="mobile-menu"
 							/>
 						</div>
-						{/* Hamburger Menu */}
 					</div>
 
-					{/* NAVMENU === MOBILE */}
+					{/* Mobile Menu */}
 					<motion.div
-						id='mobile-menu'
+						id="mobile-menu"
 						aria-hidden={!isOpen}
-						inert={!isOpen ? "" : undefined}   // Non-aktifkan interaksi saat tertutup
-						initial={{ x: '100%' }} // Mulai dari luar layar (kanan)
-						animate={{ x: isOpen ? '1%' : '100%' }} // Muncul ke kiri saat isOpen = true
-						exit={{ x: '100%' }} // Pergi ke kanan saat isOpen = false
-						transition={{ type: 'spring', stiffness: 200, damping: 30 }} // Animasi halus
-						className={`${isOpen ? 'shadow-xl' : ''
-							} flex h-screen flex-col justify-between border-e bg-clr-container-light fixed top-0 right-0 w-max min-w-72 z-40 px-4 pb-10 pt-24`}>
+						aria-label="Navigasi mobile"
+						inert={!isOpen ? "" : undefined}
+						initial={{ x: "100%" }}
+						animate={{ x: isOpen ? "0%" : "100%" }}
+						exit={{ x: "100%" }}
+						transition={{ type: "spring", stiffness: 200, damping: 30 }}
+						className={clsx(
+							"fixed top-0 right-0 h-screen min-w-72 w-max z-40 flex flex-col justify-between border-e bg-clr-container-light px-4 pb-10 pt-24",
+							isOpen && "shadow-xl"
+						)}
+					>
 						<div className="w-full">
 							{/* Mobile Search */}
-							<Input
-								text="Search"
-								id="mobileSearch"
-								label="Search"
-								type="text"
-								iconRight={
-									<FiSearch
-										strokeWidth={1.5}
-										size={16}
-										className="text-clr-text-light"
-									/>
-								}
-							/>
-							{/* Mobile Search */}
+							<SearchInput id="mobileSearch" mobile />
 
-							{/* NAVLINK === MOBILE */}
+							{/* Nav Links (Mobile) */}
 							<ul className="mt-6 space-y-1">
-								{/* Beranda */}
-								<li>
-									<NavLink
-										to="/"
-										className={({ isActive }) =>
-											isActive ? 'navlink-active' : 'navlink'
-										}>
-										Beranda
-									</NavLink>
-								</li>
-								{/* Beranda */}
-
-								{/* Blog */}
-								<li>
-									<NavLink
-										to="/blog"
-										className={({ isActive }) =>
-											isActive ? 'navlink-active' : 'navlink'
-										}>
-										Blog
-									</NavLink>
-								</li>
-								{/* Blog */}
-
-								{/* Tentang Kami */}
-								<li>
-									<NavLink
-										to="/about"
-										className={({ isActive }) =>
-											isActive ? 'navlink-active' : 'navlink'
-										}>
-										Tentang Kami
-									</NavLink>
-								</li>
-								{/* Tentang Kami */}
+								{NAV_ITEMS.map(({ to, label }) => (
+									<li key={to}>
+										<NavLink
+											to={to}
+											className={({ isActive }) =>
+												clsx(isActive ? "navlink-active" : "navlink")
+											}
+											onClick={() => setIsOpen(false)}
+										>
+											{label}
+										</NavLink>
+									</li>
+								))}
 							</ul>
-							{/* NAVLINK === MOBILE */}
 						</div>
 
-						{/* Action Button */}
+						{/* Action Buttons (Mobile) */}
 						<div className="flex flex-col gap-2">
 							<Button to="/login" text="Masuk" style="primary-outline" />
 							<Button to="/register" text="Daftar" />
 						</div>
-						{/* Action Button */}
 					</motion.div>
-					{/* NAVMENU === MOBILE */}
 				</div>
 			</div>
 		</nav>
 	)
 }
-
-export default Navbar

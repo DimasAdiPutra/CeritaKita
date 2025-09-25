@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import HamburgerMenu from '@/components/HamburgerMenu'
+import HamburgerMenu from '@/components/ui/HamburgerMenu'
 
 describe('HamburgerMenu Component', () => {
 	test('menampilkan tombol dengan label aria yang benar saat menu tertutup', () => {

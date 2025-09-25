@@ -36,7 +36,7 @@ describe('User API Register', () => {
 			})
 
 			expect(res.statusCode).toBe(201)
-			expect(res.body.status).toBe('success')
+			expect(res.body.success).toBe(true)
 			expect(res.body.data).toHaveProperty('user')
 		},
 		TIME_OUT
@@ -59,9 +59,9 @@ describe('User API Register', () => {
 			password: 'password123',
 		})
 
-		expect(res.statusCode).toBe(400)
-		expect(res.body.status).toBe('error')
-		expect(res.body.errors.email).toMatch(/Email sudah digunakan/i)
+		expect(res.statusCode).toBe(409)
+		expect(res.body.success).toBe(false)
+		expect(res.body.errors.details.email).toMatch(/Email sudah digunakan/i)
 	})
 
 	it('POST /api/auth/register → harus gagal jika username sudah terdaftar', async () => {
@@ -81,9 +81,11 @@ describe('User API Register', () => {
 			password: 'password123',
 		})
 
-		expect(res.statusCode).toBe(400)
-		expect(res.body.status).toBe('error')
-		expect(res.body.errors.username).toMatch(/Username sudah digunakan/i)
+		expect(res.statusCode).toBe(409)
+		expect(res.body.success).toBe(false)
+		expect(res.body.errors.details.username).toMatch(
+			/Username sudah digunakan/i
+		)
 	})
 
 	it('POST /api/auth/register → harus gagal jika format email salah', async () => {
@@ -94,9 +96,9 @@ describe('User API Register', () => {
 			password: 'password123',
 		})
 
-		expect(res.statusCode).toBe(400)
-		expect(res.body.status).toBe('error')
-		expect(res.body.errors.email).toMatch(/Format email tidak valid/i)
+		expect(res.statusCode).toBe(422)
+		expect(res.body.success).toBe(false)
+		expect(res.body.errors.details.email).toMatch(/Format email tidak valid/i)
 	})
 
 	it(
@@ -121,8 +123,8 @@ describe('User API Register', () => {
 			})
 
 			expect(res.statusCode).toBe(429)
-			expect(res.body.status).toBe('error')
-			expect(res.body.message || res.text).toMatch(/Terlalu banyak percobaan/i)
+			expect(res.body.success).toBe(false)
+			expect(res.body.message || res.text).toMatch(/Too many request/i)
 		},
 		TIME_OUT
 	)

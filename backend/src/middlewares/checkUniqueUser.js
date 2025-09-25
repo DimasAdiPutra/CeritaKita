@@ -1,6 +1,7 @@
 // middlewares/checkUniqueUser.js
 import User from '../models/user.model.js'
-import { errorResponse } from '../utils/response.helpers.js'
+import { ERROR_CODES } from '../utils/errors.helper.js'
+import { sendResponse } from '../utils/response.helper.js'
 
 export const checkUniqueUser = async (req, res, next) => {
 	try {
@@ -19,9 +20,10 @@ export const checkUniqueUser = async (req, res, next) => {
 		}
 
 		if ('email' in errors || 'username' in errors) {
-			return res
-				.status(400)
-				.json(errorResponse(errors, 'Email atau username sudah digunakan', 400))
+			return sendResponse(res, {
+				code: ERROR_CODES.DUPLICATE_ENTRY,
+				details: { ...errors },
+			})
 		}
 
 		next()

@@ -1,5 +1,6 @@
 import rateLimit from 'express-rate-limit'
-import { errorResponse } from '../utils/response.helpers.js'
+import { sendResponse } from '../utils/response.helper.js'
+import { ERROR_CODES } from '../utils/errors.helper.js'
 
 /**
  * Create rate limiter dengan konfigurasi custom
@@ -10,9 +11,18 @@ export const createRateLimiter = (options) => {
 	return rateLimit({
 		windowMs: options.windowMs,
 		max: options.max,
-		message:
-			options.message ||
-			errorResponse({}, 'Terlalu banyak permintaan, Coba lagi nanti', 400),
+		handler: (req, res) => {
+			// Gunakan handler custom untuk mengirim response yang konsisten
+			return sendResponse(res, {
+				code: ERROR_CODES.RATE_LIMIT_EXCEEDED,
+				details: {
+					limit: options.max,
+					window: `${options.windowMs / 1000 / 60} minutes`,
+					message:
+						options.message || 'Too many requests. Please try again later.',
+				},
+			})
+		},
 		standardHeaders: true,
 		legacyHeaders: false,
 		skipSuccessfulRequests: options.skipSuccessfulRequests || false,
@@ -25,11 +35,7 @@ export const createRateLimiter = (options) => {
 export const registerRateLimiter = createRateLimiter({
 	windowMs: 60 * 60 * 1000, // 1 jam
 	max: 5,
-	message: errorResponse(
-		{},
-		'Terlalu banyak percobaan. Coba lagi setelah 10 menit',
-		400
-	),
+	message: 'Too many register experiments.Try again after 1 hour',
 })
 
 /**
@@ -38,10 +44,6 @@ export const registerRateLimiter = createRateLimiter({
 export const loginRateLimiter = createRateLimiter({
 	windowMs: 15 * 60 * 1000, // 15 menit
 	max: 10,
-	message: errorResponse(
-		{},
-		'Terlalu banyak percobaan. Coba lagi setelah 5 menit',
-		400
-	),
+	message: 'Too many login experiments.Try again after 15 minutes',
 	skipSuccessfulRequests: true, // Abaikan jika login berhasil
 })

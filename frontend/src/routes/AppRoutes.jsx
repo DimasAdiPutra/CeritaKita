@@ -9,7 +9,7 @@ const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'))
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'))
 
 // import components
-import Loading from '../components/Loading'
+import Loading from '../components/ui/Loading'
 
 // import layouts
 import MainLayouts from '../layouts/MainLayouts'
@@ -18,19 +18,18 @@ const AppRoutes = () => {
 	return (
 		<Router>
 			<Suspense fallback={<Loading />}>
-				<MainLayouts>
-					<Routes>
+				<Routes>
+					{/* Main Routes with Layout */}
+					<Route element={<MainLayouts />}>
 						<Route path="/" element={<HomePage />} />
 						<Route path="/blog" element={<BlogPage />} />
+						<Route path="*" element={<NotFoundPage />} />
+					</Route>
 
-						{/* Auth */}
-						<Route path="/register" element={<RegisterPage />} />
-						<Route path="/login" element={<LoginPage />} />
-
-						{/* Halaman 404 Not Found */}
-						<Route path='*' element={<NotFoundPage />} />
-					</Routes>
-				</MainLayouts>
+					{/* Auth Routes (tanpa layout utama) */}
+					<Route path="/register" element={<RegisterPage />} />
+					<Route path="/login" element={<LoginPage />} />
+				</Routes>
 			</Suspense>
 		</Router>
 	)

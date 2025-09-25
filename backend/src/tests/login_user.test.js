@@ -52,7 +52,7 @@ describe('User API Login', () => {
 			})
 
 			expect(res.statusCode).toBe(200)
-			expect(res.body.status).toBe('success')
+			expect(res.body.success).toBe(true)
 			expect(res.body.data).toHaveProperty('user')
 			expect(res.body.data).toHaveProperty('token')
 			expect(res.body.data.user.email).toBe('budi_login@example.com')
@@ -68,10 +68,13 @@ describe('User API Login', () => {
 				password: 'password_salah',
 			})
 
-			expect(res.statusCode).toBe(400)
-			expect(res.body.status).toBe('error')
-			expect(res.body.errors).toHaveProperty('auth')
-			expect(res.body.errors.auth).toBe('Gagal Login')
+			console.log(res.body.errors)
+
+			expect(res.statusCode).toBe(422)
+			expect(res.body.success).toBe(false)
+			expect(res.body.message).toBe('Invalid email or password')
+			expect(res.body.errors).toHaveProperty('code')
+			expect(res.body.errors.code).toBe('VALIDATION_ERROR')
 		},
 		TIME_OUT
 	)
@@ -84,10 +87,11 @@ describe('User API Login', () => {
 				password: 'password123',
 			})
 
-			expect(res.statusCode).toBe(400)
-			expect(res.body.status).toBe('error')
-			expect(res.body.errors).toHaveProperty('auth')
-			expect(res.body.errors.auth).toBe('Gagal Login')
+			expect(res.statusCode).toBe(422)
+			expect(res.body.success).toBe(false)
+			expect(res.body.message).toBe('Invalid email or password')
+			expect(res.body.errors).toHaveProperty('code')
+			expect(res.body.errors.code).toBe('VALIDATION_ERROR')
 		},
 		TIME_OUT
 	)
@@ -112,8 +116,8 @@ describe('User API Login', () => {
 			})
 
 			expect(res.statusCode).toBe(429)
-			expect(res.body.status).toBe('error')
-			expect(res.body.message || res.text).toMatch(/Terlalu banyak percobaan/i)
+			expect(res.body.success).toBe(false)
+			expect(res.body.message).toMatch(/Too many request/i)
 		},
 		TIME_OUT
 	)
