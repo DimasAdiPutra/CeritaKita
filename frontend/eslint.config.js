@@ -6,7 +6,18 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import jest from 'eslint-plugin-jest'
 
 export default [
-	{ ignores: ['dist'] },
+	{
+		ignores: [
+			'node_modules/',
+			'dist/',
+			'build/',
+			'.env',
+			'.env.*',
+			'!/.env.example',
+			'coverage/',
+			'*.log',
+		],
+	},
 	{
 		files: ['**/*.{js,jsx}'],
 		languageOptions: {

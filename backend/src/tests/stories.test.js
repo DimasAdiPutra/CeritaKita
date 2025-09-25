@@ -105,6 +105,6 @@ describe('Stories API', () => {
 		const res = await request(app).delete(`/api/stories/${slug}`)
 
 		expect(res.statusCode).toBe(200)
-		expect(res.body.message).toBe('Cerita berhasil dihapus')
+		expect(res.body.message).toBe('Successfully deleted story')
 	})
 })

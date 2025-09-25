@@ -1,6 +1,7 @@
+// pages/HomePage.jsx
 import { Helmet } from 'react-helmet-async'
 
-// Import layouts
+// Layouts
 import Header from '../layouts/Home/Header'
 import Blog from '../layouts/Home/Blog'
 
@@ -9,15 +10,16 @@ const HomePage = () => {
 		<>
 			<Helmet>
 				<title>CeritaKita - Berbagi Cerita & Pengalaman</title>
+				<meta
+					name="description"
+					content="Platform untuk berbagi cerita, pengalaman, dan inspirasi. Temukan cerita menarik dan bagikan pengalamanmu di CeritaKita."
+				/>
 			</Helmet>
 
-			{/* HEADER */}
-			<Header />
-			{/* HEADER */}
-
-			{/* BLOG SECTION */}
-			<Blog />
-			{/* BLOG SECTION */}
+			<main>
+				<Header />
+				<Blog />
+			</main>
 		</>
 	)
 }

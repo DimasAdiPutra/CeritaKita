@@ -1,4 +1,7 @@
 import Story from '../models/story.model.js'
+import { ERROR_CODES } from '../utils/errors.helper.js'
+import { sendResponse } from '../utils/response.helper.js'
+import { generateStorySlug } from '../utils/slug.helper.js'
 
 // GET all stories
 export const getStories = async (req, res) => {
@@ -7,15 +10,15 @@ export const getStories = async (req, res) => {
 			.sort({ publishedAt: -1 })
 			.populate('author', 'name avatar job')
 
-		res.json({
-			success: true,
-			message: 'Berhasil mengambil Cerita',
+		sendResponse(res, {
 			data: stories,
+			message: 'Story retrieved successfully',
 		})
 	} catch (error) {
-		res
-			.status(500)
-			.json({ success: false, message: 'Gagal mengambil Cerita', error })
+		sendResponse(res, {
+			code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+			details: { ...error },
+		})
 	}
 }
 
@@ -26,37 +29,58 @@ export const getStoryBySlug = async (req, res) => {
 			.select('title slug contentHTML author publishedAt')
 			.populate('author', 'name avatar')
 		if (!story) {
-			return res.status(404).json({
-				success: false,
-				message: 'Cerita tidak ditemukan',
+			return sendResponse(res, {
+				code: ERROR_CODES.NOT_FOUND,
+				message: `Story not found`,
 			})
 		}
-		res.json({
-			success: true,
-			message: 'Cerita berhasil di temukan',
-			data: story,
-		})
+
+		sendResponse(res, { data: story, message: 'Story retrieved successfully' })
+		// res.json(successResponse(story, 'Cerita berhasil di temukan'))
 	} catch (error) {
-		res
-			.status(500)
-			.json({ success: false, message: 'Gagal mengambil Cerita', error })
+		sendResponse(res, {
+			code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+			details: { ...error },
+		})
 	}
 }
 
 // CREATE story
-export const createStory = async (req, res) => {
+export const createStory = async (req, res, next) => {
 	try {
-		const story = new Story(req.body)
+		const { title, ...otherData } = req.body
+
+		// Validasi input
+		if (!title) {
+			return sendResponse(res, {
+				code: 'VALIDATION_ERROR',
+				message: 'Title and content are required',
+				details: {
+					...(title ? {} : { title: ['Title is required'] }),
+				},
+			})
+		}
+
+		// Generate slug otomatis
+		const slug = await generateStorySlug(title, Story)
+
+		// Buat story
+		const story = new Story({
+			title,
+			slug,
+			...otherData,
+		})
+
 		await story.save()
-		res.status(201).json({
+
+		sendResponse(res, {
 			success: true,
-			message: 'Berhasil membuat Cerita',
+			message: 'Story created successfully',
 			data: story,
+			statusCode: 201,
 		})
 	} catch (error) {
-		res
-			.status(400)
-			.json({ success: false, message: 'Gagal membuat Cerita', error })
+		next(error)
 	}
 }
 
@@ -69,19 +93,19 @@ export const updateStory = async (req, res) => {
 			{ new: true }
 		)
 		if (!story) {
-			return res
-				.status(404)
-				.json({ success: false, message: 'Cerita tidak ditemukan' })
+			return sendResponse(res, {
+				code: ERROR_CODES.NOT_FOUND,
+				message: 'Story not found',
+			})
 		}
-		res.json({
-			success: true,
-			message: 'Berhasil mengupdate Cerita',
-			data: story,
-		})
+
+		sendResponse(res, { data: story, message: 'Story updated successfully' })
+		// res.json(successResponse(story, 'Berhasil mengupdate Cerita'))
 	} catch (error) {
-		res
-			.status(400)
-			.json({ success: false, message: 'Gagal mengupdate Cerita', error })
+		sendResponse(res, {
+			code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+			details: { ...error },
+		})
 	}
 }
 
@@ -90,14 +114,18 @@ export const deleteStory = async (req, res) => {
 	try {
 		const story = await Story.findOneAndDelete({ slug: req.params.slug })
 		if (!story) {
-			return res
-				.status(404)
-				.json({ success: false, message: 'Cerita tidak ditemukan' })
+			return sendResponse(res, {
+				code: ERROR_CODES.NOT_FOUND,
+				message: 'Story not found',
+			})
 		}
-		res.json({ success: true, message: 'Cerita berhasil dihapus' })
+
+		sendResponse(res, { message: 'Successfully deleted story' })
+		// res.json(successResponse({}, 'Cerita berhasil dihapus'))
 	} catch (error) {
-		res
-			.status(500)
-			.json({ success: false, message: 'Gagal menghapus Cerita', error })
+		sendResponse(res, {
+			code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+			details: { ...error },
+		})
 	}
 }

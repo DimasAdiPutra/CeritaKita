@@ -1,11 +1,15 @@
+// layouts/MainLayouts.jsx
+import { Outlet } from 'react-router' // Tambahkan import
 import Navbar from './Navbar'
 import Footer from './Footer'
 
-const MainLayouts = ({ children }) => {
+const MainLayouts = () => {
 	return (
 		<>
 			<Navbar />
-			<div className="flex-grow flex flex-col">{children}</div>
+			<main className="flex-grow flex flex-col">
+				<Outlet /> {/* Gunakan Outlet, bukan children */}
+			</main>
 			<Footer />
 		</>
 	)

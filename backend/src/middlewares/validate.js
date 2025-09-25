@@ -1,3 +1,6 @@
+import { ERROR_CODES } from '../utils/errors.helper.js'
+import { sendResponse } from '../utils/response.helper.js'
+
 export const validate = (schema) => {
 	return (req, res, next) => {
 		const { error } = schema.validate(req.body, { abortEarly: false })
@@ -10,9 +13,9 @@ export const validate = (schema) => {
 				errors[field] = err.message
 			})
 
-			return res.status(400).json({
-				status: 'fail',
-				errors,
+			return sendResponse(res, {
+				code: ERROR_CODES.VALIDATION_ERROR,
+				details: { ...errors },
 			})
 		}
 
