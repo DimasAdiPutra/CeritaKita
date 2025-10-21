@@ -12,6 +12,7 @@ import {
 	formatUserResponse,
 	generateToken,
 	setTokenCookie,
+	verifyTokenHelper,
 } from '../utils/auth.helpers.js'
 
 // * REGISTRASI USER
@@ -131,4 +132,30 @@ export const logoutUser = async (req, res) => {
 			details: { ...error },
 		})
 	}
+}
+
+// * CHECK USER
+export const checkUser = (req, res) => {
+	const token = req.cookies.token
+	if (!token)
+		return sendResponse(res, {
+			code: ERROR_CODES.INVALID_TOKEN,
+			details: { loggedIn: false },
+		})
+
+	const decoded = verifyTokenHelper(token)
+	if (!decoded)
+		return sendResponse(res, {
+			code: ERROR_CODES.INVALID_TOKEN,
+			details: { loggedIn: false },
+		})
+
+	sendResponse(res, {
+		statusCode: 200,
+		message: 'Sudah Login',
+		data: {
+			loggedIn: true,
+			user: decoded,
+		},
+	})
 }

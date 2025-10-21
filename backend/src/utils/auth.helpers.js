@@ -38,6 +38,19 @@ export const clearTokenCookie = (res) => {
 }
 
 /**
+ * Verifikasi JWT token.
+ * @param {string} token - Token JWT dari cookie.
+ * @returns {Object|null} - Data decoded jika valid, null jika tidak valid.
+ */
+export const verifyTokenHelper = (token) => {
+	try {
+		return jwt.verify(token, process.env.JWT_SECRET)
+	} catch {
+		return null
+	}
+}
+
+/**
  * Format user response data
  * @param {Object} user
  * @returns {Object} formatted user data

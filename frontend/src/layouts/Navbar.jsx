@@ -2,6 +2,7 @@ import { Link, NavLink, useLocation } from "react-router"
 import { useState, useEffect } from "react"
 import { motion } from "motion/react"
 import clsx from "clsx"
+import { FiSearch, FiLogOut } from "react-icons/fi"
 
 // Components
 import Logo from "../components/ui/Logo"
@@ -9,8 +10,10 @@ import Input from "../components/ui/Input"
 import HamburgerMenu from "../components/ui/HamburgerMenu"
 import Button from "../components/ui/Button"
 
-// Icons
-import { FiSearch } from "react-icons/fi"
+// Hooks
+import { useAuth } from "@/context/auth/useAuth"
+import { logoutUser } from "@/services/auth.api"
+import { FaRegCircleUser } from "react-icons/fa6"
 
 // Data: daftar link navbar
 const NAV_ITEMS = [
@@ -23,6 +26,7 @@ export default function Navbar() {
 	const [isOpen, setIsOpen] = useState(false)
 	const [isTransparent, setIsTransparent] = useState(true)
 	const location = useLocation()
+	const { user, isAuthenticated, setUser } = useAuth()
 
 	// Ubah transparansi navbar saat scroll
 	useEffect(() => {
@@ -40,6 +44,17 @@ export default function Navbar() {
 		return () => window.removeEventListener("scroll", handleScroll)
 	}, [location])
 
+	// Handle logout
+	const handleLogout = async () => {
+		try {
+			await logoutUser()
+			setUser(null)
+			setIsOpen(false)
+		} catch (err) {
+			console.error("[Logout Error]:", err)
+		}
+	}
+
 	// Komponen kecil untuk Search Input
 	const SearchInput = ({ id, transparent, mobile }) => (
 		<Input
@@ -52,7 +67,11 @@ export default function Navbar() {
 					strokeWidth={1.5}
 					size={16}
 					className={clsx(
-						mobile ? "text-clr-text-light" : isTransparent ? "text-clr-text-dark" : "text-clr-text-light"
+						mobile
+							? "text-clr-text-light"
+							: isTransparent
+								? "text-clr-text-dark"
+								: "text-clr-text-light"
 					)}
 				/>
 			}
@@ -63,7 +82,7 @@ export default function Navbar() {
 	return (
 		<nav
 			className={clsx(
-				"fixed top-0 z-30 w-full h-20 flex items-center transition",
+				"fixed top-0 z-30 w-full h-20 flex items-center transition-all duration-300",
 				isTransparent ? "bg-transparent" : "bg-clr-container-light shadow"
 			)}
 		>
@@ -108,9 +127,26 @@ export default function Navbar() {
 						</nav>
 
 						{/* Action Buttons (Desktop) */}
-						<div className="hidden lg:flex sm:gap-4">
-							<Button to="/login" text="Masuk" />
-							<Button to="/register" text="Daftar" style="secondary" />
+						<div className="hidden lg:flex sm:gap-4 items-center">
+							{isAuthenticated ? (
+								<Link
+									to="/profile"
+									className={clsx(
+										"p-2 rounded-full transition",
+										isTransparent
+											? "text-clr-text-dark hover:bg-black/5"
+											: "text-clr-text-light hover:bg-white/10"
+									)}
+									title={user?.name || "Profile"}
+								>
+									<FaRegCircleUser size={20} />
+								</Link>
+							) : (
+								<>
+									<Button to="/login" text="Masuk" />
+									<Button to="/register" text="Daftar" style="secondary" />
+								</>
+							)}
 						</div>
 
 						{/* Hamburger Menu (Mobile) */}
@@ -162,8 +198,19 @@ export default function Navbar() {
 
 						{/* Action Buttons (Mobile) */}
 						<div className="flex flex-col gap-2">
-							<Button to="/login" text="Masuk" style="primary-outline" />
-							<Button to="/register" text="Daftar" />
+							{isAuthenticated ? (
+								<Button
+									text="Logout"
+									iconLeft={<FiLogOut size={16} />}
+									onClick={handleLogout}
+									style="primary-outline"
+								/>
+							) : (
+								<>
+									<Button to="/login" text="Masuk" style="primary-outline" />
+									<Button to="/register" text="Daftar" />
+								</>
+							)}
 						</div>
 					</motion.div>
 				</div>
