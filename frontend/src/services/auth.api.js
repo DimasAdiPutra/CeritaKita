@@ -1,3 +1,4 @@
+import { dgerror } from '@/utils/logger'
 import api from './api'
 
 /**
@@ -15,7 +16,7 @@ export const registerUser = async (payload) => {
 
 		return res.data
 	} catch (err) {
-		console.error('[registerUser Error]:', err.response?.data || err.message)
+		dgerror('[registerUser Error]:', err.response?.data || err.message)
 		if (err.response) {
 			return err.response.data
 		}
@@ -38,7 +39,7 @@ export const loginUser = async (payload) => {
 
 		return res.data
 	} catch (err) {
-		console.error('[loginUser Error]:', err.response?.data || err.message)
+		dgerror('[loginUser Error]:', err.response?.data || err.message)
 		if (err.response) {
 			return err.response.data
 		}
@@ -60,7 +61,7 @@ export const logoutUser = async () => {
 
 		return res.data
 	} catch (err) {
-		console.error('[logoutUser Error]:', err.response?.data || err.message)
+		dgerror('[logoutUser Error]:', err.response?.data || err.message)
 		if (err.response) {
 			return err.response.data
 		}
@@ -83,7 +84,7 @@ export const checkUser = async () => {
 
 		return res.data
 	} catch (err) {
-		console.error('[checkUser Error]:', err.response?.data || err.message)
+		dgerror('[checkUser Error]:', err.response?.data || err.message)
 		return err.response.data.errors.details // fallback aman agar UI tidak crash
 	}
 }

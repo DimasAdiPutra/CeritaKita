@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { dgerror, dglog } from '../utils/logger'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -8,17 +9,17 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-	console.log('📤 Request:', config)
+	dglog('📤 Request:', config)
 	return config
 })
 
 api.interceptors.response.use(
 	(response) => {
-		console.log('📥 Response:', response)
+		dglog('📥 Response:', response)
 		return response
 	},
 	(error) => {
-		console.error('❌ Error Response:', error.response || error.message)
+		dgerror('❌ Error Response:', error.response || error.message)
 		return Promise.reject(error)
 	}
 )

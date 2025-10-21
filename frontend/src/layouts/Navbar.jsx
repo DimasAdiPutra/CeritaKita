@@ -14,6 +14,7 @@ import Button from "../components/ui/Button"
 import { useAuth } from "@/context/auth/useAuth"
 import { logoutUser } from "@/services/auth.api"
 import { FaRegCircleUser } from "react-icons/fa6"
+import { dgerror } from "../utils/logger"
 
 // Data: daftar link navbar
 const NAV_ITEMS = [
@@ -51,7 +52,7 @@ export default function Navbar() {
 			setUser(null)
 			setIsOpen(false)
 		} catch (err) {
-			console.error("[Logout Error]:", err)
+			dgerror("[Logout Error]:", err)
 		}
 	}
 

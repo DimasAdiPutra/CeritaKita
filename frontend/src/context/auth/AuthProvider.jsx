@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react"
 import { AuthContext } from "./AuthContext"
 import { checkUser } from "@/services/auth.api"
+import { dgerror } from "@/utils/logger"
 
 /**
  * AuthProvider — membungkus seluruh aplikasi dengan context Auth.
@@ -27,7 +28,7 @@ export default function AuthProvider({ children }) {
         setUser(null)
       }
     } catch (err) {
-      console.error("[Auth Check Error]:", err)
+      dgerror("[Auth Check Error]:", err)
       setUser(null)
     } finally {
       setLoading(false)

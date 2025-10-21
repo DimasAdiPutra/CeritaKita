@@ -9,6 +9,7 @@ import SortDropdown from "../components/features/blog/SortDropdown";
 
 import { getStories } from "../services/stories.api";
 import BlogList from "../components/features/blog/BlogList";
+import { dgerror } from "../utils/logger";
 
 const BlogPage = () => {
 	const [stories, setStories] = useState([]);
@@ -21,7 +22,7 @@ const BlogPage = () => {
 				const data = await getStories();
 				setStories(data);
 			} catch (err) {
-				console.error(err);
+				dgerror(err);
 				setError(err);
 			} finally {
 				setLoading(false);

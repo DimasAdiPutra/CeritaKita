@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router'
 import { successToast } from '@/utils/alerts'
+import { dgerror, dglog } from '../utils/logger'
 import { useAuth } from '@/context/auth/useAuth' // 🔥 custom hook untuk akses AuthContext
 
 /**
@@ -42,7 +43,7 @@ export const useAuthForm = (schema, submitHandler) => {
 
 		try {
 			const res = await submitHandler(data)
-			console.log('🟢 [AuthForm] API Response:', res)
+			dglog('🟢 [AuthForm] API Response:', res)
 
 			// ✅ Jika sukses login/register
 			if (res?.success) {
@@ -57,19 +58,29 @@ export const useAuthForm = (schema, submitHandler) => {
 			}
 
 			// ⚠️ Jika gagal (validasi/server error)
-			console.log('🟠 [AuthForm] Gagal login/register:', res)
-			const errorPayload = res.errors || res?.data?.errors || {}
-			const message = res.message || res?.data?.message || 'Terjadi kesalahan.'
+			dglog('🟠 [AuthForm] Gagal login/register:', res)
+			if (res?.success === false) {
+				const errorPayload = res.errors || res?.data?.errors || {}
+				const errorCode = errorPayload.code
+				const errorDetails = errorPayload.details || {}
+				const message =
+					res.message || res?.data?.message || 'Terjadi kesalahan.'
 
-			if (Object.keys(errorPayload).length > 0) {
-				Object.entries(errorPayload).forEach(([field, msg]) => {
-					setError(field, { type: 'server', message: msg })
-				})
-			} else {
-				setRootError(message)
+				if (
+					errorCode === 'DUPLICATE_ENTRY' &&
+					Object.keys(errorDetails).length
+				) {
+					// Set error field spesifik
+					Object.entries(errorDetails).forEach(([field, msg]) => {
+						setError(field, { type: 'server', message: msg })
+					})
+				} else {
+					// Error umum
+					setRootError(message)
+				}
 			}
 		} catch (err) {
-			console.error('🔴 [AuthForm Error]:', err)
+			dgerror('🔴 [AuthForm Error]:', err)
 			setRootError('Terjadi kesalahan server.')
 		} finally {
 			setLoading(false)
