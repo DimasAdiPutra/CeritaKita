@@ -3,6 +3,10 @@ import { useState, useEffect } from "react"
 import { motion } from "motion/react"
 import clsx from "clsx"
 import { FiSearch, FiLogOut } from "react-icons/fi"
+import { IoSettingsOutline } from "react-icons/io5";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { LuCircleUser } from "react-icons/lu";
+
 
 // Components
 import Logo from "../components/ui/Logo"
@@ -12,9 +16,7 @@ import Button from "../components/ui/Button"
 
 // Hooks
 import { useAuth } from "@/context/auth/useAuth"
-import { logoutUser } from "@/services/auth.api"
-import { FaRegCircleUser } from "react-icons/fa6"
-import { dgerror } from "../utils/logger"
+import Dropdown from "../components/ui/Dropdown"
 
 // Data: daftar link navbar
 const NAV_ITEMS = [
@@ -27,7 +29,7 @@ export default function Navbar() {
 	const [isOpen, setIsOpen] = useState(false)
 	const [isTransparent, setIsTransparent] = useState(true)
 	const location = useLocation()
-	const { user, isAuthenticated, setUser } = useAuth()
+	const { user, isAuthenticated } = useAuth()
 
 	// Ubah transparansi navbar saat scroll
 	useEffect(() => {
@@ -45,16 +47,12 @@ export default function Navbar() {
 		return () => window.removeEventListener("scroll", handleScroll)
 	}, [location])
 
-	// Handle logout
-	const handleLogout = async () => {
-		try {
-			await logoutUser()
-			setUser(null)
-			setIsOpen(false)
-		} catch (err) {
-			dgerror("[Logout Error]:", err)
-		}
-	}
+
+	const profileDropdown = [
+		{ label: "Profile", to: '/profile' },
+		{ label: "Settings", to: '/settings' },
+		{ label: "Logout", to: "/logout" },
+	]
 
 	// Komponen kecil untuk Search Input
 	const SearchInput = ({ id, transparent, mobile }) => (
@@ -130,18 +128,27 @@ export default function Navbar() {
 						{/* Action Buttons (Desktop) */}
 						<div className="hidden lg:flex sm:gap-4 items-center">
 							{isAuthenticated ? (
-								<Link
-									to="/profile"
-									className={clsx(
-										"p-2 rounded-full transition",
-										isTransparent
-											? "text-clr-text-dark hover:bg-black/5"
-											: "text-clr-text-light hover:bg-white/10"
-									)}
-									title={user?.name || "Profile"}
-								>
-									<FaRegCircleUser size={20} />
-								</Link>
+								<div className="flex gap-3">
+									<Link
+										to="/notification"
+										className={clsx(
+											"p-2 rounded-full transition",
+											isTransparent
+												? "text-clr-text-dark hover:bg-black/5"
+												: "text-clr-text-light hover:bg-white/10"
+										)}
+										title={user?.name || "Profile"}
+									>
+										<IoMdNotificationsOutline size={32} />
+									</Link>
+									<Dropdown items={profileDropdown} trigger={<LuCircleUser size={32}
+										className={clsx(
+											"rounded-full transition",
+											isTransparent
+												? "text-clr-text-dark hover:bg-black/5"
+												: "text-clr-text-light hover:bg-white/10"
+										)} />} align="start" onSelect={(v) => console.log("Filter:", v)} />
+								</div>
 							) : (
 								<>
 									<Button to="/login" text="Masuk" />
@@ -176,6 +183,21 @@ export default function Navbar() {
 						)}
 					>
 						<div className="w-full">
+							{/* Profile, Setting, and Notifications Icons Setelah login */}
+							{isAuthenticated && (
+								<div className="mb-6 flex justify-evenly">
+									<Link to='/profile'>
+										<LuCircleUser size={32} />
+									</Link>
+									<Link to="/settings">
+										<IoSettingsOutline size={32} />
+									</Link>
+									<Link to="/notification">
+										<IoMdNotificationsOutline size={32} />
+									</Link>
+								</div>
+							)}
+
 							{/* Mobile Search */}
 							<SearchInput id="mobileSearch" mobile />
 
@@ -201,9 +223,9 @@ export default function Navbar() {
 						<div className="flex flex-col gap-2">
 							{isAuthenticated ? (
 								<Button
+									to='/logout'
 									text="Logout"
 									iconLeft={<FiLogOut size={16} />}
-									onClick={handleLogout}
 									style="primary-outline"
 								/>
 							) : (

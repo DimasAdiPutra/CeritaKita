@@ -7,6 +7,7 @@ const BlogPage = lazy(() => import('../pages/BlogPage'))
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
 const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'))
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'))
+const LogoutPage = lazy(() => import('../pages/auth/LogoutPage'))
 
 // import components
 import Loading from '../components/ui/Loading'
@@ -29,6 +30,7 @@ const AppRoutes = () => {
 					{/* Auth Routes (tanpa layout utama) */}
 					<Route path="/register" element={<RegisterPage />} />
 					<Route path="/login" element={<LoginPage />} />
+					<Route path="/logout" element={<LogoutPage />} />
 				</Routes>
 			</Suspense>
 		</Router>

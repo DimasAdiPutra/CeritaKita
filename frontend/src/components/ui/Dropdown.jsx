@@ -36,7 +36,7 @@ const Dropdown = ({ items, trigger, align = "end", onSelect }) => {
                 handleClose();
                 onSelect?.(label);
               }}
-              className="block rounded-lg px-4 py-2 text-sm text-clr-text-light hover:bg-clr-container-dark hover:text-clr-text-light"
+              className="block rounded-lg px-4 py-2 text-sm text-clr-text-light hover:bg-clr-container-dark hover:text-clr-text-dark"
               role="menuitem"
             >
               {label}
