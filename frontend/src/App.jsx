@@ -1,5 +1,6 @@
 import { HelmetProvider } from 'react-helmet-async'
 import { IKContext } from 'imagekitio-react';
+import AuthProvider from '@/context/auth/AuthProvider'
 import AppRoutes from './routes/AppRoutes'
 
 function App() {
@@ -8,9 +9,11 @@ function App() {
 
 	return (
 		<HelmetProvider>
-			<IKContext publicKey={publicKey} urlEndpoint={urlEndpoint} clientHints={true}>
-				<AppRoutes />
-			</IKContext>
+			<AuthProvider>
+				<IKContext publicKey={publicKey} urlEndpoint={urlEndpoint} clientHints={true}>
+					<AppRoutes />
+				</IKContext>
+			</AuthProvider>
 		</HelmetProvider>
 	)
 }

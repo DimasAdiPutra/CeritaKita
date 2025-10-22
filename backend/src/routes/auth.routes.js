@@ -1,5 +1,6 @@
 import express from 'express'
 import {
+	checkUser,
 	loginUser,
 	logoutUser,
 	registerUser,
@@ -33,5 +34,7 @@ router.post(
 )
 
 router.post('/logout', logoutUser)
+
+router.get('/check', checkUser)
 
 export default router

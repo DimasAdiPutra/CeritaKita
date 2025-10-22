@@ -1,3 +1,4 @@
+import { dgerror } from '../utils/logger'
 import api from './api'
 
 /**
@@ -15,7 +16,7 @@ export const getStories = async () => {
 
 		return res.data.data // kembalikan data saja
 	} catch (err) {
-		console.error('[getStories Error]:', err.message)
+		dgerror('[getStories Error]:', err.message)
 		throw err // lempar lagi biar komponen tahu ada error
 	}
 }

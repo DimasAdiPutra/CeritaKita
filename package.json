@@ -1,0 +1,17 @@
+{
+  "name": "ceritakita-root",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Root workspace untuk menjalankan frontend dan backend CeritaKita secara bersamaan.",
+  "scripts": {
+    "dev": "concurrently -n FRONTEND,BACKEND -c blue,green \"pnpm --prefix frontend run dev\" \"pnpm --prefix backend run dev\"",
+    "dev:frontend": "pnpm --prefix frontend run dev",
+    "dev:backend": "pnpm --prefix backend run dev",
+    "install:all": "pnpm --prefix frontend install && pnpm --prefix backend install"
+  },
+  "license": "ISC",
+  "packageManager": "pnpm@10.18.3",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

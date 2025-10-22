@@ -1,14 +1,25 @@
-// src/hooks/useAuthForm.js
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router'
-import { successToast } from '../utils/alerts'
+import { successToast } from '@/utils/alerts'
+import { dgerror, dglog } from '../utils/logger'
+import { useAuth } from '@/context/auth/useAuth' // 🔥 custom hook untuk akses AuthContext
 
+/**
+ * useAuthForm
+ * Custom hook untuk menangani form login/register secara konsisten.
+ *
+ * @param {ZodSchema} schema - Skema validasi Zod
+ * @param {Function} submitHandler - Fungsi API handler (loginUser / registerUser)
+ * @returns {Object} handler form, error, loading state, dll
+ */
 export const useAuthForm = (schema, submitHandler) => {
 	const [loading, setLoading] = useState(false)
 	const [rootError, setRootError] = useState(null)
 	const navigate = useNavigate()
+
+	const { refreshUser } = useAuth() // 🔹 akses fungsi global untuk update user state
 
 	const {
 		register,
@@ -20,25 +31,34 @@ export const useAuthForm = (schema, submitHandler) => {
 		mode: 'onChange',
 	})
 
+	/**
+	 * Handler utama saat form disubmit
+	 * - Jalankan API handler (login/register)
+	 * - Tangani validasi & error dari backend
+	 * - Update AuthContext dengan refreshUser()
+	 */
 	const onSubmit = async (data) => {
 		setLoading(true)
 		setRootError(null)
 
 		try {
 			const res = await submitHandler(data)
-			console.log('API Response:', res)
+			dglog('🟢 [AuthForm] API Response:', res)
 
-			// Response sukses
+			// ✅ Jika sukses login/register
 			if (res?.success) {
-				console.log('success')
-				successToast(res.data.message || 'Berhasil')
+				successToast(res.message || 'Berhasil!')
+
+				// 🔹 Perbarui data user di AuthContext agar navbar langsung berubah
+				await refreshUser()
+
+				// 🔹 Redirect ke beranda
 				navigate('/')
 				return
 			}
 
-			console.log('lewati success')
-
-			// Response gagal (validasi / server error)
+			// ⚠️ Jika gagal (validasi/server error)
+			dglog('🟠 [AuthForm] Gagal login/register:', res)
 			if (res?.success === false) {
 				const errorPayload = res.errors || res?.data?.errors || {}
 				const errorCode = errorPayload.code
@@ -60,7 +80,7 @@ export const useAuthForm = (schema, submitHandler) => {
 				}
 			}
 		} catch (err) {
-			console.error(err)
+			dgerror('🔴 [AuthForm Error]:', err)
 			setRootError('Terjadi kesalahan server.')
 		} finally {
 			setLoading(false)
