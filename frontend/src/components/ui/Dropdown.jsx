@@ -2,16 +2,29 @@
 import { motion } from "motion/react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const Dropdown = ({ items, trigger, align = "end", onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null); // 👈 untuk referensi elemen dropdown
 
   const handleToggle = () => setIsOpen((prev) => !prev);
   const handleClose = () => setIsOpen(false);
 
+  // 👇 Tutup dropdown jika klik di luar
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        handleClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className="relative w-max flex items-center">
+    <div ref={dropdownRef} className="relative w-max flex items-center">
       {/* Trigger */}
       <div onClick={handleToggle} className="cursor-pointer">
         {trigger}
