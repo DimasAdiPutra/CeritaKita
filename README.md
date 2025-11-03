@@ -79,10 +79,8 @@
 
 1. **Frontend: React JS + Tailwind CSS**
    - React JS akan digunakan untuk frontend dengan Tailwind CSS ( Hyper UI ) untuk styling.
-2. **Backend: Proxy, Strapi (CMS), Express JS (Custom API)**
-   - Proxy akan menghubungkan frontend dengan backend.
-   - Strapi akan mengelola konten blog dan cerita.
-   - Express JS akan menangani API kustom dan fitur yang tidak tersedia di Strapi.
+2. **Backend: Express JS (Custom API)**
+   - Express JS akan menangani API.
 3. **Database: MongoDB**
    - MongoDB Atlas akan menyimpan data dengan keunggulan fleksibilitas dan biaya rendah.
 4. **Authentication: Google OAuth + JWT**
@@ -91,7 +89,53 @@
    - Multi-factor authentication (MFA) akan diterapkan untuk meningkatkan keamanan.
 6. **ElasticSearch**
    - Akan dimanfaatkan untuk pencarian yang cepat dan fleksibel.
-7. **CMS Backend: Strapi**
-   - Berfungsi sebagai platform pengelolaan konten artikel dan cerita.
-8. **Image Hosting: ImageKit.io**
+7. **Image Hosting: ImageKit.io**
    - Akan mengoptimalkan dan menyimpan gambar untuk mendukung kecepatan dan kualitas.
+
+## Aturan Commit
+
+### **Format Commit:**
+
+```bash
+
+<tipe> (<komponen>): <pesan commit yang jelas dan deskriptif>
+
+```
+
+### **Tipe Commit**
+
+1. **feat**: Menambahkan fitur baru
+2. **fix**: Memperbaiki bug atau masalah
+3. **docs**: Pembaruan atau penambahan dokumentasi
+4. **style**: Perubahan pada format kode (spasi, indentasi, dll) yang tidak mengubah fungsionalitas
+5. **refactor**: Perubahan kode yang tidak menambah fitur baru atau memperbaiki bug, tetapi membuat kode lebih baik
+6. **test**: Menambahkan atau memperbarui pengujian (tests)
+7. **chore**: Pembaruan pada hal-hal yang tidak terkait langsung dengan kode (misalnya pembaruan dependensi, konfigurasi build, dll)
+8. **build**: Perubahan terkait dengan build system atau tools
+9. **ci**: Perubahan pada konfigurasi CI/CD pipeline
+
+### **Contoh Commit**
+
+- `feat(frontend): add user login page`
+- `fix(backend): resolve authentication issue with JWT`
+- `docs(readme): update installation instructions`
+- `style(frontend): fix indentation in App.jsx`
+- `refactor(backend): restructure user service for scalability`
+- `test(frontend): add unit tests for user registration form`
+- `chore: update dependencies to latest versions`
+- `ci: add GitHub Actions CI configuration`
+
+### **Beberapa Tips:**
+
+- Gunakan **present tense** di pesan commit (misalnya "add", "fix", bukan "added", "fixed").
+- **Singkat tapi jelas**, berikan informasi yang cukup agar orang lain tahu apa yang kamu ubah dan kenapa.
+- Jika commit besar atau kompleks, kamu bisa menambahkan deskripsi lebih lanjut setelah baris pertama, seperti:
+
+  ```bash
+  feat(frontend): add user login page
+
+  - Create login form component
+  - Implement form validation
+  - Connect login form to backend API
+
+  ```
