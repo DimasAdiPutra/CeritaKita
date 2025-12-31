@@ -14,6 +14,7 @@ export const getStories = async () => {
 			throw new Error(res.data.error || 'Gagal memuat data cerita')
 		}
 
+		console.log(res.data)
 		return res.data.data // kembalikan data saja
 	} catch (err) {
 		dgerror('[getStories Error]:', err.message)

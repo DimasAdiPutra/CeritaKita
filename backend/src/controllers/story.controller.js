@@ -10,7 +10,9 @@ export const getStories = async (req, res) => {
 	try {
 		const stories = await Story.find({ status: 'published' })
 			.sort({ publishedAt: -1 })
-			.select('title slug excerpt coverImage author publishedAt views likes')
+			.select(
+				'title slug excerpt coverImage author status publishedAt views likes'
+			)
 			.populate('author', 'name avatar job')
 
 		sendResponse(res, {
@@ -35,7 +37,9 @@ export const getStoryBySlug = async (req, res) => {
 			{ $inc: { views: 1 } },
 			{ new: true }
 		)
-			.select('title slug contentHTML author publishedAt views')
+			.select(
+				'title slug coverImage contentHTML status author publishedAt views'
+			)
 			.populate('author', 'name avatar')
 
 		if (!story) {

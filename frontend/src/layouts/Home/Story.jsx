@@ -1,21 +1,21 @@
-// layouts/Home/Blog.jsx
+// layouts/Home/Story.jsx
 import { useState, useEffect } from "react";
 
 // Components
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
-import FilterDropdown from "../../components/features/blog/FilterDropdown";
-import SortDropdown from "../../components/features/blog/SortDropdown";
+import FilterDropdown from "../../components/features/story/FilterDropdown";
+import SortDropdown from "../../components/features/story/SortDropdown";
 
 // Icons
 import { FiSearch } from "react-icons/fi";
 
 // Services
 import { getStories } from "../../services/stories.api";
-import BlogList from "../../components/features/blog/BlogList";
+import StoryList from "../../components/features/story/StoryList";
 import { dgerror } from "../../utils/logger";
 
-const Blog = () => {
+const Story = () => {
 	const [stories, setStories] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -74,8 +74,8 @@ const Blog = () => {
 					</div>
 				</div>
 
-				{/* Blog Cards */}
-				<BlogList stories={stories} loading={loading} error={error} layout="flex" />
+				{/* Story Cards */}
+				<StoryList stories={stories} loading={loading} error={error} layout="flex" />
 
 
 				{/* Button unlimited scroll */}
@@ -87,4 +87,4 @@ const Blog = () => {
 	);
 };
 
-export default Blog;
+export default Story;

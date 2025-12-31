@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const imageMetaSchema = new mongoose.Schema(
 	{
 		url: { type: String, required: true },
-		fileId: { type: String, required: true },
+		fileId: { type: String, required: false },
 		width: { type: Number },
 		height: { type: Number },
 		size: { type: Number },

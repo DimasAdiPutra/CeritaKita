@@ -3,7 +3,7 @@ import { Suspense, lazy } from 'react'
 
 // Import pages
 const HomePage = lazy(() => import('../pages/HomePage'))
-const BlogPage = lazy(() => import('../pages/BlogPage'))
+const StoryPage = lazy(() => import('../pages/StoryPage'))
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
 const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'))
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'))
@@ -23,7 +23,7 @@ const AppRoutes = () => {
 					{/* Main Routes with Layout */}
 					<Route element={<MainLayouts />}>
 						<Route path="/" element={<HomePage />} />
-						<Route path="/blog" element={<BlogPage />} />
+						<Route path="/story" element={<StoryPage />} />
 						<Route path="*" element={<NotFoundPage />} />
 					</Route>
 

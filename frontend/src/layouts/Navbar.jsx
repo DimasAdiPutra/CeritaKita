@@ -21,7 +21,7 @@ import Dropdown from "../components/ui/Dropdown"
 // Data: daftar link navbar
 const NAV_ITEMS = [
 	{ to: "/", label: "Beranda" },
-	{ to: "/blog", label: "Blog" },
+	{ to: "/story", label: "Story" },
 	{ to: "/about", label: "Tentang Kami" },
 ]
 
