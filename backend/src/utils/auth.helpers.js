@@ -43,6 +43,8 @@ export const clearTokenCookie = (res) => {
  * @returns {Object|null} - Data decoded jika valid, null jika tidak valid.
  */
 export const verifyTokenHelper = (token) => {
+	if (!token) return null
+
 	try {
 		return jwt.verify(token, process.env.JWT_SECRET)
 	} catch {

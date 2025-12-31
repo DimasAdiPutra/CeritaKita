@@ -8,6 +8,8 @@ import rateLimit from 'express-rate-limit'
 // Routes
 import storyRoutes from './routes/story.routes.js'
 import authRoutes from './routes/auth.routes.js'
+import imageRoutes from './routes/image.routes.js'
+import imagekitRoutes from './routes/imagekit.routes.js'
 import cookieParser from 'cookie-parser'
 
 // Load environment variables
@@ -67,6 +69,8 @@ app.use(morgan('dev'))
 // Routes
 app.use('/api/stories', storyRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/images', imageRoutes)
+app.use('/api/imagekit', imagekitRoutes)
 
 // * ERROR HANDLING
 // 404 Handler

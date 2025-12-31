@@ -1,5 +1,17 @@
 import mongoose from 'mongoose'
 
+const imageMetaSchema = new mongoose.Schema(
+	{
+		url: { type: String, required: true },
+		fileId: { type: String, required: true },
+		width: { type: Number },
+		height: { type: Number },
+		size: { type: Number },
+		mimeType: { type: String },
+	},
+	{ _id: false } // Jangan bikin _id internal untuk subdoc
+)
+
 const storySchema = new mongoose.Schema(
 	{
 		title: {
@@ -24,15 +36,15 @@ const storySchema = new mongoose.Schema(
 			required: true,
 		},
 		coverImage: {
-			type: String, // URL dari ImageKit
+			type: imageMetaSchema,
 			default: null,
 		},
 		contentHTML: {
-			type: String, // hasil editor rich text (untuk render cepat)
+			type: String,
 			required: true,
 		},
 		contentJSON: {
-			type: Object, // hasil editor JSON (untuk edit ulang)
+			type: Object,
 			required: true,
 		},
 		tags: [

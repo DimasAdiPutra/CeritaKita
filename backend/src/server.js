@@ -1,9 +1,9 @@
+// Load environment variables
+import dotenv from 'dotenv'
+dotenv.config({ debug: process.env.NODE_ENV == 'development' })
+
 import app from './app.js'
 import connectDB from './config/db.js'
-import dotenv from 'dotenv'
-
-// Load environment variables
-dotenv.config({ debug: process.env.NODE_ENV == 'development' })
 
 const PORT = process.env.PORT || 5000
 
