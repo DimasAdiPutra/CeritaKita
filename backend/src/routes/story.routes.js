@@ -2,6 +2,7 @@ import { Router } from 'express'
 import {
 	getStories,
 	getStoryBySlug,
+	getStoryById,
 	createStory,
 	updateStory,
 	deleteStory,
@@ -11,6 +12,11 @@ import {
 import { authenticate } from '../middlewares/authenticate.js'
 
 const router = Router()
+
+/**
+ * PROTECTED
+ */
+router.get('/draft/:id', authenticate, getStoryById) // Tambah ini SEBELUM POST
 
 /**
  * PUBLIC

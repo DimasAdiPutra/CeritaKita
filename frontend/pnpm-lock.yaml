@@ -35,6 +35,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      imagekit-javascript:
+        specifier: ^4.0.1
+        version: 4.0.1
       imagekitio-react:
         specifier: ^4.3.0
         version: 4.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2759,6 +2762,9 @@ packages:
 
   imagekit-javascript@3.1.0:
     resolution: {integrity: sha512-56YmmOg6vKarIg4A41E9T08qQ2ri8862AYU/Ykhrbr9Cd8i6BIeKkroR16cmsNYFOIoLk35/O7b8o7I8DoyGaQ==}
+
+  imagekit-javascript@4.0.1:
+    resolution: {integrity: sha512-V3eVMz7OW8w8dSNJXPtVcWQMdV0P1wRs+Bftb2B1bKRl8NjOf+NGRWYb/meJlrmSL/HxT68PjM92/XFB+9ZfJA==}
 
   imagekitio-react@4.3.0:
     resolution: {integrity: sha512-IM9bbyJeznkMiCQyahzIj8c8r6xM9EwQj1Hddws7D62Sb9LnKdR1BqhEH/y5oc6lgvRlWDr7SoFIocZneFwfUg==}
@@ -7479,6 +7485,8 @@ snapshots:
   ignore@5.3.2: {}
 
   imagekit-javascript@3.1.0: {}
+
+  imagekit-javascript@4.0.1: {}
 
   imagekitio-react@4.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

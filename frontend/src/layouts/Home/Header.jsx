@@ -26,7 +26,7 @@ const Header = () => {
 						</p>
 
 						<div className="mt-8 w-max flex text-center gap-2">
-							<Button to="/post" text="Bagikan Cerita" style="primary" />
+							<Button to="/editor" text="Bagikan Cerita" style="primary" />
 							<Button to="/search" text="Mulai Menjelajah" style="secondary" />
 						</div>
 					</div>

@@ -3,13 +3,13 @@ import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
-import Input from "../components/ui/Input";
-import FilterDropdown from "../components/features/story/FilterDropdown";
-import SortDropdown from "../components/features/story/SortDropdown";
+import Input from "@/components/ui/Input";
+import FilterDropdown from "@/components/features/story/FilterDropdown";
+import SortDropdown from "@/components/features/story/SortDropdown";
 
-import { getStories } from "../services/stories.api";
-import StoryList from "../components/features/story/StoryList";
-import { dgerror } from "../utils/logger";
+import { getPublishedStories } from "@/services/stories.api";
+import StoryList from "@/components/features/story/StoryList";
+import { dgerror } from "@/utils/logger";
 
 const StoryPage = () => {
 	const [stories, setStories] = useState([]);
@@ -19,7 +19,7 @@ const StoryPage = () => {
 	useEffect(() => {
 		const loadData = async () => {
 			try {
-				const data = await getStories();
+				const data = await getPublishedStories();
 				setStories(data);
 			} catch (err) {
 				dgerror(err);

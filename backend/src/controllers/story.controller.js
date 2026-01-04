@@ -62,6 +62,39 @@ export const getStoryBySlug = async (req, res) => {
 }
 
 /**
+ * GET story by ID (untuk edit, owner only)
+ */
+export const getStoryById = async (req, res) => {
+	try {
+		const story = await Story.findOne({
+			_id: req.params.id,
+			author: req.user.id,
+		})
+			.select(
+				'title slug excerpt contentHTML contentJSON coverImage tags status author publishedAt'
+			)
+			.populate('author', 'name avatar')
+
+		if (!story) {
+			return sendResponse(res, {
+				code: ERROR_CODES.NOT_FOUND,
+				message: 'Story not found or unauthorized',
+			})
+		}
+
+		sendResponse(res, {
+			data: story,
+			message: 'Story retrieved successfully',
+		})
+	} catch (error) {
+		sendResponse(res, {
+			code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+			details: error.message,
+		})
+	}
+}
+
+/**
  * CREATE story (draft)
  */
 export const createStory = async (req, res) => {
@@ -101,7 +134,12 @@ export const createStory = async (req, res) => {
 
 		sendResponse(res, {
 			statusCode: 201,
-			data: story,
+			data: {
+				id: story._id,
+				title: story.title,
+				slug: story.slug,
+				status: story.status,
+			},
 			message: 'Story created as draft',
 		})
 	} catch (error) {
@@ -152,8 +190,10 @@ export const publishStory = async (req, res) => {
 		sendResponse(res, {
 			message: 'Story published successfully',
 			data: {
+				id: story._id,
 				slug: story.slug,
 				publishedAt: story.publishedAt,
+				status: story.status,
 			},
 		})
 	} catch (error) {

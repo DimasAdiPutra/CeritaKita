@@ -11,7 +11,7 @@ import SortDropdown from "../../components/features/story/SortDropdown";
 import { FiSearch } from "react-icons/fi";
 
 // Services
-import { getStories } from "../../services/stories.api";
+import { getPublishedStories } from "../../services/stories.api";
 import StoryList from "../../components/features/story/StoryList";
 import { dgerror } from "../../utils/logger";
 
@@ -23,7 +23,7 @@ const Story = () => {
 	useEffect(() => {
 		const loadData = async () => {
 			try {
-				const data = await getStories();
+				const data = await getPublishedStories();
 				setStories(data);
 			} catch (err) {
 				dgerror(err);
@@ -80,7 +80,7 @@ const Story = () => {
 
 				{/* Button unlimited scroll */}
 				<div className="flex my-12 justify-center">
-					<Button text="Lihat lebih banyak" />
+					<Button to='/story' text="Lihat lebih banyak" />
 				</div>
 			</div>
 		</section>
