@@ -4,13 +4,14 @@ import cors from 'cors'
 import morgan from 'morgan'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
+import cookieParser from 'cookie-parser'
 
 // Routes
 import storyRoutes from './routes/story.routes.js'
 import authRoutes from './routes/auth.routes.js'
+import categoryRoutes from './routes/category.routes.js'
 import imageRoutes from './routes/image.routes.js'
 import imagekitRoutes from './routes/imagekit.routes.js'
-import cookieParser from 'cookie-parser'
 
 // Load environment variables
 dotenv.config({ debug: process.env.NODE_ENV == 'development' })
@@ -69,6 +70,7 @@ app.use(morgan('dev'))
 // Routes
 app.use('/api/stories', storyRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/category', categoryRoutes)
 app.use('/api/images', imageRoutes)
 app.use('/api/imagekit', imagekitRoutes)
 

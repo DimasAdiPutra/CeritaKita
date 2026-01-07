@@ -35,6 +35,13 @@ const storySchema = new mongoose.Schema(
 			ref: 'User',
 			required: true,
 		},
+		categories: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Category',
+				required: true,
+			},
+		],
 		coverImage: {
 			type: imageMetaSchema,
 			default: null,
@@ -74,5 +81,9 @@ const storySchema = new mongoose.Schema(
 	},
 	{ timestamps: true }
 )
+
+storySchema
+	.path('categories')
+	.validate((v) => v.length <= 3, 'Max 3 categories allowed')
 
 export default mongoose.model('Story', storySchema)

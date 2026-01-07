@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import seedUsers from './user.seed.js'
 import seedStories from './stories.seed.js'
+import seedCategories from './category.seed.js' // Import category seed
 
 dotenv.config()
 
@@ -12,6 +13,7 @@ const mainSeed = async () => {
 
 		const users = await seedUsers()
 		await seedStories(users)
+		await seedCategories()
 
 		console.log('🎉 Semua data berhasil di-seed')
 		process.exit()
