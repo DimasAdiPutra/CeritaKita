@@ -96,6 +96,8 @@ export const useStoryEditor = (initialStoryId = null) => {
 					setContentImages(story.contentImages)
 				}
 
+				setSelectedCategories(story.categories.map((cat) => cat._id))
+
 				console.log('Story loaded:', story)
 			} catch (err) {
 				setError('Gagal memuat draft. Silakan coba lagi.')
@@ -218,6 +220,8 @@ export const useStoryEditor = (initialStoryId = null) => {
 			return
 		}
 
+		console.log(selectedCategories)
+
 		setSavingDraft(true)
 		setError('')
 		setSuccess('')
@@ -226,6 +230,9 @@ export const useStoryEditor = (initialStoryId = null) => {
 			const contentHTML = editor.getHTML()
 			const contentJSON = editor.getJSON()
 			const excerpt = extractExcerpt(contentHTML)
+			const categories = [...selectedCategories]
+
+			console.log('Categories', categories)
 
 			const payload = {
 				title: title.trim(),
@@ -235,6 +242,7 @@ export const useStoryEditor = (initialStoryId = null) => {
 				coverImage: coverImage
 					? { fileId: coverImage.id, url: coverImage.url }
 					: null,
+				categories,
 			}
 
 			let response
@@ -293,8 +301,6 @@ export const useStoryEditor = (initialStoryId = null) => {
 			const contentHTML = editor.getHTML()
 			const contentJSON = editor.getJSON()
 			const excerpt = extractExcerpt(contentHTML)
-
-			console.log(storyId)
 
 			// Jika belum ada storyId, buat story baru terlebih dahulu
 			if (!storyId) {

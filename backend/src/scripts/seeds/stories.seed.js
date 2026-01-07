@@ -63,7 +63,6 @@ const seedStories = async (users) => {
 				],
 			},
 
-			tags: ['petualangan', 'hutan'],
 			status: 'published',
 			views: 120,
 			likes: 45,
@@ -153,8 +152,6 @@ const seedStories = async (users) => {
 					},
 				],
 			},
-
-			tags: ['resep', 'masakan', 'keluarga'],
 			status: 'published',
 			views: 87,
 			likes: 30,

@@ -54,13 +54,6 @@ const storySchema = new mongoose.Schema(
 			type: Object,
 			required: true,
 		},
-		tags: [
-			{
-				type: String,
-				lowercase: true,
-				trim: true,
-			},
-		],
 		status: {
 			type: String,
 			enum: ['draft', 'published'],

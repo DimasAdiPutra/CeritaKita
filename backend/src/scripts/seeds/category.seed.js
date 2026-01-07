@@ -9,10 +9,16 @@ const categories = [
 	{ name: 'Business', slug: 'business' },
 	{ name: 'Tutorial', slug: 'tutorial' },
 	{ name: 'Opinion', slug: 'opinion' },
+	{ name: 'Petualangan', slug: 'petualangan' },
+	{ name: 'Hutan', slug: 'hutan' },
+	{ name: 'Resep', slug: 'resep' },
+	{ name: 'Masakan', slug: 'masakan' },
+	{ name: 'Keluarga', slug: 'keluarga' },
 ]
 
 const seedCategories = async () => {
 	try {
+		await Category.deleteMany()
 		await Category.insertMany(categories, { ordered: false })
 		console.log('✅ Categories berhasil di-seed')
 		return categories

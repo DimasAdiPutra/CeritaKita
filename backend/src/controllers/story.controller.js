@@ -13,7 +13,7 @@ export const getStories = async (req, res) => {
 			.select(
 				'title slug excerpt coverImage author status publishedAt views likes'
 			)
-			.populate('author', 'name avatar job')
+			.populate('author', 'name avatar job').populate('categories', 'name slug')
 
 		sendResponse(res, {
 			data: stories,
@@ -71,9 +71,10 @@ export const getStoryById = async (req, res) => {
 			author: req.user.id,
 		})
 			.select(
-				'title slug excerpt contentHTML contentJSON coverImage tags status author publishedAt'
+				'title slug excerpt contentHTML contentJSON coverImage status author publishedAt'
 			)
 			.populate('author', 'name avatar')
+			.populate('categories', 'name slug')
 
 		if (!story) {
 			return sendResponse(res, {
@@ -104,12 +105,12 @@ export const createStory = async (req, res) => {
 			excerpt = '',
 			contentHTML,
 			contentJSON,
-			tags = [],
 			coverImage, // optional, object sesuai imageMetaSchema
+			categories,
 		} = req.body
 
 		// Validasi required fields
-		if (!title || !contentHTML || !contentJSON) {
+		if (!title || !contentHTML || !contentJSON || !categories) {
 			return sendResponse(res, {
 				code: ERROR_CODES.VALIDATION_ERROR,
 				message: 'Required fields missing',
@@ -126,10 +127,10 @@ export const createStory = async (req, res) => {
 			excerpt,
 			contentHTML,
 			contentJSON,
-			tags,
 			coverImage: coverImage || null,
 			author: req.user.id,
 			status: 'draft',
+			categories,
 		})
 
 		sendResponse(res, {
@@ -175,7 +176,12 @@ export const publishStory = async (req, res) => {
 		}
 
 		// Validasi minimal sebelum publish
-		if (!story.title || !story.contentHTML || !story.contentJSON) {
+		if (
+			!story.title ||
+			!story.contentHTML ||
+			!story.contentJSON ||
+			!story.categories
+		) {
 			return sendResponse(res, {
 				code: ERROR_CODES.VALIDATION_ERROR,
 				message: 'Story content is incomplete',
@@ -260,7 +266,7 @@ export const updateStory = async (req, res) => {
 			'contentHTML',
 			'contentJSON',
 			'coverImage',
-			'tags',
+			'categories',
 		]
 
 		ALLOWED_FIELDS.forEach((field) => {

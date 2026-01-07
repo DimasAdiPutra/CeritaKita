@@ -136,8 +136,8 @@ const StoryEditor = ({ storyId = null }) => {
               <CategoryBadge
                 key={cat._id}
                 category={cat.name}
-                active={selectedCategories.includes(cat.name)}
-                onClick={() => toggleCategory(cat.name)}
+                active={selectedCategories.includes(cat._id)}
+                onClick={() => toggleCategory(cat._id)}
               />
             ))}
           </div>
