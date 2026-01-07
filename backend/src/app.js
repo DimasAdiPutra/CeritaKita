@@ -70,7 +70,7 @@ app.use(morgan('dev'))
 // Routes
 app.use('/api/stories', storyRoutes)
 app.use('/api/auth', authRoutes)
-app.use('/api/category', categoryRoutes)
+app.use('/api/categories', categoryRoutes)
 app.use('/api/images', imageRoutes)
 app.use('/api/imagekit', imagekitRoutes)
 

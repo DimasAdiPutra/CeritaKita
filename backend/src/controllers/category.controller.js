@@ -3,7 +3,7 @@ import Category from '../models/category.model.js'
 // Get all categories
 export const getAllCategories = async (req, res) => {
 	try {
-		const categories = await Category.find()
+		const categories = await Category.find().select('name slug')
 		res.status(200).json({
 			success: true,
 			data: categories,

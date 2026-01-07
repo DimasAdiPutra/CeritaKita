@@ -13,6 +13,7 @@ import {
 	createStory,
 	getStoryById,
 } from '@/services/stories.api'
+import { getCategories } from '@/services/categories.api'
 
 export const useStoryEditor = (initialStoryId = null) => {
 	const navigate = useNavigate()
@@ -31,6 +32,8 @@ export const useStoryEditor = (initialStoryId = null) => {
 	const [publishing, setPublishing] = useState(false)
 	const [error, setError] = useState('')
 	const [success, setSuccess] = useState('')
+	const [selectedCategories, setSelectedCategories] = useState([])
+	const [categories, setCategories] = useState([])
 
 	const editor = useEditor({
 		extensions: [
@@ -107,6 +110,35 @@ export const useStoryEditor = (initialStoryId = null) => {
 			loadStoryData(initialStoryId)
 		}
 	}, [initialStoryId, editor])
+
+	// Load Category
+	useEffect(() => {
+		let isMounted = true // anti memory leak
+
+		const loadCategories = async () => {
+			try {
+				const data = await getCategories()
+				if (isMounted) {
+					setCategories(data)
+				}
+			} catch (err) {
+				if (isMounted) {
+					setError('Gagal mengambil kategori')
+					console.error(err)
+				}
+			} finally {
+				if (isMounted) {
+					setLoading(false)
+				}
+			}
+		}
+
+		loadCategories()
+
+		return () => {
+			isMounted = false
+		}
+	}, [])
 
 	/**
 	 * Extract excerpt dari HTML content
@@ -336,6 +368,23 @@ export const useStoryEditor = (initialStoryId = null) => {
 		}
 	}
 
+	// Category Badge
+	const toggleCategory = (cat) => {
+		setSelectedCategories((prev) => {
+			if (prev.includes(cat)) {
+				// remove
+				return prev.filter((c) => c !== cat)
+			}
+
+			if (prev.length >= 3) {
+				// max 3, stop right there ✋
+				return prev
+			}
+
+			return [...prev, cat]
+		})
+	}
+
 	return {
 		storyId,
 		editor,
@@ -356,5 +405,8 @@ export const useStoryEditor = (initialStoryId = null) => {
 		success,
 		setError,
 		setSuccess,
+		toggleCategory,
+		selectedCategories,
+		categories,
 	}
 }

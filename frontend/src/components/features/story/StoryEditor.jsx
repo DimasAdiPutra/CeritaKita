@@ -2,6 +2,7 @@ import { useStoryEditor } from '@/hooks/useStoryEditor'
 import EditorToolbar from './EditorToolbar'
 import ImageCropModal from '../image/imageCropModal'
 import { EditorContent } from '@tiptap/react'
+import CategoryBadge from '../../ui/CategoryBadge'
 
 const StoryEditor = ({ storyId = null }) => {
   const {
@@ -21,6 +22,9 @@ const StoryEditor = ({ storyId = null }) => {
     error,
     success,
     setError,
+    toggleCategory,
+    selectedCategories,
+    categories
   } = useStoryEditor(storyId)
 
   const handleCoverSelect = () => {
@@ -120,6 +124,28 @@ const StoryEditor = ({ storyId = null }) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
+
+        {/* CATEGORY */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            Kategori <span className="text-red-500">*</span>
+          </label>
+
+          <div className="flex flex-wrap gap-2">
+            {categories.map((cat) => (
+              <CategoryBadge
+                key={cat._id}
+                category={cat.name}
+                active={selectedCategories.includes(cat.name)}
+                onClick={() => toggleCategory(cat.name)}
+              />
+            ))}
+          </div>
+
+          <p className="mt-2 text-xs text-gray-500">
+            Maksimal 3 kategori ({selectedCategories.length}/3)
+          </p>
+        </div>
 
         {/* TOOLBAR */}
         <EditorToolbar
