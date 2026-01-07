@@ -44,7 +44,7 @@ const StoryList = ({
         >
           <StoryCard
             coverImage={story.coverImage}
-            tags={story.tags}
+            categories={story.categories}
             publishedAt={story.publishedAt}
             title={story.title}
             excerpt={story.excerpt}

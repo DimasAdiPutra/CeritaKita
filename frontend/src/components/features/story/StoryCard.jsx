@@ -17,7 +17,7 @@ const truncateDescription = (text = "", maxWords = 25) => {
 const StoryCard = ({
   className = "",
   coverImage,
-  tags = [],
+  categories = [],
   publishedAt,
   title,
   excerpt,
@@ -38,13 +38,13 @@ const StoryCard = ({
         <ImageWithFallback
           path={coverPath}
           alt={title}
-          className="h-56 w-full object-cover rounded-t-lg"
+          className="h-56 w-full object-cover rounded-t-lg brightness-75 contrast-110 transition duration-300 hover:brightness-50"
           fallback="https://via.placeholder.com/400x300?text=No+Image"
         />
 
         <div className="absolute top-2 right-2 flex gap-2 z-10">
-          {tags.map((tag) => (
-            <CategoryBadge key={tag} category={tag} />
+          {categories.map((category) => (
+            <CategoryBadge key={category._id} category={category.name} />
           ))}
         </div>
       </div>
