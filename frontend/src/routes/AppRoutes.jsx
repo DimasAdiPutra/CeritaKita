@@ -3,8 +3,13 @@ import { Suspense, lazy } from 'react'
 
 // Import pages
 const HomePage = lazy(() => import('../pages/HomePage'))
-const BlogPage = lazy(() => import('../pages/BlogPage'))
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'))
+
+// Story
+const StoryPage = lazy(() => import('../pages/story/StoryPage'))
+const DraftEditor = lazy(() => import('../pages/story/DraftEditor'))
+
+// Auth
 const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'))
 const LoginPage = lazy(() => import('../pages/auth/LoginPage'))
 const LogoutPage = lazy(() => import('../pages/auth/LogoutPage'))
@@ -23,7 +28,9 @@ const AppRoutes = () => {
 					{/* Main Routes with Layout */}
 					<Route element={<MainLayouts />}>
 						<Route path="/" element={<HomePage />} />
-						<Route path="/blog" element={<BlogPage />} />
+						<Route path="/story" element={<StoryPage />} />
+						<Route path="/editor" element={<DraftEditor />} />
+						<Route path="/editor/:storyId" element={<DraftEditor />} />
 						<Route path="*" element={<NotFoundPage />} />
 					</Route>
 

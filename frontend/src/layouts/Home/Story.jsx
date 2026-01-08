@@ -1,21 +1,21 @@
-// layouts/Home/Blog.jsx
+// layouts/Home/Story.jsx
 import { useState, useEffect } from "react";
 
 // Components
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
-import FilterDropdown from "../../components/features/blog/FilterDropdown";
-import SortDropdown from "../../components/features/blog/SortDropdown";
+import FilterDropdown from "../../components/features/story/FilterDropdown";
+import SortDropdown from "../../components/features/story/SortDropdown";
 
 // Icons
 import { FiSearch } from "react-icons/fi";
 
 // Services
-import { getStories } from "../../services/stories.api";
-import BlogList from "../../components/features/blog/BlogList";
+import { getPublishedStories } from "../../services/stories.api";
+import StoryList from "../../components/features/story/StoryList";
 import { dgerror } from "../../utils/logger";
 
-const Blog = () => {
+const Story = () => {
 	const [stories, setStories] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -23,7 +23,7 @@ const Blog = () => {
 	useEffect(() => {
 		const loadData = async () => {
 			try {
-				const data = await getStories();
+				const data = await getPublishedStories();
 				setStories(data);
 			} catch (err) {
 				dgerror(err);
@@ -74,17 +74,17 @@ const Blog = () => {
 					</div>
 				</div>
 
-				{/* Blog Cards */}
-				<BlogList stories={stories} loading={loading} error={error} layout="flex" />
+				{/* Story Cards */}
+				<StoryList stories={stories} loading={loading} error={error} layout="flex" />
 
 
 				{/* Button unlimited scroll */}
 				<div className="flex my-12 justify-center">
-					<Button text="Lihat lebih banyak" />
+					<Button to='/story' text="Lihat lebih banyak" />
 				</div>
 			</div>
 		</section>
 	);
 };
 
-export default Blog;
+export default Story;

@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 
 // Layouts
 import Header from '../layouts/Home/Header'
-import Blog from '../layouts/Home/Blog'
+import Story from '../layouts/Home/Story'
 
 const HomePage = () => {
 	return (
@@ -18,7 +18,7 @@ const HomePage = () => {
 
 			<main>
 				<Header />
-				<Blog />
+				<Story />
 			</main>
 		</>
 	)

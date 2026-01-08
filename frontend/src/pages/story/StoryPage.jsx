@@ -1,17 +1,17 @@
-// src/pages/BlogPage.jsx
+// src/pages/StoryPage.jsx
 import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
-import Input from "../components/ui/Input";
-import FilterDropdown from "../components/features/blog/FilterDropdown";
-import SortDropdown from "../components/features/blog/SortDropdown";
+import Input from "@/components/ui/Input";
+import FilterDropdown from "@/components/features/story/FilterDropdown";
+import SortDropdown from "@/components/features/story/SortDropdown";
 
-import { getStories } from "../services/stories.api";
-import BlogList from "../components/features/blog/BlogList";
-import { dgerror } from "../utils/logger";
+import { getPublishedStories } from "@/services/stories.api";
+import StoryList from "@/components/features/story/StoryList";
+import { dgerror } from "@/utils/logger";
 
-const BlogPage = () => {
+const StoryPage = () => {
 	const [stories, setStories] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -19,7 +19,7 @@ const BlogPage = () => {
 	useEffect(() => {
 		const loadData = async () => {
 			try {
-				const data = await getStories();
+				const data = await getPublishedStories();
 				setStories(data);
 			} catch (err) {
 				dgerror(err);
@@ -34,7 +34,7 @@ const BlogPage = () => {
 	return (
 		<>
 			<Helmet>
-				<title>Blog - CeritaKita</title>
+				<title>story - CeritaKita</title>
 			</Helmet>
 
 			<div className="mt-20 container py-10">
@@ -69,11 +69,11 @@ const BlogPage = () => {
 					</div>
 				</div>
 
-				{/* Blog Cards */}
-				<BlogList stories={stories} loading={loading} error={error} layout="grid" />
+				{/* Story Cards */}
+				<StoryList stories={stories} loading={loading} error={error} layout="grid" />
 			</div>
 		</>
 	);
 };
 
-export default BlogPage;
+export default StoryPage;

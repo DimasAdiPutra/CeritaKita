@@ -5,7 +5,7 @@ import AppRoutes from './routes/AppRoutes'
 
 function App() {
 	const publicKey = import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY
-	const urlEndpoint = import.meta.env.VITE_IMAGEKIT_URLENDPOINT
+	const urlEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT
 
 	return (
 		<HelmetProvider>

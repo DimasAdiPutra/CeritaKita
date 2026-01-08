@@ -1,36 +1,19 @@
-/**
- * Generate slug otomatis dari title
- * @param {string} title - Judul story
- * @param {Model} StoryModel - Mongoose Story model untuk pengecekan duplicate
- * @returns {Promise<string>} slug yang unik
- */
+import slugify from 'slugify'
+
 export const generateStorySlug = async (title, StoryModel) => {
-	// Sanitize title menjadi slug dasar
-	const baseSlug = title
-		.toLowerCase()
-		.trim()
-		.replace(/[^\w\s-]/g, '')
-		.replace(/[\s_-]+/g, '-')
-		.replace(/^-+|-+$/g, '')
-		.substring(0, 100)
+	const baseSlug = slugify(title, {
+		lower: true,
+		strict: true,
+		trim: true,
+	})
 
-	// Generate timestamp untuk keunikan
-	const timestamp = new Date()
-		.toISOString()
-		.replace(/[:\-T]/g, '')
-		.slice(0, 14)
+	let slug = baseSlug
+	let counter = 1
 
-	// Buat slug dengan timestamp
-	let slug = `${baseSlug}-${timestamp}`
-
-	// Cek jika masih conflict, tambah random suffix
-	const existing = await StoryModel.findOne({ slug })
-	if (existing) {
-		const randomSuffix = Math.random().toString(36).substring(2, 6)
-		slug = `${baseSlug}-${timestamp}-${randomSuffix}`
+	while (await StoryModel.exists({ slug })) {
+		slug = `${baseSlug}-${counter}`
+		counter++
 	}
 
 	return slug
 }
-
-export default { generateStorySlug }
