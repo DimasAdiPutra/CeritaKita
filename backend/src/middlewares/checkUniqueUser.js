@@ -1,7 +1,7 @@
 // middlewares/checkUniqueUser.js
 import User from '../models/user.model.js'
-import { ERROR_CODES } from '../utils/errors.helper.js'
-import { sendResponse } from '../utils/response.helper.js'
+import { ERROR_CODES } from '../constants/errors.js'
+import { sendResponse } from '../utils/response.utils.js'
 
 export const checkUniqueUser = async (req, res, next) => {
 	try {

@@ -1,7 +1,7 @@
 import Story from '../models/story.model.js'
-import { ERROR_CODES } from '../utils/errors.helper.js'
-import { sendResponse } from '../utils/response.helper.js'
-import { generateStorySlug } from '../utils/slug.helper.js'
+import { ERROR_CODES } from '../constants/errors.js'
+import { sendResponse } from '../utils/response.utils.js'
+import { generateStorySlug } from '../utils/slug.utils.js'
 
 /**
  * GET all published stories
@@ -13,7 +13,8 @@ export const getStories = async (req, res) => {
 			.select(
 				'title slug excerpt coverImage author status publishedAt views likes'
 			)
-			.populate('author', 'name avatar job').populate('categories', 'name slug')
+			.populate('author', 'name avatar job')
+			.populate('categories', 'name slug')
 
 		sendResponse(res, {
 			data: stories,

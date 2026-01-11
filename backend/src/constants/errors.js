@@ -2,7 +2,7 @@
  * Error Constants dan Dictionary untuk konsistensi
  */
 
-const ERROR_CODES = {
+export const ERROR_CODES = {
 	// Authentication
 	UNAUTHORIZED: 'UNAUTHORIZED',
 	INVALID_TOKEN: 'INVALID_TOKEN',
@@ -34,7 +34,7 @@ const ERROR_CODES = {
 }
 
 // Pesan Error (Bahasa Indonesia, smart casual tone)
-const ERROR_MESSAGES = {
+export const ERROR_MESSAGES = {
 	[ERROR_CODES.USER_ALREADY_EXISTS]:
 		'Email atau username ini sudah digunakan. Silakan pilih yang lain.',
 	[ERROR_CODES.ALREADY_AUTHENTICATED]:
@@ -73,7 +73,7 @@ const ERROR_MESSAGES = {
 	[ERROR_CODES.NOT_FOUND]: 'Halaman atau resource tidak tersedia.',
 }
 
-const ERROR_STATUS_CODES = {
+export const ERROR_STATUS_CODES = {
 	[ERROR_CODES.UNAUTHORIZED]: 401,
 	[ERROR_CODES.INVALID_TOKEN]: 401,
 	[ERROR_CODES.TOKEN_EXPIRED]: 401,
@@ -98,20 +98,3 @@ const ERROR_STATUS_CODES = {
 	[ERROR_CODES.BAD_REQUEST]: 400,
 	[ERROR_CODES.NOT_FOUND]: 404,
 }
-
-const createError = (
-	code,
-	message = null,
-	details = null,
-	statusCode = null
-) => {
-	const error = new Error(
-		message || ERROR_MESSAGES[code] || 'Terjadi kesalahan yang tidak diketahui.'
-	)
-	error.code = code
-	error.statusCode = statusCode || ERROR_STATUS_CODES[code] || 500
-	error.details = details
-	return error
-}
-
-export { ERROR_CODES, ERROR_MESSAGES, ERROR_STATUS_CODES, createError }

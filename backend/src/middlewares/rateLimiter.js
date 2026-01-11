@@ -1,6 +1,6 @@
 import rateLimit from 'express-rate-limit'
-import { sendResponse } from '../utils/response.helper.js'
-import { ERROR_CODES } from '../utils/errors.helper.js'
+import { sendResponse } from '../utils/response.utils.js'
+import { ERROR_CODES } from '../constants/errors.js'
 
 /**
  * Create rate limiter dengan konfigurasi custom

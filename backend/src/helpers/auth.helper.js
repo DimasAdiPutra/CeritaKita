@@ -1,14 +1,23 @@
 import jwt from 'jsonwebtoken'
+import { ROLES } from '../constants/roles.js'
 
 /**
  * Generate JWT token
  * @param {string} userId
  * @returns {string} JWT token
  */
-export const generateToken = (userId) => {
-	return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-		expiresIn: '1d',
-	})
+export const generateToken = (user) => {
+	const permissions = ROLES[user.role]
+
+	return jwt.sign(
+		{
+			id: user._id,
+			role: user.role,
+			permissions,
+		},
+		process.env.JWT_SECRET,
+		{ expiresIn: '1d' }
+	)
 }
 
 /**

@@ -1,4 +1,4 @@
-import { ERROR_MESSAGES, ERROR_STATUS_CODES } from './errors.helper.js'
+import { ERROR_MESSAGES, ERROR_STATUS_CODES } from '../constants/errors.js'
 
 const sendResponse = (
 	res,

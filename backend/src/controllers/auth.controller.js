@@ -5,15 +5,15 @@ import bcrypt from 'bcryptjs'
 import User from '../models/user.model.js'
 
 // Import Helpers
-import { ERROR_CODES } from '../utils/errors.helper.js'
-import { sendResponse } from '../utils/response.helper.js'
+import { ERROR_CODES } from '../constants/errors.js'
+import { sendResponse } from '../utils/response.utils.js'
 import {
 	clearTokenCookie,
 	formatUserResponse,
 	generateToken,
 	setTokenCookie,
 	verifyTokenHelper,
-} from '../utils/auth.helpers.js'
+} from '../helpers/auth.helper.js'
 
 // * REGISTRASI USER
 export const registerUser = async (req, res) => {
@@ -34,10 +34,11 @@ export const registerUser = async (req, res) => {
 			username,
 			email,
 			password: hashedPassword,
+			role: 'user',
 		})
 
 		// Generate token
-		const token = generateToken(newUser._id)
+		const token = generateToken(newUser)
 		setTokenCookie(res, token)
 
 		sendResponse(res, {
@@ -100,7 +101,7 @@ export const loginUser = async (req, res) => {
 		}
 
 		// Generate token dan set cookie
-		const token = generateToken(user._id)
+		const token = generateToken(user)
 		setTokenCookie(res, token)
 
 		sendResponse(res, {

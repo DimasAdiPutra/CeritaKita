@@ -1,5 +1,5 @@
-import { ERROR_CODES } from '../utils/errors.helper.js'
-import { sendResponse } from '../utils/response.helper.js'
+import { ERROR_CODES } from '../constants/errors.js'
+import { sendResponse } from '../utils/response.utils.js'
 
 export const validate = (schema) => {
 	return (req, res, next) => {

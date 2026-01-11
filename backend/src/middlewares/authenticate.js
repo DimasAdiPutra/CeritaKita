@@ -1,7 +1,7 @@
 import User from '../models/user.model.js'
-import { verifyTokenHelper } from '../utils/auth.helpers.js'
-import { ERROR_CODES } from '../utils/errors.helper.js'
-import { sendResponse } from '../utils/response.helper.js'
+import { verifyTokenHelper } from '../helpers/auth.helper.js'
+import { ERROR_CODES } from '../constants/errors.js'
+import { sendResponse } from '../utils/response.utils.js'
 
 export const authenticate = async (req, res, next) => {
 	try {
@@ -37,6 +37,7 @@ export const authenticate = async (req, res, next) => {
 			id: user._id,
 			name: user.name,
 			role: user.role,
+			permissions: decoded.permissions,
 		}
 
 		next()

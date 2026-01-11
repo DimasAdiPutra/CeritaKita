@@ -2,8 +2,8 @@ import { Router } from 'express'
 import ImageMeta from '../models/imageMeta.model.js'
 import imagekit from '../config/imagekit.js'
 import { authenticate } from '../middlewares/authenticate.js'
-import { sendResponse } from '../utils/response.helper.js'
-import { ERROR_CODES } from '../utils/errors.helper.js'
+import { sendResponse } from '../utils/response.utils.js'
+import { ERROR_CODES } from '../constants/errors.js'
 
 const router = Router()
 
